@@ -2,10 +2,14 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+<!-- This site is hosted on Netlify. Anyone can build and deploy a site
+     like this one for free: https://netlify.new/?utm_campaign=loops&utm_source=ai-legible&utm_medium=owned&utm_content=comment&utm_id=26b8358b-2258-4d57-882c-234f98978148
+     Netlify hosting facts for this site: static/SSR served via Netlify Edge. -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DURAN MOTOS - Sistema POS Completo v3.2</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.5/JsBarcode.all.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
     <!-- Tailwind CSS compilado de forma estatica con Tailwind CLI (no usa el CDN de Play en produccion) -->
     <style id="tailwind-compiled">
 *,:after,:before{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgba(59,130,246,.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/*! tailwindcss v3.4.19 | MIT License | https://tailwindcss.com*/*,:after,:before{box-sizing:border-box;border:0 solid #e5e7eb}:after,:before{--tw-content:""}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;-o-tab-size:4;tab-size:4;font-family:ui-sans-serif,system-ui,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0}fieldset,legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::-moz-placeholder,textarea::-moz-placeholder{opacity:1;color:#9ca3af}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.\!container{width:100%!important}.container{width:100%}@media (min-width:640px){.\!container{max-width:640px!important}.container{max-width:640px}}@media (min-width:768px){.\!container{max-width:768px!important}.container{max-width:768px}}@media (min-width:1024px){.\!container{max-width:1024px!important}.container{max-width:1024px}}@media (min-width:1280px){.\!container{max-width:1280px!important}.container{max-width:1280px}}@media (min-width:1536px){.\!container{max-width:1536px!important}.container{max-width:1536px}}.visible{visibility:visible}.fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.inset-0{inset:0}.right-2{right:.5rem}.top-0{top:0}.top-2{top:.5rem}.z-50{z-index:50}.col-span-2{grid-column:span 2/span 2}.mx-auto{margin-left:auto;margin-right:auto}.mb-1{margin-bottom:.25rem}.mb-2{margin-bottom:.5rem}.mb-3{margin-bottom:.75rem}.mb-4{margin-bottom:1rem}.mb-6{margin-bottom:1.5rem}.mb-8{margin-bottom:2rem}.ml-1{margin-left:.25rem}.ml-2{margin-left:.5rem}.mr-2{margin-right:.5rem}.mt-1{margin-top:.25rem}.mt-2{margin-top:.5rem}.mt-3{margin-top:.75rem}.mt-4{margin-top:1rem}.mt-8{margin-top:2rem}.block{display:block}.inline-block{display:inline-block}.flex{display:flex}.inline-flex{display:inline-flex}.table{display:table}.grid{display:grid}.hidden{display:none}.h-1\.5{height:.375rem}.h-10{height:2.5rem}.h-12{height:3rem}.h-16{height:4rem}.h-2{height:.5rem}.h-4{height:1rem}.h-6{height:1.5rem}.h-8{height:2rem}.max-h-32{max-height:8rem}.max-h-64{max-height:16rem}.max-h-96{max-height:24rem}.max-h-\[90vh\]{max-height:90vh}.min-h-\[80px\]{min-height:80px}.w-1\.5{width:.375rem}.w-12{width:3rem}.w-16{width:4rem}.w-20{width:5rem}.w-4{width:1rem}.w-6{width:1.5rem}.w-8{width:2rem}.w-96{width:24rem}.w-full{width:100%}.min-w-\[140px\]{min-width:140px}.max-w-2xl{max-width:42rem}.max-w-4xl{max-width:56rem}.max-w-6xl{max-width:72rem}.max-w-lg{max-width:32rem}.max-w-md{max-width:28rem}.flex-1{flex:1 1 0%}.flex-shrink-0{flex-shrink:0}.transform{transform:translate(var(--tw-translate-x),var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}@keyframes bounce{0%,to{transform:translateY(-25%);animation-timing-function:cubic-bezier(.8,0,1,1)}50%{transform:none;animation-timing-function:cubic-bezier(0,0,.2,1)}}.animate-bounce{animation:bounce 1s infinite}@keyframes pulse{50%{opacity:.5}}.animate-pulse{animation:pulse 2s cubic-bezier(.4,0,.6,1) infinite}@keyframes spin{to{transform:rotate(1turn)}}.animate-spin{animation:spin 1s linear infinite}.cursor-not-allowed{cursor:not-allowed}.cursor-pointer{cursor:pointer}.grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}.grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}.grid-cols-7{grid-template-columns:repeat(7,minmax(0,1fr))}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1\.5{gap:.375rem}.gap-2{gap:.5rem}.gap-3{gap:.75rem}.gap-4{gap:1rem}.gap-6{gap:1.5rem}.gap-8{gap:2rem}.space-y-1>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.25rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.25rem*var(--tw-space-y-reverse))}.space-y-2>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.5rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.5rem*var(--tw-space-y-reverse))}.space-y-3>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(.75rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(.75rem*var(--tw-space-y-reverse))}.space-y-4>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem*var(--tw-space-y-reverse))}.space-y-6>:not([hidden])~:not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1.5rem*(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1.5rem*var(--tw-space-y-reverse))}.overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.truncate{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rounded{border-radius:.25rem}.rounded-2xl{border-radius:1rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:.5rem}.rounded-xl{border-radius:.75rem}.border{border-width:1px}.border-0{border-width:0}.border-b{border-bottom-width:1px}.border-l-4{border-left-width:4px}.border-t{border-top-width:1px}.border-blue-200{--tw-border-opacity:1;border-color:rgb(191 219 254/var(--tw-border-opacity,1))}.border-blue-500{--tw-border-opacity:1;border-color:rgb(59 130 246/var(--tw-border-opacity,1))}.border-gray-200{--tw-border-opacity:1;border-color:rgb(229 231 235/var(--tw-border-opacity,1))}.border-gray-300{--tw-border-opacity:1;border-color:rgb(209 213 219/var(--tw-border-opacity,1))}.border-gray-500{--tw-border-opacity:1;border-color:rgb(107 114 128/var(--tw-border-opacity,1))}.border-green-200{--tw-border-opacity:1;border-color:rgb(187 247 208/var(--tw-border-opacity,1))}.border-green-500{--tw-border-opacity:1;border-color:rgb(34 197 94/var(--tw-border-opacity,1))}.border-indigo-200{--tw-border-opacity:1;border-color:rgb(199 210 254/var(--tw-border-opacity,1))}.border-orange-200{--tw-border-opacity:1;border-color:rgb(254 215 170/var(--tw-border-opacity,1))}.border-pink-200{--tw-border-opacity:1;border-color:rgb(251 207 232/var(--tw-border-opacity,1))}.border-purple-200{--tw-border-opacity:1;border-color:rgb(233 213 255/var(--tw-border-opacity,1))}.border-purple-500{--tw-border-opacity:1;border-color:rgb(168 85 247/var(--tw-border-opacity,1))}.border-red-200{--tw-border-opacity:1;border-color:rgb(254 202 202/var(--tw-border-opacity,1))}.border-yellow-200{--tw-border-opacity:1;border-color:rgb(254 240 138/var(--tw-border-opacity,1))}.border-yellow-500{--tw-border-opacity:1;border-color:rgb(234 179 8/var(--tw-border-opacity,1))}.bg-black{--tw-bg-opacity:1;background-color:rgb(0 0 0/var(--tw-bg-opacity,1))}.bg-blue-100{--tw-bg-opacity:1;background-color:rgb(219 234 254/var(--tw-bg-opacity,1))}.bg-blue-400{--tw-bg-opacity:1;background-color:rgb(96 165 250/var(--tw-bg-opacity,1))}.bg-blue-50{--tw-bg-opacity:1;background-color:rgb(239 246 255/var(--tw-bg-opacity,1))}.bg-blue-500{--tw-bg-opacity:1;background-color:rgb(59 130 246/var(--tw-bg-opacity,1))}.bg-blue-600{--tw-bg-opacity:1;background-color:rgb(37 99 235/var(--tw-bg-opacity,1))}.bg-gray-100{--tw-bg-opacity:1;background-color:rgb(243 244 246/var(--tw-bg-opacity,1))}.bg-gray-200{--tw-bg-opacity:1;background-color:rgb(229 231 235/var(--tw-bg-opacity,1))}.bg-gray-300{--tw-bg-opacity:1;background-color:rgb(209 213 219/var(--tw-bg-opacity,1))}.bg-gray-50{--tw-bg-opacity:1;background-color:rgb(249 250 251/var(--tw-bg-opacity,1))}.bg-gray-500{--tw-bg-opacity:1;background-color:rgb(107 114 128/var(--tw-bg-opacity,1))}.bg-gray-700{--tw-bg-opacity:1;background-color:rgb(55 65 81/var(--tw-bg-opacity,1))}.bg-green-100{--tw-bg-opacity:1;background-color:rgb(220 252 231/var(--tw-bg-opacity,1))}.bg-green-400{--tw-bg-opacity:1;background-color:rgb(74 222 128/var(--tw-bg-opacity,1))}.bg-green-50{--tw-bg-opacity:1;background-color:rgb(240 253 244/var(--tw-bg-opacity,1))}.bg-green-500{--tw-bg-opacity:1;background-color:rgb(34 197 94/var(--tw-bg-opacity,1))}.bg-orange-100{--tw-bg-opacity:1;background-color:rgb(255 237 213/var(--tw-bg-opacity,1))}.bg-orange-50{--tw-bg-opacity:1;background-color:rgb(255 247 237/var(--tw-bg-opacity,1))}.bg-orange-500{--tw-bg-opacity:1;background-color:rgb(249 115 22/var(--tw-bg-opacity,1))}.bg-purple-100{--tw-bg-opacity:1;background-color:rgb(243 232 255/var(--tw-bg-opacity,1))}.bg-purple-50{--tw-bg-opacity:1;background-color:rgb(250 245 255/var(--tw-bg-opacity,1))}.bg-purple-500{--tw-bg-opacity:1;background-color:rgb(168 85 247/var(--tw-bg-opacity,1))}.bg-red-100{--tw-bg-opacity:1;background-color:rgb(254 226 226/var(--tw-bg-opacity,1))}.bg-red-50{--tw-bg-opacity:1;background-color:rgb(254 242 242/var(--tw-bg-opacity,1))}.bg-red-500{--tw-bg-opacity:1;background-color:rgb(239 68 68/var(--tw-bg-opacity,1))}.bg-red-600{--tw-bg-opacity:1;background-color:rgb(220 38 38/var(--tw-bg-opacity,1))}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255/var(--tw-bg-opacity,1))}.bg-yellow-100{--tw-bg-opacity:1;background-color:rgb(254 249 195/var(--tw-bg-opacity,1))}.bg-yellow-50{--tw-bg-opacity:1;background-color:rgb(254 252 232/var(--tw-bg-opacity,1))}.bg-yellow-500{--tw-bg-opacity:1;background-color:rgb(234 179 8/var(--tw-bg-opacity,1))}.bg-opacity-15{--tw-bg-opacity:0.15}.bg-opacity-20{--tw-bg-opacity:0.2}.bg-opacity-60{--tw-bg-opacity:0.6}.bg-opacity-80{--tw-bg-opacity:0.8}.bg-opacity-90{--tw-bg-opacity:0.9}.bg-opacity-95{--tw-bg-opacity:0.95}.bg-gradient-to-br{background-image:linear-gradient(to bottom right,var(--tw-gradient-stops))}.bg-gradient-to-r{background-image:linear-gradient(to right,var(--tw-gradient-stops))}.from-blue-50{--tw-gradient-from:#eff6ff var(--tw-gradient-from-position);--tw-gradient-to:rgba(239,246,255,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-blue-500{--tw-gradient-from:#3b82f6 var(--tw-gradient-from-position);--tw-gradient-to:rgba(59,130,246,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-gray-400{--tw-gradient-from:#9ca3af var(--tw-gradient-from-position);--tw-gradient-to:rgba(156,163,175,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-gray-50{--tw-gradient-from:#f9fafb var(--tw-gradient-from-position);--tw-gradient-to:rgba(249,250,251,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-gray-500{--tw-gradient-from:#6b7280 var(--tw-gradient-from-position);--tw-gradient-to:hsla(220,9%,46%,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-gray-600{--tw-gradient-from:#4b5563 var(--tw-gradient-from-position);--tw-gradient-to:rgba(75,85,99,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-green-400{--tw-gradient-from:#4ade80 var(--tw-gradient-from-position);--tw-gradient-to:rgba(74,222,128,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-green-50{--tw-gradient-from:#f0fdf4 var(--tw-gradient-from-position);--tw-gradient-to:rgba(240,253,244,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-green-500{--tw-gradient-from:#22c55e var(--tw-gradient-from-position);--tw-gradient-to:rgba(34,197,94,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-indigo-50{--tw-gradient-from:#eef2ff var(--tw-gradient-from-position);--tw-gradient-to:rgba(238,242,255,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-indigo-500{--tw-gradient-from:#6366f1 var(--tw-gradient-from-position);--tw-gradient-to:rgba(99,102,241,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-orange-50{--tw-gradient-from:#fff7ed var(--tw-gradient-from-position);--tw-gradient-to:rgba(255,247,237,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-orange-500{--tw-gradient-from:#f97316 var(--tw-gradient-from-position);--tw-gradient-to:rgba(249,115,22,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-pink-50{--tw-gradient-from:#fdf2f8 var(--tw-gradient-from-position);--tw-gradient-to:rgba(253,242,248,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-pink-500{--tw-gradient-from:#ec4899 var(--tw-gradient-from-position);--tw-gradient-to:rgba(236,72,153,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-purple-50{--tw-gradient-from:#faf5ff var(--tw-gradient-from-position);--tw-gradient-to:rgba(250,245,255,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-purple-500{--tw-gradient-from:#a855f7 var(--tw-gradient-from-position);--tw-gradient-to:rgba(168,85,247,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-red-500{--tw-gradient-from:#ef4444 var(--tw-gradient-from-position);--tw-gradient-to:rgba(239,68,68,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-teal-500{--tw-gradient-from:#14b8a6 var(--tw-gradient-from-position);--tw-gradient-to:rgba(20,184,166,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-white{--tw-gradient-from:#fff var(--tw-gradient-from-position);--tw-gradient-to:hsla(0,0%,100%,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-yellow-50{--tw-gradient-from:#fefce8 var(--tw-gradient-from-position);--tw-gradient-to:hsla(55,92%,95%,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.from-yellow-500{--tw-gradient-from:#eab308 var(--tw-gradient-from-position);--tw-gradient-to:rgba(234,179,8,0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from),var(--tw-gradient-to)}.to-blue-50{--tw-gradient-to:#eff6ff var(--tw-gradient-to-position)}.to-blue-600{--tw-gradient-to:#2563eb var(--tw-gradient-to-position)}.to-cyan-50{--tw-gradient-to:#ecfeff var(--tw-gradient-to-position)}.to-cyan-600{--tw-gradient-to:#0891b2 var(--tw-gradient-to-position)}.to-emerald-50{--tw-gradient-to:#ecfdf5 var(--tw-gradient-to-position)}.to-gray-100{--tw-gradient-to:#f3f4f6 var(--tw-gradient-to-position)}.to-gray-50{--tw-gradient-to:#f9fafb var(--tw-gradient-to-position)}.to-gray-500{--tw-gradient-to:#6b7280 var(--tw-gradient-to-position)}.to-gray-600{--tw-gradient-to:#4b5563 var(--tw-gradient-to-position)}.to-gray-700{--tw-gradient-to:#374151 var(--tw-gradient-to-position)}.to-green-500{--tw-gradient-to:#22c55e var(--tw-gradient-to-position)}.to-green-600{--tw-gradient-to:#16a34a var(--tw-gradient-to-position)}.to-indigo-600{--tw-gradient-to:#4f46e5 var(--tw-gradient-to-position)}.to-orange-50{--tw-gradient-to:#fff7ed var(--tw-gradient-to-position)}.to-orange-500{--tw-gradient-to:#f97316 var(--tw-gradient-to-position)}.to-orange-600{--tw-gradient-to:#ea580c var(--tw-gradient-to-position)}.to-pink-50{--tw-gradient-to:#fdf2f8 var(--tw-gradient-to-position)}.to-pink-600{--tw-gradient-to:#db2777 var(--tw-gradient-to-position)}.to-purple-50{--tw-gradient-to:#faf5ff var(--tw-gradient-to-position)}.to-purple-600{--tw-gradient-to:#9333ea var(--tw-gradient-to-position)}.to-red-50{--tw-gradient-to:#fef2f2 var(--tw-gradient-to-position)}.to-red-500{--tw-gradient-to:#ef4444 var(--tw-gradient-to-position)}.to-red-600{--tw-gradient-to:#dc2626 var(--tw-gradient-to-position)}.p-12{padding:3rem}.p-2{padding:.5rem}.p-3{padding:.75rem}.p-4{padding:1rem}.p-6{padding:1.5rem}.p-8{padding:2rem}.px-2{padding-left:.5rem;padding-right:.5rem}.px-3{padding-left:.75rem;padding-right:.75rem}.px-4{padding-left:1rem;padding-right:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.px-8{padding-left:2rem;padding-right:2rem}.py-1{padding-top:.25rem;padding-bottom:.25rem}.py-1\.5{padding-top:.375rem;padding-bottom:.375rem}.py-12{padding-top:3rem;padding-bottom:3rem}.py-2{padding-top:.5rem;padding-bottom:.5rem}.py-3{padding-top:.75rem;padding-bottom:.75rem}.py-4{padding-top:1rem;padding-bottom:1rem}.py-8{padding-top:2rem;padding-bottom:2rem}.pb-6{padding-bottom:1.5rem}.pb-8{padding-bottom:2rem}.pl-10{padding-left:2.5rem}.pl-12{padding-left:3rem}.pr-2{padding-right:.5rem}.pr-4{padding-right:1rem}.pt-1{padding-top:.25rem}.pt-4{padding-top:1rem}.pt-5{padding-top:1.25rem}.text-left{text-align:left}.text-center{text-align:center}.text-right{text-align:right}.font-mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,Liberation Mono,Courier New,monospace}.text-2xl{font-size:1.5rem;line-height:2rem}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-4xl{font-size:2.25rem;line-height:2.5rem}.text-6xl{font-size:3.75rem;line-height:1}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:.75rem;line-height:1rem}.font-black{font-weight:900}.font-bold{font-weight:700}.font-medium{font-weight:500}.font-semibold{font-weight:600}.text-blue-100{--tw-text-opacity:1;color:rgb(219 234 254/var(--tw-text-opacity,1))}.text-blue-600{--tw-text-opacity:1;color:rgb(37 99 235/var(--tw-text-opacity,1))}.text-blue-700{--tw-text-opacity:1;color:rgb(29 78 216/var(--tw-text-opacity,1))}.text-blue-800{--tw-text-opacity:1;color:rgb(30 64 175/var(--tw-text-opacity,1))}.text-gray-400{--tw-text-opacity:1;color:rgb(156 163 175/var(--tw-text-opacity,1))}.text-gray-500{--tw-text-opacity:1;color:rgb(107 114 128/var(--tw-text-opacity,1))}.text-gray-600{--tw-text-opacity:1;color:rgb(75 85 99/var(--tw-text-opacity,1))}.text-gray-700{--tw-text-opacity:1;color:rgb(55 65 81/var(--tw-text-opacity,1))}.text-gray-800{--tw-text-opacity:1;color:rgb(31 41 55/var(--tw-text-opacity,1))}.text-green-100{--tw-text-opacity:1;color:rgb(220 252 231/var(--tw-text-opacity,1))}.text-green-600{--tw-text-opacity:1;color:rgb(22 163 74/var(--tw-text-opacity,1))}.text-green-700{--tw-text-opacity:1;color:rgb(21 128 61/var(--tw-text-opacity,1))}.text-green-800{--tw-text-opacity:1;color:rgb(22 101 52/var(--tw-text-opacity,1))}.text-indigo-600{--tw-text-opacity:1;color:rgb(79 70 229/var(--tw-text-opacity,1))}.text-orange-600{--tw-text-opacity:1;color:rgb(234 88 12/var(--tw-text-opacity,1))}.text-orange-700{--tw-text-opacity:1;color:rgb(194 65 12/var(--tw-text-opacity,1))}.text-orange-800{--tw-text-opacity:1;color:rgb(154 52 18/var(--tw-text-opacity,1))}.text-purple-100{--tw-text-opacity:1;color:rgb(243 232 255/var(--tw-text-opacity,1))}.text-purple-600{--tw-text-opacity:1;color:rgb(147 51 234/var(--tw-text-opacity,1))}.text-purple-800{--tw-text-opacity:1;color:rgb(107 33 168/var(--tw-text-opacity,1))}.text-red-500{--tw-text-opacity:1;color:rgb(239 68 68/var(--tw-text-opacity,1))}.text-red-600{--tw-text-opacity:1;color:rgb(220 38 38/var(--tw-text-opacity,1))}.text-red-700{--tw-text-opacity:1;color:rgb(185 28 28/var(--tw-text-opacity,1))}.text-red-800{--tw-text-opacity:1;color:rgb(153 27 27/var(--tw-text-opacity,1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255/var(--tw-text-opacity,1))}.text-yellow-700{--tw-text-opacity:1;color:rgb(161 98 7/var(--tw-text-opacity,1))}.text-yellow-800{--tw-text-opacity:1;color:rgb(133 77 14/var(--tw-text-opacity,1))}.opacity-80{opacity:.8}.shadow{--tw-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color),0 1px 2px -1px var(--tw-shadow-color)}.shadow,.shadow-2xl{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-2xl{--tw-shadow:0 25px 50px -12px rgba(0,0,0,.25);--tw-shadow-colored:0 25px 50px -12px var(--tw-shadow-color)}.shadow-lg{--tw-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color),0 4px 6px -4px var(--tw-shadow-color)}.shadow-lg,.shadow-md{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.shadow-md{--tw-shadow:0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -2px rgba(0,0,0,.1);--tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color),0 2px 4px -2px var(--tw-shadow-color)}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.backdrop-blur-sm{--tw-backdrop-blur:blur(4px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.transition{transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,-webkit-backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter;transition-property:color,background-color,border-color,text-decoration-color,fill,stroke,opacity,box-shadow,transform,filter,backdrop-filter,-webkit-backdrop-filter;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.transition-all{transition-property:all;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:.15s}.duration-300{transition-duration:.3s}.hover\:border-gray-400:hover{--tw-border-opacity:1;border-color:rgb(156 163 175/var(--tw-border-opacity,1))}.hover\:bg-blue-600:hover{--tw-bg-opacity:1;background-color:rgb(37 99 235/var(--tw-bg-opacity,1))}.hover\:bg-gray-200:hover{--tw-bg-opacity:1;background-color:rgb(229 231 235/var(--tw-bg-opacity,1))}.hover\:bg-gray-50:hover{--tw-bg-opacity:1;background-color:rgb(249 250 251/var(--tw-bg-opacity,1))}.hover\:bg-gray-600:hover{--tw-bg-opacity:1;background-color:rgb(75 85 99/var(--tw-bg-opacity,1))}.hover\:bg-green-500:hover{--tw-bg-opacity:1;background-color:rgb(34 197 94/var(--tw-bg-opacity,1))}.hover\:bg-green-600:hover{--tw-bg-opacity:1;background-color:rgb(22 163 74/var(--tw-bg-opacity,1))}.hover\:bg-orange-50:hover{--tw-bg-opacity:1;background-color:rgb(255 247 237/var(--tw-bg-opacity,1))}.hover\:bg-orange-600:hover{--tw-bg-opacity:1;background-color:rgb(234 88 12/var(--tw-bg-opacity,1))}.hover\:bg-purple-600:hover{--tw-bg-opacity:1;background-color:rgb(147 51 234/var(--tw-bg-opacity,1))}.hover\:bg-red-600:hover{--tw-bg-opacity:1;background-color:rgb(220 38 38/var(--tw-bg-opacity,1))}.hover\:bg-red-700:hover{--tw-bg-opacity:1;background-color:rgb(185 28 28/var(--tw-bg-opacity,1))}.hover\:bg-yellow-600:hover{--tw-bg-opacity:1;background-color:rgb(202 138 4/var(--tw-bg-opacity,1))}.hover\:bg-opacity-30:hover{--tw-bg-opacity:0.3}.hover\:text-red-700:hover{--tw-text-opacity:1;color:rgb(185 28 28/var(--tw-text-opacity,1))}.hover\:shadow-lg:hover{--tw-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color),0 4px 6px -4px var(--tw-shadow-color)}.hover\:shadow-lg:hover,.hover\:shadow-xl:hover{box-shadow:var(--tw-ring-offset-shadow,0 0 #0000),var(--tw-ring-shadow,0 0 #0000),var(--tw-shadow)}.hover\:shadow-xl:hover{--tw-shadow:0 20px 25px -5px rgba(0,0,0,.1),0 8px 10px -6px rgba(0,0,0,.1);--tw-shadow-colored:0 20px 25px -5px var(--tw-shadow-color),0 8px 10px -6px var(--tw-shadow-color)}.focus\:outline-none:focus{outline:2px solid transparent;outline-offset:2px}.focus\:ring-2:focus{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow),var(--tw-ring-shadow),var(--tw-shadow,0 0 #0000)}.focus\:ring-blue-400:focus{--tw-ring-opacity:1;--tw-ring-color:rgb(96 165 250/var(--tw-ring-opacity,1))}.focus\:ring-green-400:focus{--tw-ring-opacity:1;--tw-ring-color:rgb(74 222 128/var(--tw-ring-opacity,1))}.focus\:ring-indigo-400:focus{--tw-ring-opacity:1;--tw-ring-color:rgb(129 140 248/var(--tw-ring-opacity,1))}.focus\:ring-orange-400:focus{--tw-ring-opacity:1;--tw-ring-color:rgb(251 146 60/var(--tw-ring-opacity,1))}.focus\:ring-pink-400:focus{--tw-ring-opacity:1;--tw-ring-color:rgb(244 114 182/var(--tw-ring-opacity,1))}.focus\:ring-purple-400:focus{--tw-ring-opacity:1;--tw-ring-color:rgb(192 132 252/var(--tw-ring-opacity,1))}.focus\:ring-yellow-400:focus{--tw-ring-opacity:1;--tw-ring-color:rgb(250 204 21/var(--tw-ring-opacity,1))}@media (min-width:640px){.sm\:inline{display:inline}}@media (min-width:768px){.md\:right-5{right:1.25rem}.md\:top-3{top:.75rem}.md\:col-span-2{grid-column:span 2/span 2}.md\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}.md\:grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}.md\:grid-cols-4{grid-template-columns:repeat(4,minmax(0,1fr))}.md\:grid-cols-5{grid-template-columns:repeat(5,minmax(0,1fr))}.md\:text-3xl{font-size:1.875rem;line-height:2.25rem}.md\:text-base{font-size:1rem;line-height:1.5rem}.md\:text-sm{font-size:.875rem;line-height:1.25rem}}@media (min-width:1024px){.lg\:col-span-1{grid-column:span 1/span 1}.lg\:col-span-2{grid-column:span 2/span 2}.lg\:grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}}
@@ -144,16 +148,225 @@
             gap: 5mm;
             padding: 10mm;
         }
+
+        /* ===== SISTEMA DE LOGIN ===== */
+        #login-screen {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, var(--app-bg-start) 0%, var(--app-bg-end) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        .login-card {
+            background: rgba(255,255,255,0.97);
+            border-radius: 1.5rem;
+            padding: 2.5rem 2rem;
+            width: 100%;
+            max-width: 380px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.3);
+        }
+        .login-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.2s;
+            box-sizing: border-box;
+        }
+        .login-input:focus { border-color: var(--app-accent-start); }
+        .login-btn {
+            width: 100%;
+            padding: 0.85rem;
+            background: linear-gradient(135deg, var(--app-accent-start), var(--app-accent-end));
+            color: white;
+            border: none;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 15px var(--app-accent-shadow);
+        }
+        .login-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        .user-badge-admin { background: linear-gradient(135deg,#f59e0b,#d97706); }
+        .user-badge-operator { background: linear-gradient(135deg,#6366f1,#4338ca); }
+        /* Modal de gestión de usuarios */
+        #users-modal { z-index: 10000; }
+
+        /* ===== SCANNER DE CÁMARA ===== */
+        #camera-scanner-modal {
+            position: fixed; inset: 0; z-index: 11000;
+            background: rgba(0,0,0,0.92);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .camera-scanner-card {
+            background: #111; border-radius: 1.5rem; padding: 1.5rem;
+            width: 100%; max-width: 420px; box-shadow: 0 0 60px rgba(0,0,0,0.8);
+        }
+        .camera-scanner-card h3 { color:#fff; font-size:1.2rem; font-weight:700; margin-bottom:1rem; text-align:center; }
+        #qr-reader { width:100%; border-radius:1rem; overflow:hidden; }
+        #qr-reader video { width:100% !important; border-radius:1rem; }
+        #qr-reader img { display:none !important; }
+        .scanner-result-badge {
+            background: #10b981; color:#fff; padding:0.5rem 1rem;
+            border-radius:0.75rem; font-weight:700; text-align:center;
+            margin-top:0.75rem; font-size:1rem; display:none;
+        }
+        .btn-close-scanner {
+            width:100%; margin-top:1rem; padding:0.75rem;
+            background: linear-gradient(135deg,#ef4444,#dc2626);
+            color:#fff; border:0; border-radius:0.75rem; font-weight:700;
+            font-size:1rem; cursor:pointer;
+        }
+
+        /* Botón de scanner en campos */
+        .scan-btn {
+            background: linear-gradient(135deg,#6366f1,#4338ca);
+            color:#fff; border:0; border-radius:0.75rem; padding:0 1rem;
+            font-size:1.3rem; cursor:pointer; display:flex; align-items:center; justify-content:center;
+            transition:all 0.2s; min-width:48px; height:48px;
+        }
+        .scan-btn:hover { transform:scale(1.08); box-shadow:0 4px 15px rgba(99,102,241,0.5); }
+
+        /* Indicador USB scanner activo */
+        #usb-scan-indicator {
+            position:fixed; bottom:1rem; right:1rem; z-index:9000;
+            background:linear-gradient(135deg,#10b981,#059669);
+            color:#fff; border-radius:1rem; padding:0.5rem 1rem;
+            font-size:0.8rem; font-weight:700; display:none;
+            box-shadow:0 4px 15px rgba(16,185,129,0.5); animation:pulse 1s infinite;
+        }
+
+        /* Sugerencias de búsqueda */
+        .search-suggestions {
+            position:absolute; top:100%; left:0; right:0; z-index:1000;
+            background:#fff; border-radius:0.75rem; box-shadow:0 10px 30px rgba(0,0,0,0.15);
+            border:1px solid #e5e7eb; max-height:280px; overflow-y:auto; margin-top:4px;
+        }
+        .search-suggestion-item {
+            padding:0.75rem 1rem; cursor:pointer; border-bottom:1px solid #f3f4f6;
+            transition:background 0.15s;
+        }
+        .search-suggestion-item:hover { background:#f0fdf4; }
+        .search-suggestion-item:last-child { border-bottom:0; }
+        .suggestion-name { font-weight:600; color:#1f2937; font-size:0.9rem; }
+        .suggestion-meta { font-size:0.75rem; color:#6b7280; }
+        .suggestion-price { font-weight:700; color:#059669; }
+        mark { background:#fef08a; border-radius:2px; padding:0 2px; }
     </style>
 </head>
 <body class="gradient-bg">
-    <div id="app">
+
+    <!-- ===== PANTALLA DE LOGIN ===== -->
+    <div id="login-screen" style="display:none;">
+        <div class="login-card">
+            <div class="text-center mb-6">
+                <div style="font-size:3rem; margin-bottom:0.5rem;" id="login-icon">🏍️</div>
+                <h1 id="login-title" style="font-size:1.5rem; font-weight:900; color:#1f2937; margin-bottom:0.25rem;">DURAN MOTOS</h1>
+                <p style="color:#6b7280; font-size:0.875rem;">Sistema de Punto de Venta</p>
+            </div>
+
+            <div style="margin-bottom:1rem;">
+                <label style="display:block; font-size:0.875rem; font-weight:700; color:#374151; margin-bottom:0.4rem;">👤 Usuario</label>
+                <input type="text" id="login-username" class="login-input" placeholder="Ingrese su usuario"
+                    onkeydown="if(event.key==='Enter')document.getElementById('login-password').focus()" autocomplete="username" />
+            </div>
+            <div style="margin-bottom:1.5rem;">
+                <label style="display:block; font-size:0.875rem; font-weight:700; color:#374151; margin-bottom:0.4rem;">🔒 Contraseña</label>
+                <input type="password" id="login-password" class="login-input" placeholder="Ingrese su contraseña"
+                    onkeydown="if(event.key==='Enter')doLogin()" autocomplete="current-password" />
+            </div>
+
+            <div id="login-error" style="display:none; background:#fef2f2; border:1px solid #fca5a5; color:#b91c1c; padding:0.75rem 1rem; border-radius:0.5rem; font-size:0.875rem; margin-bottom:1rem; text-align:center;">
+                ❌ Usuario o contraseña incorrectos
+            </div>
+
+            <button class="login-btn" onclick="doLogin()">🔓 Ingresar al Sistema</button>
+
+            <p style="text-align:center; margin-top:1.25rem; font-size:0.75rem; color:#9ca3af;">
+                DURAN MOTOS &mdash; Sistema POS v3.2
+            </p>
+        </div>
+    </div>
+
+    <!-- ===== MODAL GESTIÓN DE USUARIOS (solo Admin) ===== -->
+    <div id="users-modal" class="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex items-center justify-center" style="display:none!important; z-index:10000;">
+        <div class="bg-white p-8 rounded-2xl w-full max-w-lg shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-3 text-2xl">👥</div>
+                <h3 class="text-2xl font-bold text-gray-800">Gestión de Usuarios</h3>
+                <p class="text-sm text-gray-500 mt-1">Administrá los accesos al sistema</p>
+            </div>
+
+            <!-- Lista de usuarios -->
+            <div id="users-list-container" class="space-y-3 mb-6"></div>
+
+            <!-- Formulario nuevo usuario -->
+            <div class="border-t border-gray-200 pt-5">
+                <h4 class="font-bold text-gray-700 mb-4">➕ Agregar / Editar Usuario</h4>
+                <input type="hidden" id="edit-user-id" value="" />
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-sm font-bold text-gray-600 mb-1">Nombre completo</label>
+                        <input type="text" id="user-form-name" placeholder="Ej: Juan Pérez" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-600 mb-1">Usuario (para login)</label>
+                        <input type="text" id="user-form-username" placeholder="Ej: juan" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-600 mb-1">Contraseña <span id="pass-hint" class="text-gray-400 font-normal">(dejar vacío = no cambiar)</span></label>
+                        <input type="password" id="user-form-password" placeholder="Nueva contraseña" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-400" />
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold text-gray-600 mb-1">Rol</label>
+                        <select id="user-form-role" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                            <option value="admin">👑 Administrador – Acceso total</option>
+                            <option value="operator">👤 Operador – Lectura de stock</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex gap-3 mt-4">
+                    <button onclick="saveUserForm()" class="flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white py-3 rounded-xl hover:shadow-lg font-bold transition-all">✅ Guardar</button>
+                    <button onclick="clearUserForm()" class="bg-gray-200 text-gray-700 px-4 py-3 rounded-xl font-bold hover:bg-gray-300 transition-all">🔄 Limpiar</button>
+                </div>
+            </div>
+
+            <div class="mt-5">
+                <button onclick="closeUsersModal()" class="w-full bg-gradient-to-r from-gray-500 to-gray-600 text-white py-3 rounded-xl hover:shadow-lg font-bold transition-all">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MODAL SCANNER CÁMARA ===== -->
+    <div id="camera-scanner-modal" style="display:none;">
+        <div class="camera-scanner-card">
+            <h3>📷 Escanear Código de Barras</h3>
+            <div id="qr-reader"></div>
+            <div id="scanner-result-badge" class="scanner-result-badge"></div>
+            <button class="btn-close-scanner" onclick="closeCameraScanner()">✖ Cerrar cámara</button>
+        </div>
+    </div>
+
+    <!-- Indicador USB scanner activo -->
+    <div id="usb-scan-indicator">⚡ Scanner USB activo</div>
+
+    <div id="app" style="display:none;">
         <!-- Header -->
         <div class="text-white px-6 py-4 text-center relative">
-            <!-- Botón de Configuración -->
-            <button onclick="openCompanySettings()" class="no-print absolute top-2 right-2 md:top-3 md:right-5 bg-white bg-opacity-15 hover:bg-opacity-30 backdrop-blur-sm text-white px-3 py-2 rounded-lg font-semibold text-xs md:text-sm flex items-center gap-1.5 transition-all duration-300 shadow-md" title="Configurar datos de la empresa / sitio">
-                ⚙️ <span class="hidden sm:inline">Configuración</span>
-            </button>
+            <!-- Barra superior: usuario actual + botones de acción -->
+            <div class="no-print absolute top-2 right-2 md:top-3 md:right-5 flex items-center gap-2">
+                <!-- Info usuario actual -->
+                <div id="current-user-info" class="flex items-center gap-2"></div>
+                <!-- Botón Configuración (solo Admin) -->
+                <button id="btn-config" onclick="openCompanySettings()" class="bg-white bg-opacity-15 hover:bg-opacity-30 backdrop-blur-sm text-white px-3 py-2 rounded-lg font-semibold text-xs md:text-sm flex items-center gap-1.5 transition-all duration-300 shadow-md" title="Configurar datos de la empresa / sitio" style="display:none;">
+                    ⚙️ <span class="hidden sm:inline">Configuración</span>
+                </button>
+            </div>
 
             <div class="flex items-center justify-center gap-2 mb-1">
                 <span id="header-icon-left" class="text-2xl">🏍️</span>
@@ -343,29 +556,38 @@
                     <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%)" class="text-white p-6 rounded-2xl shadow-lg">
                         <div class="flex items-center gap-4 mb-4">
                             📱
-                            <h3 class="text-xl font-bold">🔍 Escanear Código de Barras</h3>
+                            <h3 class="text-xl font-bold">🔍 Escanear / Buscar Producto</h3>
                         </div>
-                        <input
-                            type="text"
-                            id="barcode-input"
-                            placeholder="Escanee o escriba: CAS001, ACE001, etc..."
-                            class="w-full px-4 py-4 rounded-xl border-0 text-gray-800 font-semibold bg-white bg-opacity-90 backdrop-blur-sm shadow-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 text-lg"
-                            onkeypress="handleBarcodeSearch(event)"
-                        />
+                        <div class="flex gap-2 items-center">
+                            <div class="relative flex-1">
+                                <input
+                                    type="text"
+                                    id="barcode-input"
+                                    placeholder="Código, nombre o palabras clave..."
+                                    class="w-full px-4 py-4 rounded-xl border-0 text-gray-800 font-semibold bg-white bg-opacity-90 backdrop-blur-sm shadow-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 text-lg"
+                                    oninput="onBarcodeInput()"
+                                    onkeydown="handleBarcodeKeydown(event)"
+                                    autocomplete="off"
+                                />
+                                <div id="barcode-suggestions" class="search-suggestions" style="display:none;"></div>
+                            </div>
+                            <button class="scan-btn" onclick="openCameraScanner('pos')" title="Escanear con cámara">📷</button>
+                        </div>
+                        <p class="text-xs text-white text-opacity-70 mt-2 opacity-80">💡 USB Scanner: apunte y escanee — se agrega automáticamente</p>
                     </div>
 
                     <!-- Búsqueda de Productos -->
                     <div class="bg-white bg-opacity-90 backdrop-blur-sm rounded-2xl shadow-2xl p-6">
-                        <div class="flex items-center gap-4 mb-6">
+                        <div class="flex items-center gap-4 mb-6 flex-wrap">
                             <h3 class="text-xl font-bold text-gray-800">🏍️ Productos de Motos</h3>
-                            <div class="relative flex-1 max-w-md">
-                                🔍
+                            <div class="relative flex-1" style="min-width:200px;">
                                 <input
                                     type="text"
                                     id="product-search"
-                                    placeholder="Buscar productos..."
-                                    class="w-full pl-12 pr-4 py-3 rounded-xl border-0 bg-gray-50 font-medium focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    placeholder="Buscar: cable, burro arranque, filtro..."
+                                    class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 font-medium focus:outline-none focus:ring-2 focus:ring-blue-400"
                                     oninput="filterProducts()"
+                                    autocomplete="off"
                                 />
                             </div>
                         </div>
@@ -483,8 +705,8 @@
                     </div>
                 </div>
 
-                <!-- Agregar nuevo producto -->
-                <div class="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 p-6 rounded-2xl mb-8">
+                <!-- Agregar nuevo producto (solo Admin) -->
+                <div id="add-product-form" class="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 p-6 rounded-2xl mb-8" style="display:none;">
                     <h3 class="font-bold mb-6 text-xl text-gray-800 flex items-center gap-3">
                         ➕
                         ➕ Agregar Nuevo Producto
@@ -502,11 +724,11 @@
                 </div>
 
                 <!-- Búsqueda en inventario -->
-                <div class="mb-6">
-                    <div class="relative max-w-md">
-                        🔍
-                        <input type="text" id="inventory-search" placeholder="Buscar en inventario..." class="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400" oninput="filterInventory()" />
+                <div class="mb-6 flex gap-2 items-center">
+                    <div class="relative flex-1 max-w-lg">
+                        <input type="text" id="inventory-search" placeholder="Buscar: cable, burro, filtro aceite..." class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400" oninput="filterInventory()" autocomplete="off" />
                     </div>
+                    <button class="scan-btn" onclick="openCameraScanner('inventory')" title="Escanear código con cámara" style="background:linear-gradient(135deg,#f97316,#ea580c);">📷</button>
                 </div>
 
                 <!-- Lista de productos -->
@@ -1321,6 +1543,15 @@
                 </div>
             </div>
             
+            <!-- Gestión de Usuarios (solo Admin) -->
+            <div class="border-t border-gray-200 pt-5 mb-6">
+                <label class="block text-sm font-bold text-gray-700 mb-2">👥 Gestión de Usuarios</label>
+                <p class="text-xs text-gray-500 mb-3">Administrá los usuarios que pueden acceder al sistema.</p>
+                <button onclick="openUsersModal()" class="w-full bg-gradient-to-r from-indigo-500 to-purple-600 text-white py-3 rounded-xl hover:shadow-lg font-bold transition-all duration-300 flex items-center justify-center gap-2">
+                    👥 Administrar Usuarios
+                </button>
+            </div>
+
             <div class="flex gap-3">
                 <button onclick="saveCompanySettings()" class="flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white py-3 rounded-xl hover:shadow-lg font-bold transition-all duration-300 flex items-center justify-center gap-2">
                     ✅ Guardar Cambios
@@ -1493,6 +1724,218 @@
             ticketWidth: '80mm',
             theme: { bgStart: '#667eea', bgEnd: '#764ba2', accentStart: '#10b981', accentEnd: '#059669', titleColor: '#facc15' }
         };
+
+        // ===== SISTEMA DE USUARIOS =====
+        let usersData = [
+            { id: 1, username: 'admin', password: 'admin123', role: 'admin', name: 'Administrador' },
+            { id: 2, username: 'operador', password: '123456', role: 'operator', name: 'Operador' }
+        ];
+        let currentUser = null; // { id, username, role, name }
+
+        function loadUsersData() {
+            const saved = localStorage.getItem('duran_motos_users');
+            if (saved) { usersData = JSON.parse(saved); }
+        }
+        function saveUsersData() {
+            localStorage.setItem('duran_motos_users', JSON.stringify(usersData));
+        }
+        function isAdmin() {
+            return currentUser && currentUser.role === 'admin';
+        }
+
+        function checkAuth() {
+            loadUsersData();
+            const savedSession = sessionStorage.getItem('duran_motos_session');
+            if (savedSession) {
+                try {
+                    const s = JSON.parse(savedSession);
+                    // verificar que el usuario sigue existiendo y la contraseña no cambió
+                    const found = usersData.find(u => u.id === s.id && u.username === s.username);
+                    if (found) {
+                        currentUser = { id: found.id, username: found.username, role: found.role, name: found.name };
+                        showApp();
+                        return;
+                    }
+                } catch(e) {}
+            }
+            showLoginScreen();
+        }
+
+        function showLoginScreen() {
+            document.getElementById('login-screen').style.display = 'flex';
+            document.getElementById('app').style.display = 'none';
+            // Actualizar ícono y título del login con datos de empresa
+            const loginIcon = document.getElementById('login-icon');
+            const loginTitle = document.getElementById('login-title');
+            if (loginIcon) loginIcon.textContent = companyData.headerIcon || '🏍️';
+            if (loginTitle) loginTitle.textContent = companyData.siteName || 'DURAN MOTOS';
+            // Limpiar campos
+            const u = document.getElementById('login-username');
+            const p = document.getElementById('login-password');
+            if (u) u.value = '';
+            if (p) p.value = '';
+            const err = document.getElementById('login-error');
+            if (err) err.style.display = 'none';
+        }
+
+        function showApp() {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('app').style.display = 'block';
+            updateUserUI();
+        }
+
+        function doLogin() {
+            const username = document.getElementById('login-username').value.trim();
+            const password = document.getElementById('login-password').value;
+            if (!username || !password) {
+                document.getElementById('login-error').style.display = 'block';
+                document.getElementById('login-error').textContent = '⚠️ Ingresá tu usuario y contraseña';
+                return;
+            }
+            const user = usersData.find(u => u.username === username && u.password === password);
+            if (user) {
+                currentUser = { id: user.id, username: user.username, role: user.role, name: user.name };
+                sessionStorage.setItem('duran_motos_session', JSON.stringify(currentUser));
+                document.getElementById('login-error').style.display = 'none';
+                showApp();
+                renderDashboard();
+            } else {
+                document.getElementById('login-error').style.display = 'block';
+                document.getElementById('login-error').textContent = '❌ Usuario o contraseña incorrectos';
+                const p = document.getElementById('login-password');
+                if (p) { p.value = ''; p.focus(); }
+            }
+        }
+
+        function doLogout() {
+            if (!confirm('¿Salir del sistema?')) return;
+            currentUser = null;
+            sessionStorage.removeItem('duran_motos_session');
+            showLoginScreen();
+        }
+
+        function updateUserUI() {
+            const el = document.getElementById('current-user-info');
+            const btnConfig = document.getElementById('btn-config');
+            const addForm = document.getElementById('add-product-form');
+
+            if (el && currentUser) {
+                const isAdm = currentUser.role === 'admin';
+                el.innerHTML = `
+                    <span class="inline-flex items-center gap-1 text-white text-xs font-bold px-2 py-1 rounded-full ${isAdm ? 'user-badge-admin' : 'user-badge-operator'}">
+                        ${isAdm ? '👑' : '👤'} ${currentUser.name}
+                    </span>
+                    <button onclick="doLogout()" class="bg-white bg-opacity-20 hover:bg-opacity-40 text-white text-xs px-2 py-1.5 rounded-lg font-semibold transition-all duration-200 shadow">
+                        🚪 Salir
+                    </button>
+                `;
+            }
+
+            // Mostrar/ocultar botón Configuración
+            if (btnConfig) btnConfig.style.display = isAdmin() ? 'flex' : 'none';
+
+            // Mostrar/ocultar formulario de agregar producto
+            if (addForm) addForm.style.display = isAdmin() ? 'block' : 'none';
+        }
+
+        // ===== GESTIÓN DE USUARIOS (modal) =====
+        function openUsersModal() {
+            renderUsersList();
+            clearUserForm();
+            document.getElementById('users-modal').style.cssText = 'display:flex!important;';
+        }
+        function closeUsersModal() {
+            document.getElementById('users-modal').style.cssText = 'display:none!important;';
+        }
+
+        function renderUsersList() {
+            const container = document.getElementById('users-list-container');
+            container.innerHTML = usersData.map(u => `
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-200">
+                    <div>
+                        <span class="font-bold text-gray-800">${u.name}</span>
+                        <span class="ml-2 text-xs text-gray-500">@${u.username}</span>
+                        <span class="ml-2 px-2 py-0.5 rounded-full text-xs font-bold ${u.role === 'admin' ? 'bg-yellow-100 text-yellow-800' : 'bg-indigo-100 text-indigo-800'}">
+                            ${u.role === 'admin' ? '👑 Admin' : '👤 Operador'}
+                        </span>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="editUserForm(${u.id})" class="bg-blue-500 text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-blue-600 transition-all">✏️</button>
+                        ${usersData.length > 1 ? `<button onclick="deleteUser(${u.id})" class="bg-red-500 text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-red-600 transition-all">🗑️</button>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function clearUserForm() {
+            document.getElementById('edit-user-id').value = '';
+            document.getElementById('user-form-name').value = '';
+            document.getElementById('user-form-username').value = '';
+            document.getElementById('user-form-password').value = '';
+            document.getElementById('user-form-role').value = 'operator';
+            document.getElementById('pass-hint').textContent = '';
+        }
+
+        function editUserForm(userId) {
+            const u = usersData.find(u => u.id === userId);
+            if (!u) return;
+            document.getElementById('edit-user-id').value = u.id;
+            document.getElementById('user-form-name').value = u.name;
+            document.getElementById('user-form-username').value = u.username;
+            document.getElementById('user-form-password').value = '';
+            document.getElementById('user-form-role').value = u.role;
+            document.getElementById('pass-hint').textContent = '(dejar vacío = no cambiar)';
+            document.getElementById('user-form-name').focus();
+        }
+
+        function saveUserForm() {
+            const editId = document.getElementById('edit-user-id').value;
+            const name = document.getElementById('user-form-name').value.trim();
+            const username = document.getElementById('user-form-username').value.trim().toLowerCase();
+            const password = document.getElementById('user-form-password').value;
+            const role = document.getElementById('user-form-role').value;
+
+            if (!name || !username) { alert('Completá el nombre y el usuario'); return; }
+
+            // Verificar usuario duplicado
+            const dup = usersData.find(u => u.username === username && String(u.id) !== editId);
+            if (dup) { alert('Ya existe un usuario con ese nombre de usuario'); return; }
+
+            if (editId) {
+                // Editar existente
+                const idx = usersData.findIndex(u => String(u.id) === editId);
+                if (idx >= 0) {
+                    usersData[idx].name = name;
+                    usersData[idx].username = username;
+                    usersData[idx].role = role;
+                    if (password) usersData[idx].password = password;
+                    // Si es el usuario actual, actualizar sesión
+                    if (currentUser && currentUser.id === usersData[idx].id) {
+                        currentUser.name = name;
+                        currentUser.username = username;
+                        currentUser.role = role;
+                        sessionStorage.setItem('duran_motos_session', JSON.stringify(currentUser));
+                        updateUserUI();
+                    }
+                }
+            } else {
+                // Nuevo usuario
+                if (!password) { alert('Ingresá una contraseña para el nuevo usuario'); return; }
+                usersData.push({ id: Date.now(), username, password, role, name });
+            }
+
+            saveUsersData();
+            renderUsersList();
+            clearUserForm();
+        }
+
+        function deleteUser(userId) {
+            if (currentUser && currentUser.id === userId) { alert('No podés eliminar el usuario con el que estás logueado'); return; }
+            if (!confirm('¿Eliminar este usuario?')) return;
+            usersData = usersData.filter(u => u.id !== userId);
+            saveUsersData();
+            renderUsersList();
+        }
 
         // Variables del sistema de backup
         let backupHistory = [];
@@ -1783,6 +2226,10 @@
 
         // Configuración de Empresa / Sitio
         function openCompanySettings() {
+            if (!isAdmin()) {
+                alert('⛔ Solo el Administrador puede acceder a la Configuración.');
+                return;
+            }
             document.getElementById('settings-site-name').value = companyData.siteName || companyData.name || '';
             document.getElementById('settings-subtitle').value = companyData.subtitle || '';
             document.getElementById('settings-company-name').value = companyData.name || '';
@@ -2369,29 +2816,59 @@
             renderClientSelection();
         }
 
+        function smartFilter(products, searchTerm) {
+            if (!searchTerm) return products;
+            const words = searchTerm.toLowerCase().trim().split(/\s+/).filter(w => w.length > 0);
+            return products.filter(p => {
+                const haystack = (p.name + ' ' + p.code + ' ' + p.category).toLowerCase();
+                // Código exacto → prioridad máxima
+                if (p.code.toLowerCase() === searchTerm.toLowerCase()) return true;
+                // Todas las palabras deben aparecer en el haystack
+                return words.every(word => haystack.includes(word));
+            }).sort((a, b) => {
+                // Ordenar: código exacto primero, luego nombre empieza con término, luego resto
+                const aCode = a.code.toLowerCase() === searchTerm.toLowerCase();
+                const bCode = b.code.toLowerCase() === searchTerm.toLowerCase();
+                if (aCode && !bCode) return -1;
+                if (!aCode && bCode) return 1;
+                const aStarts = a.name.toLowerCase().startsWith(searchTerm.toLowerCase());
+                const bStarts = b.name.toLowerCase().startsWith(searchTerm.toLowerCase());
+                if (aStarts && !bStarts) return -1;
+                if (!aStarts && bStarts) return 1;
+                return a.name.localeCompare(b.name);
+            });
+        }
+
+        function highlightText(text, searchTerm) {
+            if (!searchTerm) return text;
+            const words = searchTerm.trim().split(/\s+/).filter(w => w.length > 0);
+            let result = text;
+            words.forEach(word => {
+                const regex = new RegExp('(' + word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+                result = result.replace(regex, '<mark>$1</mark>');
+            });
+            return result;
+        }
+
         function renderProductsGrid() {
-            const searchTerm = document.getElementById('product-search').value.toLowerCase();
-            const filteredProducts = products.filter(product =>
-                product.name.toLowerCase().includes(searchTerm) ||
-                product.code.toLowerCase().includes(searchTerm) ||
-                product.category.toLowerCase().includes(searchTerm)
-            );
+            const searchTerm = document.getElementById('product-search').value;
+            const filteredProducts = smartFilter(products, searchTerm);
 
             document.getElementById('products-grid').innerHTML = filteredProducts.map(product => `
                 <div class="bg-gradient-to-br from-white to-gray-50 rounded-xl p-4 shadow hover:shadow-lg transition-all duration-300 border border-gray-200 card-hover">
                     <div class="flex justify-between items-start mb-3">
                         <div class="flex-1">
-                            <h4 class="font-bold text-gray-800">${product.name}</h4>
-                            <p class="text-sm text-gray-500">${product.code} • ${product.category}</p>
+                            <h4 class="font-bold text-gray-800">${highlightText(product.name, searchTerm)}</h4>
+                            <p class="text-sm text-gray-500">${highlightText(product.code, searchTerm)} • ${highlightText(product.category, searchTerm)}</p>
                         </div>
                         <span class="text-lg font-bold text-green-600">${formatCurrency(product.price)}</span>
                     </div>
-                    
+
                     <div class="flex justify-between items-center">
                         <span class="text-sm font-semibold ${product.stock <= 5 ? 'text-red-500' : 'text-gray-600'}">
                             📦 Stock: ${product.stock}
                         </span>
-                        <button onclick="addToCart(${product.id})" ${product.stock <= 0 ? 'disabled' : ''} 
+                        <button onclick="addToCart(${product.id})" ${product.stock <= 0 ? 'disabled' : ''}
                             class="px-3 py-2 rounded-lg text-sm font-bold transition-all ${
                                 product.stock <= 0
                                     ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
@@ -2639,40 +3116,242 @@
             renderProductsGrid();
         }
 
-        function handleBarcodeSearch(event) {
+        // ========================================================
+        // SISTEMA DE SCANNER (USB + CÁMARA) Y BÚSQUEDA INTELIGENTE
+        // ========================================================
+
+        let scannerMode = 'pos'; // 'pos' o 'inventory'
+        let html5QrCode = null;
+        let usbScanBuffer = '';
+        let usbScanTimer = null;
+        let usbLastKeyTime = 0;
+        const USB_SCAN_THRESHOLD_MS = 60; // chars < 60ms entre sí = scanner USB
+
+        // ── BARCODE INPUT (POS): mientras escribe, muestra sugerencias ──
+        function onBarcodeInput() {
+            const val = document.getElementById('barcode-input').value;
+            if (val.trim().length < 2) {
+                hideBarcodesuggestions();
+                return;
+            }
+            const results = smartFilter(products, val).slice(0, 6);
+            if (results.length === 0) { hideBarcodesuggestions(); return; }
+            const box = document.getElementById('barcode-suggestions');
+            box.innerHTML = results.map(p => `
+                <div class="search-suggestion-item" onclick="selectSuggestion(${p.id})">
+                    <div class="suggestion-name">${highlightText(p.name, val)}</div>
+                    <div class="suggestion-meta">${p.code} • ${p.category} •
+                        <span class="suggestion-price">${formatCurrency(p.price)}</span> •
+                        Stock: ${p.stock}
+                    </div>
+                </div>
+            `).join('');
+            box.style.display = 'block';
+        }
+
+        function hideBarcodesuggestions() {
+            const box = document.getElementById('barcode-suggestions');
+            if (box) box.style.display = 'none';
+        }
+
+        function selectSuggestion(productId) {
+            addToCart(productId);
+            document.getElementById('barcode-input').value = '';
+            hideBarcodesuggestions();
+        }
+
+        function handleBarcodeKeydown(event) {
+            if (event.key === 'Escape') {
+                hideBarcodesuggestions();
+                return;
+            }
             if (event.key === 'Enter') {
-                const barcode = event.target.value.trim();
-                if (!barcode) return;
-                
-                const product = products.find(p => 
-                    p.code.toLowerCase() === barcode.toLowerCase() ||
-                    p.name.toLowerCase().includes(barcode.toLowerCase())
-                );
-                
+                hideBarcodesuggestions();
+                const val = event.target.value.trim();
+                if (!val) return;
+                // Buscar por código exacto primero, luego smart filter
+                let product = products.find(p => p.code.toLowerCase() === val.toLowerCase());
+                if (!product) {
+                    const results = smartFilter(products, val);
+                    if (results.length === 1) product = results[0];
+                    else if (results.length > 1) {
+                        // Mostrar sugerencias si hay más de uno
+                        onBarcodeInput();
+                        return;
+                    }
+                }
                 if (product) {
                     addToCart(product.id);
                     event.target.value = '';
+                    showScanFeedback(product.name + ' — añadido ✓');
                 } else {
-                    alert('Producto no encontrado');
+                    showScanFeedback('⚠️ Producto no encontrado: ' + val, true);
                     event.target.value = '';
                 }
             }
         }
 
+        function showScanFeedback(msg, isError = false) {
+            // feedback en el badge del scanner de cámara si está abierto
+            const badge = document.getElementById('scanner-result-badge');
+            if (badge && document.getElementById('camera-scanner-modal').style.display !== 'none') {
+                badge.style.display = 'block';
+                badge.style.background = isError ? '#ef4444' : '#10b981';
+                badge.textContent = msg;
+                setTimeout(() => { badge.style.display = 'none'; }, 2500);
+            }
+        }
+
+        // ── USB BARCODE SCANNER: listener global ──
+        // Los scanners USB envían caracteres muy rápido y terminan con Enter.
+        // Capturamos eso globalmente aunque el foco no esté en ningún input.
+        document.addEventListener('keydown', function(e) {
+            // Ignorar si el foco está en un input que no sea barcode-input
+            const active = document.activeElement;
+            const isOtherInput = active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active.tagName === 'SELECT')
+                                 && active.id !== 'barcode-input';
+            if (isOtherInput) return;
+
+            // Ignorar teclas de control excepto Enter
+            if (e.key.length > 1 && e.key !== 'Enter') return;
+
+            const now = Date.now();
+            const timeSinceLast = now - usbLastKeyTime;
+            usbLastKeyTime = now;
+
+            // ¿Es un scanner USB? (caracteres muy rápidos)
+            const isScanner = timeSinceLast < USB_SCAN_THRESHOLD_MS;
+
+            if (e.key === 'Enter') {
+                if (usbScanBuffer.length >= 3) {
+                    // Procesar como scan USB
+                    const scanned = usbScanBuffer.trim();
+                    usbScanBuffer = '';
+                    clearTimeout(usbScanTimer);
+                    processScannedCode(scanned);
+                } else {
+                    usbScanBuffer = '';
+                }
+                return;
+            }
+
+            if (isScanner || usbScanBuffer.length > 0) {
+                usbScanBuffer += e.key;
+                // Mostrar indicador de scanner activo
+                const ind = document.getElementById('usb-scan-indicator');
+                if (ind) { ind.style.display = 'block'; clearTimeout(ind._t); ind._t = setTimeout(() => ind.style.display='none', 1500); }
+                // Prevenir que el carácter vaya al campo activo (si el foco no está en barcode-input)
+                if (active && active.id !== 'barcode-input' && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA')) {
+                    // no preventDefault para no romper escritura normal
+                }
+                // Timeout de seguridad: si no llega Enter en 300ms, limpiar
+                clearTimeout(usbScanTimer);
+                usbScanTimer = setTimeout(() => { usbScanBuffer = ''; }, 300);
+            }
+        });
+
+        function processScannedCode(code) {
+            // Encontrar producto por código exacto primero, luego smart search
+            let product = products.find(p => p.code.toLowerCase() === code.toLowerCase());
+            if (!product) {
+                const results = smartFilter(products, code);
+                if (results.length >= 1) product = results[0];
+            }
+
+            const activeTab = document.querySelector('.tab-active');
+            const tabName = activeTab ? activeTab.getAttribute('onclick') : '';
+            const inInventory = tabName && tabName.includes('inventario');
+
+            if (inInventory) {
+                // En inventario: rellenar el campo búsqueda
+                const inv = document.getElementById('inventory-search');
+                if (inv) { inv.value = code; filterInventory(); }
+                if (isAdmin()) {
+                    const codeField = document.getElementById('new-product-code');
+                    if (codeField) { codeField.value = code; document.getElementById('new-product-name').focus(); }
+                }
+            } else {
+                // En POS o cualquier otra tab: agregar al carrito
+                const barcodeInput = document.getElementById('barcode-input');
+                if (barcodeInput) barcodeInput.value = code;
+                if (product) {
+                    addToCart(product.id);
+                    if (barcodeInput) barcodeInput.value = '';
+                    showScanFeedback(product.name + ' — añadido ✓');
+                } else {
+                    if (barcodeInput) {
+                        barcodeInput.focus();
+                        onBarcodeInput();
+                    }
+                }
+            }
+        }
+
+        // ── CAMERA SCANNER ──
+        function openCameraScanner(mode) {
+            scannerMode = mode || 'pos';
+            document.getElementById('camera-scanner-modal').style.display = 'flex';
+            document.getElementById('scanner-result-badge').style.display = 'none';
+
+            if (!window.Html5Qrcode) {
+                alert('Librería de scanner no disponible. Verifique conexión a internet.');
+                closeCameraScanner();
+                return;
+            }
+
+            html5QrCode = new Html5Qrcode('qr-reader');
+            const config = { fps: 12, qrbox: { width: 280, height: 180 }, aspectRatio: 1.5 };
+
+            html5QrCode.start(
+                { facingMode: 'environment' },
+                config,
+                (decodedText) => {
+                    // Éxito: código leído
+                    const badge = document.getElementById('scanner-result-badge');
+                    badge.textContent = '✅ Leído: ' + decodedText;
+                    badge.style.display = 'block';
+                    badge.style.background = '#10b981';
+
+                    // Pequeña pausa para que el usuario vea el resultado
+                    setTimeout(() => {
+                        closeCameraScanner();
+                        processScannedCode(decodedText);
+                    }, 800);
+                },
+                (errorMsg) => { /* ignorar errores de frame sin código */ }
+            ).catch(err => {
+                alert('No se pudo acceder a la cámara.\nAsegúrese de permitir el acceso.\n' + err);
+                closeCameraScanner();
+            });
+        }
+
+        function closeCameraScanner() {
+            document.getElementById('camera-scanner-modal').style.display = 'none';
+            if (html5QrCode) {
+                html5QrCode.stop().then(() => {
+                    html5QrCode.clear();
+                    html5QrCode = null;
+                }).catch(() => { html5QrCode = null; });
+            }
+        }
+
+        // Cerrar sugerencias al hacer click fuera
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('#barcode-input') && !e.target.closest('#barcode-suggestions')) {
+                hideBarcodesuggestions();
+            }
+        });
+
         // Renderizar Inventario
         function renderInventario() {
-            const searchTerm = document.getElementById('inventory-search').value.toLowerCase();
-            const filteredProducts = products.filter(product =>
-                product.name.toLowerCase().includes(searchTerm) ||
-                product.code.toLowerCase().includes(searchTerm) ||
-                product.category.toLowerCase().includes(searchTerm)
-            );
+            const searchTerm = document.getElementById('inventory-search').value;
+            const filteredProducts = smartFilter(products, searchTerm);
 
             document.getElementById('inventory-table').innerHTML = filteredProducts.map(product => `
                 <tr class="hover:bg-orange-50 transition-all duration-300">
-                    <td class="p-4 font-mono font-bold text-blue-600">${product.code}</td>
-                    <td class="p-4 font-semibold">${product.name}</td>
-                    <td class="p-4 text-gray-600">${product.category}</td>
+                    <td class="p-4 font-mono font-bold text-blue-600">${highlightText(product.code, searchTerm)}</td>
+                    <td class="p-4 font-semibold">${highlightText(product.name, searchTerm)}</td>
+                    <td class="p-4 text-gray-600">${highlightText(product.category, searchTerm)}</td>
                     <td class="p-4 text-right font-bold text-green-600">${formatCurrency(product.price)}</td>
                     <td class="p-4 text-right font-bold ${product.stock <= 5 ? 'text-red-500' : 'text-blue-600'}">${product.stock}</td>
                     <td class="p-4 text-center">
@@ -2686,6 +3365,7 @@
                         </span>
                     </td>
                     <td class="p-4 text-center">
+                        ${isAdmin() ? `
                         <div class="flex gap-2 justify-center">
                             <button onclick="editProduct(${product.id})" class="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 py-2 rounded-lg hover:shadow-lg font-bold transition-all duration-300">
                                 ✏️
@@ -2694,6 +3374,7 @@
                                 🗑️
                             </button>
                         </div>
+                        ` : '<span class="text-xs text-gray-400 font-medium">🔒 Solo lectura</span>'}
                     </td>
                 </tr>
             `).join('');
@@ -3980,6 +4661,9 @@
                 companyData = { ...companyData, ...JSON.parse(savedCompany) };
             }
             applyCompanyDataToUI();
+
+            // Iniciar sistema de usuarios y mostrar login
+            checkAuth();
 
             // Cargar nombre de empresa específico para etiquetas (si fue editado antes)
             const savedLabelCompanyName = localStorage.getItem('duran_motos_label_company_name');
