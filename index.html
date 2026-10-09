@@ -1837,6 +1837,12 @@
         }
 
         // ===== SISTEMA DE USUARIOS =====
+        // Mapeo username → email de Supabase Auth (actualizar si se cambian los usuarios)
+        const USER_AUTH_MAP = {
+            'admin':    { email: 'admin@duranmotos.ar',    role: 'admin',    name: 'Administrador' },
+            'operador': { email: 'operador@duranmotos.ar', role: 'operator', name: 'Operador' }
+        };
+
         let usersData = [
             { id: 1, username: 'admin', password: 'admin123', role: 'admin', name: 'Administrador' },
             { id: 2, username: 'operador', password: '123456', role: 'operator', name: 'Operador' }
@@ -1854,13 +1860,31 @@
             return currentUser && currentUser.role === 'admin';
         }
 
-        function checkAuth() {
+        async function checkAuth() {
             loadUsersData();
+
+            // 1. Intentar restaurar sesión activa de Supabase Auth
+            if (sb) {
+                try {
+                    const { data: { session } } = await sb.auth.getSession();
+                    if (session) {
+                        const email = session.user.email;
+                        const username = Object.keys(USER_AUTH_MAP).find(k => USER_AUTH_MAP[k].email === email);
+                        const entry = username ? USER_AUTH_MAP[username] : null;
+                        if (entry) {
+                            currentUser = { id: session.user.id, username, role: entry.role, name: entry.name };
+                            showApp();
+                            return;
+                        }
+                    }
+                } catch(e) { console.warn('Supabase session check:', e); }
+            }
+
+            // 2. Fallback: sesión local (retrocompatibilidad mientras se migra)
             const savedSession = sessionStorage.getItem('duran_motos_session');
             if (savedSession) {
                 try {
                     const s = JSON.parse(savedSession);
-                    // verificar que el usuario sigue existiendo y la contraseña no cambió
                     const found = usersData.find(u => u.id === s.id && u.username === s.username);
                     if (found) {
                         currentUser = { id: found.id, username: found.username, role: found.role, name: found.name };
@@ -1869,6 +1893,7 @@
                     }
                 } catch(e) {}
             }
+
             showLoginScreen();
         }
 
@@ -1895,31 +1920,66 @@
             updateUserUI();
         }
 
-        function doLogin() {
-            const username = document.getElementById('login-username').value.trim();
+        async function doLogin() {
+            const username = document.getElementById('login-username').value.trim().toLowerCase();
             const password = document.getElementById('login-password').value;
+            const errEl = document.getElementById('login-error');
+            const btnLogin = document.querySelector('.login-btn');
+
             if (!username || !password) {
-                document.getElementById('login-error').style.display = 'block';
-                document.getElementById('login-error').textContent = '⚠️ Ingresá tu usuario y contraseña';
+                errEl.style.display = 'block';
+                errEl.textContent = '⚠️ Ingresá tu usuario y contraseña';
                 return;
             }
+
+            // Deshabilitar botón mientras verifica
+            if (btnLogin) { btnLogin.disabled = true; btnLogin.textContent = '⏳ Verificando...'; }
+
+            // --- Supabase Auth ---
+            if (sb && USER_AUTH_MAP[username]) {
+                const { email } = USER_AUTH_MAP[username];
+                const { data, error } = await sb.auth.signInWithPassword({ email, password });
+                if (data?.session && !error) {
+                    const entry = USER_AUTH_MAP[username];
+                    currentUser = { id: data.user.id, username, role: entry.role, name: entry.name };
+                    sessionStorage.setItem('duran_motos_session', JSON.stringify(currentUser));
+                    errEl.style.display = 'none';
+                    if (btnLogin) { btnLogin.disabled = false; btnLogin.textContent = '🔓 Ingresar al Sistema'; }
+                    // Recargar datos desde la nube con la sesión autenticada
+                    try { await loadFromSupabase(); } catch(e) {}
+                    showApp();
+                    renderDashboard();
+                    return;
+                } else {
+                    errEl.style.display = 'block';
+                    errEl.textContent = '❌ Usuario o contraseña incorrectos';
+                    if (btnLogin) { btnLogin.disabled = false; btnLogin.textContent = '🔓 Ingresar al Sistema'; }
+                    const p = document.getElementById('login-password');
+                    if (p) { p.value = ''; p.focus(); }
+                    return;
+                }
+            }
+
+            // --- Fallback local (si Supabase no disponible o usuario no en mapa) ---
+            if (btnLogin) { btnLogin.disabled = false; btnLogin.textContent = '🔓 Ingresar al Sistema'; }
             const user = usersData.find(u => u.username === username && u.password === password);
             if (user) {
                 currentUser = { id: user.id, username: user.username, role: user.role, name: user.name };
                 sessionStorage.setItem('duran_motos_session', JSON.stringify(currentUser));
-                document.getElementById('login-error').style.display = 'none';
+                errEl.style.display = 'none';
                 showApp();
                 renderDashboard();
             } else {
-                document.getElementById('login-error').style.display = 'block';
-                document.getElementById('login-error').textContent = '❌ Usuario o contraseña incorrectos';
+                errEl.style.display = 'block';
+                errEl.textContent = '❌ Usuario o contraseña incorrectos';
                 const p = document.getElementById('login-password');
                 if (p) { p.value = ''; p.focus(); }
             }
         }
 
-        function doLogout() {
+        async function doLogout() {
             if (!confirm('¿Salir del sistema?')) return;
+            if (sb) { try { await sb.auth.signOut(); } catch(e) {} }
             currentUser = null;
             sessionStorage.removeItem('duran_motos_session');
             showLoginScreen();
@@ -4969,7 +5029,7 @@
             applyCompanyDataToUI();
 
             // Iniciar sistema de usuarios y mostrar login
-            checkAuth();
+            await checkAuth();
 
             // Cargar nombre de empresa específico para etiquetas (si fue editado antes)
             const savedLabelCompanyName = localStorage.getItem('duran_motos_label_company_name');
