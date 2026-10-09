@@ -586,18 +586,22 @@
 
                     <!-- Búsqueda de Productos -->
                     <div class="bg-white bg-opacity-90 backdrop-blur-sm rounded-2xl shadow-2xl p-6">
-                        <div class="flex items-center gap-4 mb-6 flex-wrap">
-                            <h3 class="text-xl font-bold text-gray-800">🏍️ Productos de Motos</h3>
-                            <div class="relative flex-1" style="min-width:200px;">
+                        <div class="flex items-center gap-3 mb-6 flex-wrap">
+                            <h3 class="text-xl font-bold text-gray-800" style="white-space:nowrap;">🏍️ Productos</h3>
+                            <div class="relative" style="flex:2;min-width:160px;">
                                 <input
                                     type="text"
                                     id="product-search"
-                                    placeholder="Buscar: cable, burro arranque, filtro..."
+                                    placeholder="Buscar: cable, burro, filtro..."
                                     class="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 font-medium focus:outline-none focus:ring-2 focus:ring-blue-400"
                                     oninput="filterProducts()"
                                     autocomplete="off"
                                 />
                             </div>
+                            <select id="product-category-filter" onchange="filterProducts()"
+                                style="flex:1;min-width:130px;padding:0.7rem 0.8rem;border-radius:0.75rem;border:1px solid #e5e7eb;font-size:0.9rem;background:#f9fafb;font-weight:600;color:#374151;cursor:pointer;">
+                                <option value="">📂 Todas</option>
+                            </select>
                         </div>
 
                         <div id="products-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4 max-h-96 overflow-y-auto">
@@ -711,8 +715,8 @@
                 <!-- Búsqueda en inventario — DESTACADA -->
                 <div class="mb-6" style="background:linear-gradient(135deg,#fff7ed,#fef3c7);border:2px solid #f97316;border-radius:1rem;padding:1.25rem 1.5rem;box-shadow:0 4px 20px rgba(249,115,22,0.18);">
                     <p class="text-xs font-bold text-orange-600 mb-2 uppercase tracking-widest">🔍 Buscar en inventario</p>
-                    <div class="flex gap-2 items-center">
-                        <div class="relative flex-1">
+                    <div class="flex gap-2 items-center flex-wrap">
+                        <div class="relative" style="flex:2;min-width:180px;">
                             <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:1.2rem;pointer-events:none;">🔍</span>
                             <input type="text" id="inventory-search"
                                 placeholder="Buscar: cable, burro, filtro aceite, código..."
@@ -720,6 +724,10 @@
                                 style="padding:0.85rem 1rem 0.85rem 2.8rem;border-radius:0.75rem;border:2px solid #fed7aa;font-size:1.05rem;background:#fff;width:100%;box-sizing:border-box;"
                                 oninput="filterInventory()" autocomplete="off" />
                         </div>
+                        <select id="inventory-category-filter" onchange="filterInventory()"
+                            style="flex:1;min-width:140px;padding:0.85rem 1rem;border-radius:0.75rem;border:2px solid #fed7aa;font-size:0.95rem;background:#fff;font-weight:600;color:#c2410c;cursor:pointer;box-sizing:border-box;">
+                            <option value="">📂 Todas</option>
+                        </select>
                         <button class="scan-btn" onclick="openCameraScanner('inventory')" title="Escanear código con cámara" style="background:linear-gradient(135deg,#f97316,#ea580c);flex-shrink:0;">📷</button>
                     </div>
                 </div>
@@ -2921,6 +2929,7 @@
 
         // Renderizar Ventas
         function renderVentas() {
+            populateCategoryFilters();
             renderProductsGrid();
             renderCart();
             renderClientSelection();
@@ -2962,7 +2971,9 @@
 
         function renderProductsGrid() {
             const searchTerm = document.getElementById('product-search').value;
-            const filteredProducts = smartFilter(products, searchTerm);
+            const cat = document.getElementById('product-category-filter')?.value || '';
+            let filteredProducts = smartFilter(products, searchTerm);
+            if (cat) filteredProducts = filteredProducts.filter(p => p.category === cat);
 
             document.getElementById('products-grid').innerHTML = filteredProducts.map(product => `
                 <div class="bg-gradient-to-br from-white to-gray-50 rounded-xl p-4 shadow hover:shadow-lg transition-all duration-300 border border-gray-200 card-hover">
@@ -3452,8 +3463,21 @@
             }
         });
 
+        // Puebla los selectores de categoría en Inventario y Ventas
+        function populateCategoryFilters() {
+            const cats = [...new Set(products.map(p => p.category).filter(Boolean))].sort();
+            ['inventory-category-filter', 'product-category-filter'].forEach(id => {
+                const sel = document.getElementById(id);
+                if (!sel) return;
+                const current = sel.value;
+                sel.innerHTML = '<option value="">📂 Todas las categorías</option>' +
+                    cats.map(c => `<option value="${c}"${c === current ? ' selected' : ''}>${c}</option>`).join('');
+            });
+        }
+
         // Renderizar Inventario
         function renderInventario() {
+            populateCategoryFilters();
             // Enfocar la barra de búsqueda automáticamente al abrir inventario
             setTimeout(() => {
                 const inv = document.getElementById('inventory-search');
@@ -3461,7 +3485,9 @@
             }, 80);
 
             const searchTerm = document.getElementById('inventory-search').value;
-            const filteredProducts = smartFilter(products, searchTerm);
+            const cat = document.getElementById('inventory-category-filter')?.value || '';
+            let filteredProducts = smartFilter(products, searchTerm);
+            if (cat) filteredProducts = filteredProducts.filter(p => p.category === cat);
 
             document.getElementById('inventory-table').innerHTML = filteredProducts.map(product => `
                 <tr class="hover:bg-orange-50 transition-all duration-300">
@@ -3508,7 +3534,9 @@
 
         function filterInventory() {
             const searchTerm = document.getElementById('inventory-search').value;
-            const filteredProducts = smartFilter(products, searchTerm);
+            const cat = document.getElementById('inventory-category-filter')?.value || '';
+            let filteredProducts = smartFilter(products, searchTerm);
+            if (cat) filteredProducts = filteredProducts.filter(p => p.category === cat);
 
             document.getElementById('inventory-table').innerHTML = filteredProducts.map(product => `
                 <tr class="hover:bg-orange-50 transition-all duration-300">
