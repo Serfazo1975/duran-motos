@@ -705,7 +705,9 @@
                         <input type="text" id="new-product-code" placeholder="Código" class="px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400" />
                         <input type="number" id="new-product-price" placeholder="Precio" class="px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400" />
                         <input type="number" id="new-product-stock" placeholder="Stock" class="px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400" />
-                        <input type="text" id="new-product-category" placeholder="Categoría" class="px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400" />
+                        <select id="new-product-category" class="px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400">
+                            <option value="">— Categoría —</option>
+                        </select>
                     </div>
                     <button onclick="addNewProduct()" class="bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-6 py-3 rounded-xl hover:shadow-lg font-bold transition-all duration-300">
                         ✨ Agregar Producto
@@ -728,6 +730,8 @@
                             style="flex:1;min-width:140px;padding:0.85rem 1rem;border-radius:0.75rem;border:2px solid #fed7aa;font-size:0.95rem;background:#fff;font-weight:600;color:#c2410c;cursor:pointer;box-sizing:border-box;">
                             <option value="">📂 Todas</option>
                         </select>
+                        <button onclick="openCategoryManager()" title="Gestionar categorías"
+                            style="flex-shrink:0;padding:0.75rem 0.9rem;border-radius:0.75rem;background:linear-gradient(135deg,#7c3aed,#6d28d9);color:#fff;font-weight:700;font-size:0.85rem;border:none;cursor:pointer;white-space:nowrap;">⚙️ Categorías</button>
                         <button class="scan-btn" onclick="openCameraScanner('inventory')" title="Escanear código con cámara" style="background:linear-gradient(135deg,#f97316,#ea580c);flex-shrink:0;">📷</button>
                     </div>
                 </div>
@@ -1583,6 +1587,30 @@
         </div>
     </div>
 
+    <!-- Modal Gestionar Categorías -->
+    <div id="category-manager-modal" class="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex items-center justify-center z-50" style="display:none;">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 overflow-hidden">
+            <div style="background:linear-gradient(135deg,#7c3aed,#6d28d9);" class="px-6 py-4 flex items-center justify-between">
+                <h3 class="text-white font-bold text-lg">⚙️ Gestionar Categorías</h3>
+                <button onclick="closeCategoryManager()" class="text-white text-2xl font-bold hover:opacity-70 leading-none">×</button>
+            </div>
+            <div class="p-6">
+                <!-- Agregar nueva categoría -->
+                <div class="flex gap-2 mb-5">
+                    <input type="text" id="new-category-input" placeholder="Nueva categoría..." onkeydown="if(event.key==='Enter')addCategory()"
+                        class="flex-1 px-4 py-3 rounded-xl border-2 border-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-400 font-medium" />
+                    <button onclick="addCategory()"
+                        style="background:linear-gradient(135deg,#7c3aed,#6d28d9);color:#fff;padding:0.75rem 1.25rem;border-radius:0.75rem;font-weight:700;border:none;cursor:pointer;white-space:nowrap;">
+                        ➕ Agregar
+                    </button>
+                </div>
+                <!-- Lista de categorías -->
+                <div id="category-list" class="space-y-2 max-h-72 overflow-y-auto pr-1"></div>
+                <p class="text-xs text-gray-400 mt-4 text-center">Las categorías se usan al cargar y filtrar productos</p>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal Editar Producto -->
     <div id="edit-product-modal" class="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex items-center justify-center z-50" style="display: none;">
         <div class="bg-white p-8 rounded-2xl w-96 shadow-2xl">
@@ -1598,7 +1626,9 @@
                 <input type="text" id="edit-product-code" placeholder="Código" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-400" />
                 <input type="number" id="edit-product-price" placeholder="Precio" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-400" />
                 <input type="number" id="edit-product-stock" placeholder="Stock" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-400" />
-                <input type="text" id="edit-product-category" placeholder="Categoría" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-400" />
+                <select id="edit-product-category" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-400">
+                    <option value="">— Categoría —</option>
+                </select>
             </div>
             
             <div class="flex gap-3">
@@ -1744,6 +1774,66 @@
             ticketWidth: '80mm',
             theme: { bgStart: '#667eea', bgEnd: '#764ba2', accentStart: '#10b981', accentEnd: '#059669', titleColor: '#facc15' }
         };
+
+        // ===== CATEGORÍAS =====
+        let categories = ['Aceites y Lubricantes','Cadenas y Piñones','Carburación','Eléctrico','Filtros','Frenos','Iluminación','Llantas y Neumáticos','Motor','Repuestos Generales','Seguridad','Suspensión','Transmisión'];
+
+        function saveCategoryData() {
+            localStorage.setItem('duran_motos_categories', JSON.stringify(categories));
+        }
+        function loadCategoryData() {
+            const saved = localStorage.getItem('duran_motos_categories');
+            if (saved) categories = JSON.parse(saved);
+        }
+
+        // Rellena todos los <select> de categoría en el DOM
+        function refreshCategorySelects(currentVal) {
+            const opts = '<option value="">— Seleccionar categoría —</option>' +
+                categories.sort().map(c => `<option value="${c}">${c}</option>`).join('');
+            ['new-product-category','edit-product-category'].forEach(id => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                const prev = currentVal !== undefined ? currentVal : el.value;
+                el.innerHTML = opts;
+                if (prev) el.value = prev;
+            });
+        }
+
+        function openCategoryManager() {
+            renderCategoryList();
+            document.getElementById('category-manager-modal').style.display = 'flex';
+        }
+        function closeCategoryManager() {
+            document.getElementById('category-manager-modal').style.display = 'none';
+            populateCategoryFilters();
+            refreshCategorySelects();
+        }
+        function renderCategoryList() {
+            document.getElementById('category-list').innerHTML = categories.sort().map((c,i) => `
+                <div class="flex items-center justify-between py-2 px-3 rounded-lg bg-gray-50 hover:bg-orange-50">
+                    <span class="font-medium text-gray-700">📂 ${c}</span>
+                    <button onclick="deleteCategory('${c.replace(/'/g,"\\'")}')
+" class="text-red-400 hover:text-red-600 font-bold text-lg leading-none transition-colors" title="Eliminar">✕</button>
+                </div>
+            `).join('') || '<p class="text-gray-400 text-center py-4">Sin categorías guardadas</p>';
+        }
+        function addCategory() {
+            const inp = document.getElementById('new-category-input');
+            const name = inp.value.trim();
+            if (!name) return;
+            if (categories.includes(name)) { alert('Esa categoría ya existe.'); return; }
+            categories.push(name);
+            saveCategoryData();
+            inp.value = '';
+            renderCategoryList();
+        }
+        function deleteCategory(name) {
+            const inUse = products.some(p => p.category === name);
+            if (inUse && !confirm(`La categoría "${name}" está asignada a productos. ¿Eliminarla igual?`)) return;
+            categories = categories.filter(c => c !== name);
+            saveCategoryData();
+            renderCategoryList();
+        }
 
         // ===== SISTEMA DE USUARIOS =====
         let usersData = [
@@ -3463,16 +3553,20 @@
             }
         });
 
-        // Puebla los selectores de categoría en Inventario y Ventas
+        // Puebla los selectores de categoría en Inventario y Ventas (filtros)
         function populateCategoryFilters() {
-            const cats = [...new Set(products.map(p => p.category).filter(Boolean))].sort();
+            // Combina categorías guardadas + las que hay en productos (por si acaso)
+            const fromProducts = products.map(p => p.category).filter(Boolean);
+            const all = [...new Set([...categories, ...fromProducts])].sort();
             ['inventory-category-filter', 'product-category-filter'].forEach(id => {
                 const sel = document.getElementById(id);
                 if (!sel) return;
                 const current = sel.value;
                 sel.innerHTML = '<option value="">📂 Todas las categorías</option>' +
-                    cats.map(c => `<option value="${c}"${c === current ? ' selected' : ''}>${c}</option>`).join('');
+                    all.map(c => `<option value="${c}"${c === current ? ' selected' : ''}>${c}</option>`).join('');
             });
+            // También actualiza los selects de agregar/editar producto
+            refreshCategorySelects();
         }
 
         // Renderizar Inventario
@@ -3619,15 +3713,22 @@
         function editProduct(productId) {
             const product = products.find(p => p.id === productId);
             if (!product) return;
-            
+
             editingProduct = product;
-            
+
+            // Asegurar que la categoría del producto existe en la lista
+            if (product.category && !categories.includes(product.category)) {
+                categories.push(product.category);
+                saveCategoryData();
+            }
+            refreshCategorySelects(product.category);
+
             document.getElementById('edit-product-name').value = product.name;
             document.getElementById('edit-product-code').value = product.code;
             document.getElementById('edit-product-price').value = product.price;
             document.getElementById('edit-product-stock').value = product.stock;
             document.getElementById('edit-product-category').value = product.category;
-            
+
             document.getElementById('edit-product-modal').style.display = 'flex';
         }
 
@@ -4935,6 +5036,9 @@
                 ];
             }
             
+            // Cargar categorías guardadas
+            loadCategoryData();
+
             // Inicializar sistema de backup
             initializeBackupSystem();
             
