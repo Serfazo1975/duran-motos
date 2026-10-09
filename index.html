@@ -398,38 +398,40 @@
             </div>
         </div>
 
-        <!-- Navigation Tabs — un solo renglón -->
-        <div class="px-4 pb-3" style="overflow-x:auto;">
-            <div class="flex justify-center gap-1" style="flex-wrap:nowrap;min-width:max-content;margin:0 auto;">
-                <button onclick="setActiveTab('dashboard')" id="tab-dashboard" class="tab-button px-3 py-1.5 rounded-lg text-sm font-semibold transition-all duration-300 flex items-center gap-1 tab-active" style="white-space:nowrap;">
+        <!-- Navigation Tabs — un solo renglón, ancho completo -->
+        <div style="background:rgba(0,0,0,0.18);border-top:1px solid rgba(255,255,255,0.12);border-bottom:1px solid rgba(255,255,255,0.12);padding:8px 16px 10px;">
+            <div style="display:flex;width:100%;gap:6px;">
+                <button onclick="setActiveTab('dashboard')" id="tab-dashboard" class="tab-button tab-active" style="flex:1;padding:7px 4px;border-radius:8px;font-size:0.8rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap;transition:all .25s;">
                     🏠 Dashboard
                 </button>
-                <button onclick="setActiveTab('ventas')" id="tab-ventas" class="tab-button px-3 py-1.5 rounded-lg text-sm font-semibold transition-all duration-300 flex items-center gap-1 tab-inactive" style="white-space:nowrap;">
+                <button onclick="setActiveTab('ventas')" id="tab-ventas" class="tab-button tab-inactive" style="flex:1;padding:7px 4px;border-radius:8px;font-size:0.8rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap;transition:all .25s;">
                     🛒 Ventas
                 </button>
-                <button onclick="setActiveTab('inventario')" id="tab-inventario" class="tab-button px-3 py-1.5 rounded-lg text-sm font-semibold transition-all duration-300 flex items-center gap-1 tab-inactive" style="white-space:nowrap;">
+                <button onclick="setActiveTab('inventario')" id="tab-inventario" class="tab-button tab-inactive" style="flex:1;padding:7px 4px;border-radius:8px;font-size:0.8rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap;transition:all .25s;">
                     📦 Inventario
                 </button>
-                <button onclick="setActiveTab('etiquetas')" id="tab-etiquetas" class="tab-button px-3 py-1.5 rounded-lg text-sm font-semibold transition-all duration-300 flex items-center gap-1 tab-inactive" style="white-space:nowrap;">
+                <button onclick="setActiveTab('etiquetas')" id="tab-etiquetas" class="tab-button tab-inactive" style="flex:1;padding:7px 4px;border-radius:8px;font-size:0.8rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap;transition:all .25s;">
                     🏷️ Etiquetas
                 </button>
-                <button onclick="setActiveTab('calendario')" id="tab-calendario" class="tab-button px-3 py-1.5 rounded-lg text-sm font-semibold transition-all duration-300 flex items-center gap-1 tab-inactive" style="white-space:nowrap;">
+                <button onclick="setActiveTab('calendario')" id="tab-calendario" class="tab-button tab-inactive" style="flex:1;padding:7px 4px;border-radius:8px;font-size:0.8rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap;transition:all .25s;">
                     📅 Calendario
                 </button>
-                <button onclick="setActiveTab('clientes')" id="tab-clientes" class="tab-button px-3 py-1.5 rounded-lg text-sm font-semibold transition-all duration-300 flex items-center gap-1 tab-inactive" style="white-space:nowrap;">
+                <button onclick="setActiveTab('clientes')" id="tab-clientes" class="tab-button tab-inactive" style="flex:1;padding:7px 4px;border-radius:8px;font-size:0.8rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap;transition:all .25s;">
                     👥 Clientes
                 </button>
-                <button onclick="setActiveTab('reparaciones')" id="tab-reparaciones" class="tab-button px-3 py-1.5 rounded-lg text-sm font-semibold transition-all duration-300 flex items-center gap-1 tab-inactive" style="white-space:nowrap;">
+                <button onclick="setActiveTab('reparaciones')" id="tab-reparaciones" class="tab-button tab-inactive" style="flex:1;padding:7px 4px;border-radius:8px;font-size:0.8rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap;transition:all .25s;">
                     🔧 Reparaciones
                 </button>
-                <button onclick="setActiveTab('backup')" id="tab-backup" class="tab-button px-3 py-1.5 rounded-lg text-sm font-semibold transition-all duration-300 flex items-center gap-1 tab-inactive" style="white-space:nowrap;">
+                <button onclick="setActiveTab('backup')" id="tab-backup" class="tab-button tab-inactive" style="flex:1;padding:7px 4px;border-radius:8px;font-size:0.8rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap;transition:all .25s;">
                     💾 Backup
                 </button>
-                <button onclick="setActiveTab('reportes')" id="tab-reportes" class="tab-button px-3 py-1.5 rounded-lg text-sm font-semibold transition-all duration-300 flex items-center gap-1 tab-inactive" style="white-space:nowrap;">
+                <button onclick="setActiveTab('reportes')" id="tab-reportes" class="tab-button tab-inactive" style="flex:1;padding:7px 4px;border-radius:8px;font-size:0.8rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap;transition:all .25s;">
                     📊 Reportes
                 </button>
             </div>
         </div>
+        <!-- Separador visual entre nav y contenido -->
+        <div style="height:18px;"></div>
 
         <!-- Dashboard Tab -->
         <div id="dashboard-content" class="px-8 pb-8">
