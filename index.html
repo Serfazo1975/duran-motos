@@ -38,17 +38,22 @@
             .print-area { position: absolute; left: 0; top: 0; width: 100%; }
             .no-print { display: none !important; }
             .print-content { font-size: 12px !important; line-height: 1.4 !important; }
-            @page { margin: 0.5in; size: A4; }
-            
-            .label-print { 
-                page-break-inside: avoid; 
-                margin: 2mm; 
-                border: 1px solid #000; 
-            }
-            .labels-grid {
+            @page { margin: 8mm; size: A4; }
+
+            /* Solo se imprimen exactamente los divs generados — sin celdas fantasma */
+            .labels-print-area {
                 display: grid !important;
-                grid-template-columns: repeat(auto-fit, minmax(60mm, 1fr)) !important;
-                gap: 2mm !important;
+                grid-template-columns: repeat(3, 1fr) !important;
+                gap: 3mm !important;
+                padding: 0 !important;
+            }
+
+            .label-print {
+                break-inside: avoid;
+                page-break-inside: avoid;
+                margin: 1mm;
+                border: 1px solid #ccc;
+                box-shadow: none !important;
             }
         }
         
@@ -2669,52 +2674,61 @@
             updateLabelStats();
         }
 
+        // Contador global para IDs únicos de barcode (evita colisiones cuando mismo producto se repite)
+        let _labelIdCounter = 0;
+
         function generateLabelHTML(product, container) {
             let labelHTML = '';
-            
+
             if (labelConfig.includeCompany) {
                 const companyLabelName = (document.getElementById('label-company-name')?.value || '').trim() || companyData.siteName || companyData.name || 'DURAN MOTOS';
                 const labelIcon = companyData.headerIcon || '🏍️';
                 labelHTML += `<div class="label-text font-bold text-blue-600">${labelIcon} ${companyLabelName}</div>`;
             }
-            
+
             if (labelConfig.includeName) {
                 labelHTML += `<div class="label-text font-bold">${product.name}</div>`;
             }
-            
-            const barcodeId = `barcode-${product.id}-${Date.now()}`;
+
+            // ID único garantizado con contador global (no usa Date.now() para evitar colisiones en loops rápidos)
+            const barcodeId = `bc-${++_labelIdCounter}`;
             labelHTML += `<div class="barcode-container"><svg id="${barcodeId}"></svg></div>`;
-            
+
             if (labelConfig.includeCode) {
                 labelHTML += `<div class="label-text">Código: ${product.code}</div>`;
             }
-            
+
             if (labelConfig.includeCategory) {
                 labelHTML += `<div class="label-text text-gray-600">${product.category}</div>`;
             }
-            
+
             if (labelConfig.includePrice) {
                 labelHTML += `<div class="label-price">${formatCurrency(product.price)}</div>`;
             }
-            
+
             container.innerHTML = labelHTML;
-            
-            setTimeout(() => {
-                try {
-                    if (typeof JsBarcode !== 'undefined') {
-                        JsBarcode(`#${barcodeId}`, product.code, {
-                            format: labelConfig.barcodeFormat,
-                            width: labelConfig.size === 'small' ? 1 : labelConfig.size === 'medium' ? 1.5 : 2,
-                            height: labelConfig.size === 'small' ? 30 : labelConfig.size === 'medium' ? 40 : 50,
-                            displayValue: false,
-                            margin: 2
-                        });
+
+            // Retorna una Promise que resuelve cuando el barcode está dibujado
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    try {
+                        if (typeof JsBarcode !== 'undefined') {
+                            JsBarcode(`#${barcodeId}`, product.code, {
+                                format: labelConfig.barcodeFormat,
+                                width: labelConfig.size === 'small' ? 1 : labelConfig.size === 'medium' ? 1.5 : 2,
+                                height: labelConfig.size === 'small' ? 30 : labelConfig.size === 'medium' ? 40 : 50,
+                                displayValue: false,
+                                margin: 2
+                            });
+                        }
+                    } catch (error) {
+                        console.error('Error generando código de barras:', error);
+                        const svgEl = document.getElementById(barcodeId);
+                        if (svgEl) svgEl.innerHTML = `<text x="50%" y="50%" text-anchor="middle" fill="red">Error</text>`;
                     }
-                } catch (error) {
-                    console.error('Error generando código de barras:', error);
-                    document.getElementById(barcodeId).innerHTML = `<text x="50%" y="50%" text-anchor="middle" fill="red">Error: ${error.message}</text>`;
-                }
-            }, 10);
+                    resolve();
+                }, 30); // 30ms es suficiente para renderizar cada SVG
+            });
         }
 
         function generateSingleLabel() {
@@ -2765,21 +2779,25 @@
             showLabelsModal();
         }
 
-        function showLabelsModal() {
+        async function showLabelsModal() {
             const labelsGrid = document.getElementById('labels-grid');
             labelsGrid.innerHTML = '';
-            
+
+            // Crear todos los divs primero, luego esperar a que todos los barcodes se dibujen
+            const renderPromises = [];
             generatedLabels.forEach((product, index) => {
                 const labelDiv = document.createElement('div');
                 labelDiv.className = `label-preview label-${labelConfig.size} label-print bg-white`;
                 labelDiv.id = `generated-label-${index}`;
-                
-                generateLabelHTML(product, labelDiv);
                 labelsGrid.appendChild(labelDiv);
+                renderPromises.push(generateLabelHTML(product, labelDiv));
             });
-            
+
+            // Mostrar modal
             document.getElementById('labels-modal').style.display = 'flex';
-            showSaveIndicator();
+
+            // Esperar que todos los códigos de barras terminen de dibujarse
+            await Promise.all(renderPromises);
         }
 
         function closeLabelsModal() {
@@ -2787,7 +2805,10 @@
         }
 
         function printLabels() {
-            window.print();
+            // Breve pausa para garantizar que todos los SVG de barcode estén completamente renderizados
+            setTimeout(() => {
+                window.print();
+            }, 150);
         }
 
         function downloadLabelsJSON() {
