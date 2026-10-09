@@ -4758,10 +4758,56 @@ No cubre daños por mal uso, humedad, golpes o sobrecarga eléctrica.</textarea>
         }
 
         function printLabels() {
-            // Breve pausa para garantizar que todos los SVG de barcode estén completamente renderizados
-            setTimeout(() => {
-                window.print();
-            }, 150);
+            // Abrir ventana limpia aislada para imprimir etiquetas
+            // (evita conflictos con los @media print del módulo presupuesto)
+            const labelsHtml = document.getElementById('labels-grid').innerHTML;
+            const printWin = window.open('', '_blank', 'width=900,height=700');
+            if (!printWin) { alert('Por favor permite las ventanas emergentes para imprimir.'); return; }
+            printWin.document.write(`<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Inter, Arial, sans-serif; background: white; padding: 8mm; }
+@page { margin: 8mm; size: A4; }
+.labels-print-area {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3mm;
+}
+.label-preview {
+    border: 2px dashed #ccc;
+    border-radius: 8px;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    break-inside: avoid;
+    page-break-inside: avoid;
+}
+.label-small  { width: 60mm; height: 40mm; }
+.label-medium { width: 80mm; height: 50mm; }
+.label-large  { width: 100mm; height: 60mm; }
+.label-print  { border: 1px solid #ccc; box-shadow: none; }
+.barcode-container { margin: 5px 0; }
+.barcode-container svg { max-width: 100%; height: auto; }
+.label-text  { font-size: 10px; text-align: center; margin: 2px 0; font-weight: bold; }
+.label-price { font-size: 14px; font-weight: bold; color: #059669; }
+</style>
+</head>
+<body>
+<div class="labels-print-area">${labelsHtml}</div>
+<script>
+window.onload = function() {
+    setTimeout(function() { window.print(); setTimeout(function() { window.close(); }, 600); }, 400);
+};
+</script>
+</body>
+</html>`);
+            printWin.document.close();
         }
 
         function downloadLabelsJSON() {
