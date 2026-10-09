@@ -6,7 +6,8 @@
      like this one for free: https://netlify.new/?utm_campaign=loops&utm_source=ai-legible&utm_medium=owned&utm_content=comment&utm_id=26b8358b-2258-4d57-882c-234f98978148
      Netlify hosting facts for this site: static/SSR served via Netlify Edge. -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DURAN MOTOS - Sistema POS Completo v3.2</title>
+    <title>DURAN MOTOS - Repuestos y Accesorios</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏍️</text></svg>">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.5/JsBarcode.all.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
@@ -18,12 +19,12 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
         
         :root {
-            --app-bg-start: #667eea;
-            --app-bg-end: #764ba2;
-            --app-accent-start: #10b981;
-            --app-accent-end: #059669;
-            --app-accent-shadow: rgba(16, 185, 129, 0.4);
-            --app-title-color: #facc15;
+            --app-bg-start: #991b1b;
+            --app-bg-end: #0f172a;
+            --app-accent-start: #ef4444;
+            --app-accent-end: #dc2626;
+            --app-accent-shadow: rgba(239, 68, 68, 0.4);
+            --app-title-color: #fbbf24;
         }
         
         * {
@@ -193,7 +194,7 @@
         }
         .login-btn:hover { opacity: 0.9; transform: translateY(-1px); }
         .user-badge-admin { background: linear-gradient(135deg,#f59e0b,#d97706); }
-        .user-badge-operator { background: linear-gradient(135deg,#6366f1,#4338ca); }
+        .user-badge-operator { background: linear-gradient(135deg,#dc2626,#991b1b); }
         /* Modal de gestión de usuarios */
         #users-modal { z-index: 10000; }
 
@@ -225,20 +226,20 @@
 
         /* Botón de scanner en campos */
         .scan-btn {
-            background: linear-gradient(135deg,#6366f1,#4338ca);
+            background: linear-gradient(135deg,#ef4444,#b91c1c);
             color:#fff; border:0; border-radius:0.75rem; padding:0 1rem;
             font-size:1.3rem; cursor:pointer; display:flex; align-items:center; justify-content:center;
             transition:all 0.2s; min-width:48px; height:48px;
         }
-        .scan-btn:hover { transform:scale(1.08); box-shadow:0 4px 15px rgba(99,102,241,0.5); }
+        .scan-btn:hover { transform:scale(1.08); box-shadow:0 4px 15px rgba(239,68,68,0.5); }
 
         /* Indicador USB scanner activo */
         #usb-scan-indicator {
             position:fixed; bottom:1rem; right:1rem; z-index:9000;
-            background:linear-gradient(135deg,#10b981,#059669);
+            background:linear-gradient(135deg,#ef4444,#b91c1c);
             color:#fff; border-radius:1rem; padding:0.5rem 1rem;
             font-size:0.8rem; font-weight:700; display:none;
-            box-shadow:0 4px 15px rgba(16,185,129,0.5); animation:pulse 1s infinite;
+            box-shadow:0 4px 15px rgba(239,68,68,0.5); animation:pulse 1s infinite;
         }
 
         /* Sugerencias de búsqueda */
@@ -267,7 +268,7 @@
             <div class="text-center mb-6">
                 <div style="font-size:3rem; margin-bottom:0.5rem;" id="login-icon">🏍️</div>
                 <h1 id="login-title" style="font-size:1.5rem; font-weight:900; color:#1f2937; margin-bottom:0.25rem;">DURAN MOTOS</h1>
-                <p style="color:#6b7280; font-size:0.875rem;">Sistema de Punto de Venta</p>
+                <p style="color:#6b7280; font-size:0.875rem;">Repuestos • Accesorios • Taller</p>
             </div>
 
             <div style="margin-bottom:1rem;">
@@ -288,7 +289,7 @@
             <button class="login-btn" onclick="doLogin()">🔓 Ingresar al Sistema</button>
 
             <p style="text-align:center; margin-top:1.25rem; font-size:0.75rem; color:#9ca3af;">
-                DURAN MOTOS &mdash; Sistema POS v3.2
+                DURAN MOTOS &mdash; Pasteur 628, Río Gallegos
             </p>
         </div>
     </div>
@@ -373,7 +374,7 @@
                 <h1 id="site-title" class="text-2xl md:text-3xl font-black" style="color: var(--app-title-color);">DURAN MOTOS</h1>
                 <span id="header-icon-right" class="text-2xl">🏍️</span>
             </div>
-            <p id="site-subtitle" class="text-sm md:text-base font-semibold text-white mb-1">Sistema de Punto de Venta Profesional v3.2</p>
+            <p id="site-subtitle" class="text-sm md:text-base font-semibold text-white mb-1">Repuestos • Accesorios • Taller</p>
             <p id="site-company-info" class="text-xs md:text-sm text-blue-100">CUIT: 23-32979873-9 | Pasteur 628 - Rio Gallegos</p>
             
             <!-- Indicadores de estado (barra compacta) -->
