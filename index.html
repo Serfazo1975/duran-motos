@@ -1881,7 +1881,7 @@
             }
 
             // 2. Fallback: sesión local (retrocompatibilidad mientras se migra)
-            const savedSession = sessionStorage.getItem('duran_motos_session');
+            const savedSession = localStorage.getItem('duran_motos_session');
             if (savedSession) {
                 try {
                     const s = JSON.parse(savedSession);
@@ -1942,7 +1942,7 @@
                 if (data?.session && !error) {
                     const entry = USER_AUTH_MAP[username];
                     currentUser = { id: data.user.id, username, role: entry.role, name: entry.name };
-                    sessionStorage.setItem('duran_motos_session', JSON.stringify(currentUser));
+                    localStorage.setItem('duran_motos_session', JSON.stringify(currentUser));
                     errEl.style.display = 'none';
                     if (btnLogin) { btnLogin.disabled = false; btnLogin.textContent = '🔓 Ingresar al Sistema'; }
                     // Recargar datos desde la nube con la sesión autenticada
@@ -1965,7 +1965,7 @@
             const user = usersData.find(u => u.username === username && u.password === password);
             if (user) {
                 currentUser = { id: user.id, username: user.username, role: user.role, name: user.name };
-                sessionStorage.setItem('duran_motos_session', JSON.stringify(currentUser));
+                localStorage.setItem('duran_motos_session', JSON.stringify(currentUser));
                 errEl.style.display = 'none';
                 showApp();
                 renderDashboard();
@@ -1981,7 +1981,7 @@
             if (!confirm('¿Salir del sistema?')) return;
             if (sb) { try { await sb.auth.signOut(); } catch(e) {} }
             currentUser = null;
-            sessionStorage.removeItem('duran_motos_session');
+            localStorage.removeItem('duran_motos_session');
             showLoginScreen();
         }
 
@@ -2085,7 +2085,7 @@
                         currentUser.name = name;
                         currentUser.username = username;
                         currentUser.role = role;
-                        sessionStorage.setItem('duran_motos_session', JSON.stringify(currentUser));
+                        localStorage.setItem('duran_motos_session', JSON.stringify(currentUser));
                         updateUserUI();
                     }
                 }
