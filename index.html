@@ -1074,13 +1074,23 @@
         <!-- Clientes Tab -->
         <div id="clientes-content" class="px-8 pb-8" style="display: none;">
             <div class="bg-white bg-opacity-90 backdrop-blur-sm rounded-2xl shadow-2xl p-8">
-                <div class="flex justify-between items-center mb-8">
+                <div class="flex justify-between items-center mb-6">
                     <h2 class="text-3xl font-bold text-gray-800 flex items-center gap-3">
                         👥 Gestión de Clientes
                     </h2>
                     <button onclick="showAddClientModal()" class="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-xl hover:shadow-lg font-bold transition-all duration-300 flex items-center gap-2">
                         ➕ Agregar Cliente
                     </button>
+                </div>
+
+                <!-- Barra de búsqueda -->
+                <div class="relative mb-6">
+                    <span style="position:absolute;left:1rem;top:50%;transform:translateY(-50%);font-size:1.1rem;pointer-events:none;">🔍</span>
+                    <input type="text" id="client-search"
+                        placeholder="Buscar por nombre, teléfono o email..."
+                        oninput="filterClientes()"
+                        style="width:100%;padding:0.85rem 1rem 0.85rem 2.8rem;border-radius:0.75rem;border:2px solid #d1fae5;font-size:1rem;font-weight:500;color:#374151;outline:none;box-sizing:border-box;transition:border-color 0.2s;"
+                        onfocus="this.style.borderColor='#10b981'" onblur="this.style.borderColor='#d1fae5'" />
                 </div>
 
                 <div id="clients-grid" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -2692,6 +2702,8 @@
                     renderCalendar();
                     break;
                 case 'clientes':
+                    const csrch = document.getElementById('client-search');
+                    if (csrch) csrch.value = '';
                     renderClientes();
                     break;
                 case 'reparaciones':
@@ -3956,6 +3968,56 @@
             `).join('');
             
             updateSelectedClientInfo();
+        }
+
+        function filterClientes() {
+            const term = (document.getElementById('client-search')?.value || '').toLowerCase().trim();
+            const filtered = term
+                ? clients.filter(c =>
+                    (c.name  || '').toLowerCase().includes(term) ||
+                    (c.phone || '').toLowerCase().includes(term) ||
+                    (c.email || '').toLowerCase().includes(term) ||
+                    (c.cuit  || '').toLowerCase().includes(term))
+                : clients;
+
+            const clientsGrid = document.getElementById('clients-grid');
+            if (filtered.length === 0) {
+                clientsGrid.innerHTML = `
+                    <div class="col-span-3 text-center py-16 text-gray-400">
+                        <div style="font-size:3rem;">🔍</div>
+                        <p class="mt-3 text-lg font-semibold">No se encontró ningún cliente con "<strong>${term}</strong>"</p>
+                        <p class="text-sm mt-1">Probá con el nombre, teléfono o email</p>
+                    </div>`;
+                return;
+            }
+
+            clientsGrid.innerHTML = filtered.map(client => `
+                <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-200 hover:shadow-xl transition-all duration-300">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
+                            ${client.name.charAt(0).toUpperCase()}
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-bold text-lg text-gray-800">${client.name}</h3>
+                            <p class="text-gray-600">${client.condition}</p>
+                        </div>
+                    </div>
+                    <div class="space-y-2 mb-4">
+                        ${client.cuit  ? `<p class="text-sm text-gray-600"><strong>CUIT:</strong> ${client.cuit}</p>` : ''}
+                        ${client.phone ? `<p class="text-sm text-gray-600"><strong>Teléfono:</strong> ${client.phone}</p>` : ''}
+                        ${client.email ? `<p class="text-sm text-gray-600"><strong>Email:</strong> ${client.email}</p>` : ''}
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="selectClient(${client.id})" class="flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white py-2 rounded-lg font-bold hover:shadow-lg transition-all duration-300">
+                            ✅ Seleccionar
+                        </button>
+                        ${client.phone ? `
+                            <button onclick="sendWhatsApp('${client.phone}')" class="bg-gradient-to-r from-green-400 to-green-500 text-white px-4 py-2 rounded-lg font-bold hover:shadow-lg transition-all duration-300">
+                                📱
+                            </button>` : ''}
+                    </div>
+                </div>
+            `).join('');
         }
 
         function selectClient(clientId) {
