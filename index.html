@@ -1588,25 +1588,26 @@
     </div>
 
     <!-- Modal Gestionar Categorías -->
-    <div id="category-manager-modal" class="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex items-center justify-center z-50" style="display:none;">
-        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 overflow-hidden">
-            <div style="background:linear-gradient(135deg,#7c3aed,#6d28d9);" class="px-6 py-4 flex items-center justify-between">
+    <div id="category-manager-modal" class="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex items-end justify-center z-50" style="display:none;">
+        <div class="bg-white rounded-t-2xl shadow-2xl w-full max-w-lg" style="max-height:85vh;display:flex;flex-direction:column;">
+            <!-- Header fijo -->
+            <div style="background:linear-gradient(135deg,#7c3aed,#6d28d9);border-radius:1rem 1rem 0 0;flex-shrink:0;" class="px-6 py-4 flex items-center justify-between">
                 <h3 class="text-white font-bold text-lg">⚙️ Gestionar Categorías</h3>
                 <button onclick="closeCategoryManager()" class="text-white text-2xl font-bold hover:opacity-70 leading-none">×</button>
             </div>
-            <div class="p-6">
-                <!-- Agregar nueva categoría -->
-                <div class="flex gap-2 mb-5">
+            <!-- Lista scrolleable -->
+            <div id="category-list" class="overflow-y-auto px-6 py-4 space-y-2" style="flex:1;"></div>
+            <!-- Pie fijo: agregar nueva categoría -->
+            <div style="flex-shrink:0;border-top:2px solid #f3f4f6;padding:1rem 1.5rem 1.5rem;">
+                <p class="text-xs text-gray-400 mb-2 text-center">Escribí el nombre y presioná ➕ o Enter</p>
+                <div class="flex gap-2">
                     <input type="text" id="new-category-input" placeholder="Nueva categoría..." onkeydown="if(event.key==='Enter')addCategory()"
-                        class="flex-1 px-4 py-3 rounded-xl border-2 border-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-400 font-medium" />
+                        class="flex-1 px-4 py-3 rounded-xl border-2 border-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-400 font-medium text-base" />
                     <button onclick="addCategory()"
-                        style="background:linear-gradient(135deg,#7c3aed,#6d28d9);color:#fff;padding:0.75rem 1.25rem;border-radius:0.75rem;font-weight:700;border:none;cursor:pointer;white-space:nowrap;">
+                        style="background:linear-gradient(135deg,#7c3aed,#6d28d9);color:#fff;padding:0.75rem 1.25rem;border-radius:0.75rem;font-weight:700;border:none;cursor:pointer;white-space:nowrap;font-size:1rem;">
                         ➕ Agregar
                     </button>
                 </div>
-                <!-- Lista de categorías -->
-                <div id="category-list" class="space-y-2 max-h-72 overflow-y-auto pr-1"></div>
-                <p class="text-xs text-gray-400 mt-4 text-center">Las categorías se usan al cargar y filtrar productos</p>
             </div>
         </div>
     </div>
