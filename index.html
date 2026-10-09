@@ -3507,7 +3507,50 @@
         }
 
         function filterInventory() {
-            renderInventario();
+            const searchTerm = document.getElementById('inventory-search').value;
+            const filteredProducts = smartFilter(products, searchTerm);
+
+            document.getElementById('inventory-table').innerHTML = filteredProducts.map(product => `
+                <tr class="hover:bg-orange-50 transition-all duration-300">
+                    <td class="p-4 font-mono font-bold text-blue-600">${highlightText(product.code, searchTerm)}</td>
+                    <td class="p-4 font-semibold">${highlightText(product.name, searchTerm)}</td>
+                    <td class="p-4 text-gray-600">${highlightText(product.category, searchTerm)}</td>
+                    <td class="p-4 text-right font-bold text-green-600">${formatCurrency(product.price)}</td>
+                    <td class="p-4 text-right font-bold ${product.stock <= 5 ? 'text-red-500' : 'text-blue-600'}">${product.stock}</td>
+                    <td class="p-4 text-center">
+                        <span class="px-3 py-1 rounded-full text-xs font-bold ${
+                            product.stock <= 0 ? 'bg-red-100 text-red-800' :
+                            product.stock <= 5 ? 'bg-yellow-100 text-yellow-800' :
+                            'bg-green-100 text-green-800'
+                        }">
+                            ${product.stock <= 0 ? '❌ Sin Stock' :
+                             product.stock <= 5 ? '⚠️ Stock Bajo' : '✅ Disponible'}
+                        </span>
+                    </td>
+                    <td class="p-4 text-center">
+                        ${isAdmin() ? `
+                        <div class="flex gap-2 justify-center">
+                            <button onclick="editProduct(${product.id})" class="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 py-2 rounded-lg hover:shadow-lg font-bold transition-all duration-300">
+                                ✏️
+                            </button>
+                            <button onclick="deleteProduct(${product.id})" class="delete-btn text-white px-3 py-2 rounded-lg hover:shadow-lg font-bold transition-all duration-300">
+                                🗑️
+                            </button>
+                        </div>
+                        ` : '<span class="text-xs text-gray-400 font-medium">🔒 Solo lectura</span>'}
+                    </td>
+                </tr>
+            `).join('');
+
+            if (filteredProducts.length === 0) {
+                document.getElementById('inventory-table').innerHTML = `
+                    <tr>
+                        <td colspan="7" class="p-8 text-center text-gray-500">
+                            ${searchTerm ? '🔍 No se encontraron productos' : '📦 No hay productos en el inventario'}
+                        </td>
+                    </tr>
+                `;
+            }
         }
 
         function addNewProduct() {
