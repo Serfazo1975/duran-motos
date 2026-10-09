@@ -4351,7 +4351,7 @@
                     isCurrentMonth ? 'bg-white' : 'bg-gray-100 text-gray-400'
                 }`;
                 
-                dayDiv.onclick = () => showDayDetails(currentDate.toISOString().split('T')[0]);
+                dayDiv.onclick = () => showDayDetails(dateStr);
                 
                 const dayNotes = calendarNotes[dateStr] || [];
                 dayDiv.innerHTML = `
