@@ -3712,12 +3712,12 @@ No cubre daños por mal uso, humedad, golpes o sobrecarga eléctrica.</textarea>
         // Mapeo username → email de Supabase Auth (actualizar si se cambian los usuarios)
         const USER_AUTH_MAP = {
             'admin':    { email: 'admin@duranmotos.ar',    role: 'admin',    name: 'Administrador' },
-            'operador': { email: 'operador@duranmotos.ar', role: 'operator', name: 'Usuario' }
+            'usuario': { email: 'operador@duranmotos.ar', role: 'operator', name: 'Usuario' }
         };
 
         let usersData = [
             { id: 1, username: 'admin', password: 'admin123', role: 'admin', name: 'Administrador' },
-            { id: 2, username: 'operador', password: '123456', role: 'operator', name: 'Usuario' }
+            { id: 2, username: 'usuario', password: '123456', role: 'operator', name: 'Usuario' }
         ];
         let currentUser = null; // { id, username, role, name }
 
