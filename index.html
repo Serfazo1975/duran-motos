@@ -201,6 +201,9 @@
             box-shadow: 0 4px 15px var(--app-accent-shadow);
         }
         .login-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        body.role-operator .admin-only { display: none !important; }
+        .operator-only { display: none; }
+        body.role-operator .operator-only { display: block; }
         .user-badge-admin { background: linear-gradient(135deg,#f59e0b,#d97706); }
         .user-badge-operator { background: linear-gradient(135deg,#dc2626,#991b1b); }
         /* Modal de gestión de usuarios */
@@ -1745,7 +1748,16 @@
   .iva-row td:first-child { cursor: pointer; }
 
     </style>
-</head>
+<style id="v21-css">
+.bg-green-600{background:#16a34a}.hover\:bg-green-700:hover{background:#15803d}.bg-gray-500{background:#6b7280}.hover\:bg-gray-600:hover{background:#4b5563}
+.bg-gradient-to-r.from-emerald-500{background-image:linear-gradient(to right,#10b981,#0d9488)}
+.bg-gradient-to-r.from-amber-500{background-image:linear-gradient(to right,#f59e0b,#f97316)}
+.bg-orange-100{background:#ffedd5}.text-orange-800{color:#9a3412}.text-orange-700{color:#c2410c}.bg-red-100{background:#fee2e2}.text-red-800{color:#991b1b}
+.bg-teal-100{background:#ccfbf1}.text-teal-800{color:#115e59}.bg-blue-100{background:#dbeafe}.text-blue-800{color:#1e40af}
+.bg-indigo-100{background:#e0e7ff}.text-indigo-800{color:#3730a3}.bg-green-100{background:#dcfce7}.text-green-800{color:#166534}.text-green-700{color:#15803d}
+.bg-yellow-100{background:#fef9c3}.text-yellow-800{color:#854d0e}.bg-emerald-100{background:#d1fae5}.text-emerald-800{color:#065f46}
+.bg-purple-100{background:#f3e8ff}.text-purple-800{color:#6b21a8}.bg-gray-100{background:#f3f4f6}.text-gray-700{color:#374151}
+</style></head>
 <body class="gradient-bg">
 
     <!-- ===== PANTALLA DE LOGIN ===== -->
@@ -1902,8 +1914,11 @@
                 <button onclick="setActiveTab('reparaciones')" id="tab-reparaciones" class="tab-button tab-inactive" style="flex:1;padding:7px 4px;border-radius:8px;font-size:0.8rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap;transition:all .25s;">
                     🔧 Reparaciones
                 </button>
-                <button onclick="setActiveTab('backup')" id="tab-backup" class="tab-button tab-inactive" style="flex:1;padding:7px 4px;border-radius:8px;font-size:0.8rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap;transition:all .25s;">
+                <button onclick="setActiveTab('backup')" id="tab-backup" class="tab-button tab-inactive admin-only" style="flex:1;padding:7px 4px;border-radius:8px;font-size:0.8rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap;transition:all .25s;">
                     💾 Backup
+                </button>
+                <button onclick="setActiveTab('log')" id="tab-log" class="tab-button tab-inactive admin-only" style="flex:1;padding:7px 4px;border-radius:8px;font-size:0.8rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap;">
+                    📜 Log
                 </button>
                 <button onclick="setActiveTab('reportes')" id="tab-reportes" class="tab-button tab-inactive" style="flex:1;padding:7px 4px;border-radius:8px;font-size:0.8rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap;transition:all .25s;">
                     📊 Reportes
@@ -2183,6 +2198,22 @@
                     </button>
                 </div>
 
+                <!-- V21: Sumar stock (Admin y Operador). Cada ingreso queda en el Log. -->
+                <div id="stock-in-panel" class="bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 p-6 rounded-2xl mb-8">
+                    <h3 class="font-bold mb-2 text-xl text-gray-800">➕ Sumar stock</h3>
+                    <p class="text-sm text-gray-600 mb-3">Suma unidades a un producto existente. Cada ingreso queda registrado en el Log.</p>
+                    <div class="operator-only bg-blue-50 border border-blue-200 text-blue-800 text-xs p-3 rounded-lg mb-3">
+                        🧑‍🔧 <strong>Modo Operador:</strong> solo podés <strong>sumar</strong> stock. Correcciones, bajas y cambios de precio los hace el Administrador.
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <input type="text" id="stockin-product" list="products-datalist" onfocus="refreshDatalist()" placeholder="Código o nombre (ej: ACE001)" class="px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-400" />
+                        <input type="number" id="stockin-qty" min="1" step="1" placeholder="Cantidad a sumar" class="px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-400" />
+                        <input type="text" id="stockin-note" placeholder="Nota / proveedor (opcional)" class="px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-400" />
+                        <button onclick="quickStockIn()" class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-6 py-3 rounded-xl hover:shadow-lg font-bold">➕ Sumar Stock</button>
+                    </div>
+                    <datalist id="products-datalist"></datalist>
+                </div>
+
                 <!-- Búsqueda en inventario — DESTACADA -->
                 <div class="mb-6" style="background:linear-gradient(135deg,#fff7ed,#fef3c7);border:2px solid #f97316;border-radius:1rem;padding:1.25rem 1.5rem;box-shadow:0 4px 20px rgba(249,115,22,0.18);">
                     <p class="text-xs font-bold text-orange-600 mb-2 uppercase tracking-widest">🔍 Buscar en inventario</p>
@@ -2226,7 +2257,7 @@
                 </div>
 
                 <!-- Importar/Exportar Excel — al final de la página -->
-                <div class="bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 p-6 rounded-2xl mt-8">
+                <div class="admin-only bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 p-6 rounded-2xl mt-8">
                     <h3 class="font-bold mb-6 text-xl text-gray-800 flex items-center gap-3">
                         📊 Importar/Exportar Inventario Excel
                     </h3>
@@ -2785,6 +2816,65 @@
                                     </td>
                                 </tr>
                             </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- V21: Log de movimientos (solo Administrador) -->
+        <div id="log-content" class="px-8 pb-8 admin-only" style="display: none;">
+            <div class="bg-white bg-opacity-90 backdrop-blur-sm rounded-2xl shadow-2xl p-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">📜 Log de Movimientos</h2>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-gray-100 rounded-xl p-4 text-center"><p class="text-2xl font-bold text-gray-700" id="log-stat-total">0</p><p class="text-xs text-gray-500">Movimientos</p></div>
+                    <div class="bg-orange-100 rounded-xl p-4 text-center"><p class="text-2xl font-bold text-orange-700" id="log-stat-workshop">0</p><p class="text-xs text-gray-500">Consumos de taller</p></div>
+                    <div class="bg-green-100 rounded-xl p-4 text-center"><p class="text-2xl font-bold text-green-700" id="log-stat-ingresos">0</p><p class="text-xs text-gray-500">Ingresos de stock</p></div>
+                    <div class="bg-red-100 rounded-xl p-4 text-center"><p class="text-2xl font-bold text-red-700" id="log-stat-denied">0</p><p class="text-xs text-gray-500">Accesos denegados</p></div>
+                </div>
+
+                <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-4 mb-6 flex flex-wrap items-center justify-between gap-3">
+                    <div>
+                        <p class="font-bold text-indigo-900">Control estricto del Operador</p>
+                        <p class="text-sm text-indigo-800" id="enforce-status">Consultando…</p>
+                    </div>
+                    <button id="enforce-toggle" onclick="toggleEnforcement()" class="bg-green-600 text-white px-5 py-2 rounded-xl font-bold">Activar control estricto</button>
+                </div>
+
+                <div class="bg-orange-50 border border-orange-200 rounded-xl p-4 mb-6">
+                    <h3 class="font-bold text-orange-900 mb-2">🔧 Consumo del taller (según filtro)</h3>
+                    <div id="log-workshop-summary"></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-3 mb-4">
+                    <select id="log-filter-category" onchange="drawLog()" class="px-3 py-2 rounded-lg border border-gray-300">
+                        <option value="all">Todas las categorías</option>
+                        <option value="taller">🔧 Taller</option>
+                        <option value="stock">📦 Stock</option>
+                        <option value="venta">🛒 Ventas</option>
+                        <option value="sistema">⚙️ Sistema / Accesos</option>
+                    </select>
+                    <input type="date" id="log-filter-from" onchange="drawLog()" class="px-3 py-2 rounded-lg border border-gray-300" />
+                    <input type="date" id="log-filter-to" onchange="drawLog()" class="px-3 py-2 rounded-lg border border-gray-300" />
+                    <input type="text" id="log-filter-text" oninput="drawLog()" placeholder="Buscar producto, usuario, detalle…" class="px-3 py-2 rounded-lg border border-gray-300" />
+                    <div class="flex gap-2">
+                        <button onclick="clearLogFilters()" class="flex-1 bg-gray-200 hover:bg-gray-300 px-3 py-2 rounded-lg font-bold text-sm">Limpiar</button>
+                        <button onclick="renderLog()" class="flex-1 bg-blue-500 text-white px-3 py-2 rounded-lg font-bold text-sm">🔄</button>
+                        <button onclick="exportLogExcel()" class="flex-1 bg-green-600 text-white px-3 py-2 rounded-lg font-bold text-sm">📊 Excel</button>
+                    </div>
+                </div>
+                <p class="text-xs text-gray-500 mb-2" id="log-count-info"></p>
+
+                <div class="bg-white rounded-xl overflow-hidden shadow">
+                    <div class="max-h-[32rem] overflow-y-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50 sticky top-0"><tr>
+                                <th class="p-3 text-left text-sm">🕒 Fecha</th><th class="p-3 text-left text-sm">👤 Usuario</th>
+                                <th class="p-3 text-left text-sm">🔖 Tipo</th><th class="p-3 text-left text-sm">📦 Producto</th>
+                                <th class="p-3 text-right text-sm">± Cant.</th><th class="p-3 text-right text-sm">Stock</th>
+                                <th class="p-3 text-left text-sm">📝 Detalle</th></tr></thead>
+                            <tbody id="log-table"></tbody>
                         </table>
                     </div>
                 </div>
@@ -3655,7 +3745,9 @@ No cubre daños por mal uso, humedad, golpes o sobrecarga eléctrica.</textarea>
                         const entry = username ? USER_AUTH_MAP[username] : null;
                         if (entry) {
                             currentUser = { id: session.user.id, username, role: entry.role, name: entry.name };
+                            cloudAuth = true;
                             showApp();
+                            refreshCloudStatus();
                             return;
                         }
                     }
@@ -3724,11 +3816,14 @@ No cubre daños por mal uso, humedad, golpes o sobrecarga eléctrica.</textarea>
                 if (data?.session && !error) {
                     const entry = USER_AUTH_MAP[username];
                     currentUser = { id: data.user.id, username, role: entry.role, name: entry.name };
+                    cloudAuth = true;
                     localStorage.setItem('duran_motos_session', JSON.stringify(currentUser));
                     errEl.style.display = 'none';
                     if (btnLogin) { btnLogin.disabled = false; btnLogin.textContent = '🔓 Ingresar al Sistema'; }
                     // Recargar datos desde la nube con la sesión autenticada
                     try { await loadFromSupabase(); } catch(e) {}
+                    cloudLog('login', 'Inicio de sesión');
+                    refreshCloudStatus();
                     showApp();
                     renderDashboard();
                     return;
@@ -3761,6 +3856,8 @@ No cubre daños por mal uso, humedad, golpes o sobrecarga eléctrica.</textarea>
 
         async function doLogout() {
             if (!confirm('¿Salir del sistema?')) return;
+            await cloudLog('logout', 'Cierre de sesión');
+            cloudAuth = false;
             if (sb) { try { await sb.auth.signOut(); } catch(e) {} }
             currentUser = null;
             localStorage.removeItem('duran_motos_session');
@@ -3784,6 +3881,7 @@ No cubre daños por mal uso, humedad, golpes o sobrecarga eléctrica.</textarea>
                 `;
             }
 
+            document.body.classList.toggle('role-operator', !!currentUser && currentUser.role !== 'admin');
             // Mostrar/ocultar botón Configuración
             if (btnConfig) btnConfig.style.display = isAdmin() ? 'flex' : 'none';
 
@@ -3994,6 +4092,7 @@ No cubre daños por mal uso, humedad, golpes o sobrecarga eléctrica.</textarea>
         }
 
         function createManualBackup() {
+            if (!isAdmin()) { alert('⛔ Solo el Administrador puede crear backups manuales.'); return; }
             const backup = createBackupData('manual');
             downloadBackup(backup);
             addToBackupHistory(backup);
@@ -4431,6 +4530,322 @@ No cubre daños por mal uso, humedad, golpes o sobrecarga eléctrica.</textarea>
         }
         // ────────────────────────────────────────────────────────────────────────────
 
+        // ─── V21: stock controlado por la base de datos + Log de movimientos ────────
+        let cloudAuth = false;                       // true cuando hay sesión real de Supabase
+        let cloudInfo = { role: null, enforced: false };
+
+        function escH(s) {
+            return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        }
+
+        async function cloudRpc(fn, args) {
+            if (!sb || !cloudAuth) return { ok: false, local: true };
+            try {
+                const { data, error } = await sb.rpc(fn, args);
+                if (error) {
+                    const msg = error.message || String(error);
+                    return { ok: false, error: msg, network: /fetch|network|timeout|Failed/i.test(msg) };
+                }
+                return data == null ? { ok: true } : data;
+            } catch (e) {
+                return { ok: false, error: String(e), network: true };
+            }
+        }
+
+        function cloudLog(type, detail, repairId) {
+            return cloudRpc('dm_log_event', { p_type: type, p_detail: detail, p_repair: repairId || null });
+        }
+
+        async function refreshCloudStatus() {
+            const r = await cloudRpc('dm_status', {});
+            if (r && r.role) cloudInfo = { role: r.role, enforced: !!r.enforced };
+            if (typeof updateEnforceCard === 'function') updateEnforceCard();
+        }
+
+        // Trae el stock oficial de la nube (conserva lo que solo existe en este equipo)
+        async function refreshProductsFromCloud() {
+            if (!sb || !cloudAuth) return false;
+            try {
+                const { data, error } = await sb.from('dm_products').select('data');
+                if (error || !data || !data.length) return false;
+                const cloud = new Map(data.map(r => [r.data.id, r.data]));
+                products = products.map(p => cloud.has(p.id) ? { ...p, stock: cloud.get(p.id).stock } : p);
+                const local = new Set(products.map(p => p.id));
+                cloud.forEach((v, k) => { if (!local.has(k)) products.push(v); });
+                try { localStorage.setItem('duran_motos_products', JSON.stringify(products)); } catch (e) {}
+                return true;
+            } catch (e) { return false; }
+        }
+
+        function refreshDatalist() {
+            const dl = document.getElementById('products-datalist');
+            if (!dl) return;
+            dl.innerHTML = products.map(p => `<option value="${escH(p.code)}">${escH(p.name)} (stock ${p.stock})</option>`).join('');
+        }
+
+        function findProductByInput(text) {
+            const t = (text || '').trim().toLowerCase();
+            if (!t) return null;
+            return products.find(x => String(x.code).toLowerCase() === t)
+                || products.find(x => String(x.name).toLowerCase() === t)
+                || (() => { const m = products.filter(x => String(x.name).toLowerCase().includes(t) || String(x.code).toLowerCase().includes(t)); return m.length === 1 ? m[0] : null; })();
+        }
+
+        // ── Sumar stock (única vía de modificación de stock para el Operador) ──
+        function prefillStockIn(code) {
+            refreshDatalist();
+            document.getElementById('stockin-product').value = code;
+            document.getElementById('stockin-qty').focus();
+            document.getElementById('stock-in-panel').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        async function quickStockIn() {
+            const product = findProductByInput(document.getElementById('stockin-product').value);
+            const qtyRaw = document.getElementById('stockin-qty').value.trim();
+            const note = document.getElementById('stockin-note').value.trim();
+            const qty = Number(qtyRaw);
+            if (!product) { alert('Producto no encontrado. Escribí el código exacto.'); return; }
+            if (!qtyRaw || !Number.isInteger(qty) || qty < 1) { alert('La cantidad debe ser un número entero mayor a 0. Para restar stock hablá con el Administrador.'); return; }
+
+            if (sb && cloudAuth) {
+                const r = await cloudRpc('dm_stock_in', { p_product: product.id, p_qty: qty, p_note: note || null });
+                if (r.network) { alert('Sin conexión con la nube. Intentá de nuevo cuando vuelva internet.'); return; }
+                if (!r.ok) { alert('No se pudo sumar el stock: ' + r.error); return; }
+                product.stock = r.stock;
+            } else {
+                product.stock += qty;
+            }
+            document.getElementById('stockin-product').value = '';
+            document.getElementById('stockin-qty').value = '';
+            document.getElementById('stockin-note').value = '';
+            saveAllData();
+            renderInventario();
+        }
+
+        // ── Insumos usados en una reparación (descuentan stock) ──
+        function repairLabel(r) {
+            return `#${String(r.id).slice(-5)} ${r.client} – ${r.vehicle}${r.plate ? ' (' + r.plate + ')' : ''}`;
+        }
+
+        function renderMaterialsBlock(repair) {
+            const mats = repair.materials || [];
+            const cost = mats.filter(m => !m.returned).reduce((s, m) => s + m.qty * (m.unitPrice || 0), 0);
+            const locked = repair.status === 'entregado';
+            return `
+                <div class="mt-4 bg-amber-50 border border-amber-200 rounded-xl p-4">
+                    <div class="flex justify-between items-center mb-3">
+                        <h4 class="font-bold text-amber-800">🛢️ Insumos y repuestos usados</h4>
+                        <span class="text-sm font-bold text-amber-700">Costo: ${formatCurrency(cost)}</span>
+                    </div>
+                    ${mats.length === 0 ? '<p class="text-sm text-gray-500 mb-3">Todavía no se cargó ningún insumo.</p>' : `
+                        <div class="space-y-1 mb-3">
+                            ${mats.map(m => `
+                                <div class="flex justify-between items-center text-sm bg-white rounded-lg px-3 py-2 ${m.returned ? 'opacity-60' : ''}">
+                                    <span class="${m.returned ? 'line-through' : ''}"><strong>${escH(m.name)}</strong> (${escH(m.code)}) × ${m.qty}
+                                        <span class="text-xs text-gray-500">· ${escH(m.user || '')} · ${escH(m.date || '')}</span>
+                                        ${m.returned ? '<span class="text-xs text-green-700 font-bold">↩ devuelto al stock</span>' : ''}
+                                    </span>
+                                    <span class="flex items-center gap-2">
+                                        <span class="font-semibold text-green-700">${formatCurrency(m.qty * (m.unitPrice || 0))}</span>
+                                        ${m.returned ? '' : `<button onclick="returnRepairMaterial(${repair.id}, '${escH(m.id)}')" class="admin-only text-xs bg-gray-200 hover:bg-gray-300 px-2 py-1 rounded font-bold">↩ Devolver</button>`}
+                                    </span>
+                                </div>`).join('')}
+                        </div>`}
+                    ${locked ? '<p class="text-xs text-gray-500">Reparación entregada: no se pueden cargar más insumos.</p>' : `
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-2">
+                            <input type="text" id="mat-product-${repair.id}" list="products-datalist" onfocus="refreshDatalist()" placeholder="Código o nombre (ej: ACE001)" class="md:col-span-2 px-3 py-2 rounded-lg border border-gray-300 text-sm" />
+                            <input type="number" id="mat-qty-${repair.id}" min="1" step="1" value="1" class="px-3 py-2 rounded-lg border border-gray-300 text-sm" />
+                            <button onclick="addRepairMaterial(${repair.id})" class="bg-gradient-to-r from-amber-500 to-orange-500 text-white px-3 py-2 rounded-lg font-bold text-sm hover:shadow-lg">➖ Usar del stock</button>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-2">Al cargar un insumo se descuenta automáticamente del inventario y queda registrado en el Log.</p>`}
+                </div>`;
+        }
+
+        async function addRepairMaterial(repairId) {
+            const repair = repairs.find(r => r.id === repairId);
+            if (!repair) return;
+            if (repair.status === 'entregado') { alert('La reparación ya fue entregada'); return; }
+            const product = findProductByInput(document.getElementById('mat-product-' + repairId).value);
+            const qtyRaw = document.getElementById('mat-qty-' + repairId).value.trim();
+            const qty = Number(qtyRaw);
+            if (!product) { alert('Producto no encontrado. Escribí el código exacto (ej: ACE001).'); return; }
+            if (!qtyRaw || !Number.isInteger(qty) || qty < 1) { alert('La cantidad debe ser un número entero mayor a 0'); return; }
+
+            if (sb && cloudAuth) {
+                const r = await cloudRpc('dm_consume_stock', {
+                    p_items: [{ id: product.id, qty }], p_category: 'taller',
+                    p_detail: 'Usado en ' + repairLabel(repair), p_repair: repair.id
+                });
+                if (r.network) { alert('Sin conexión con la nube. Intentá de nuevo cuando vuelva internet.'); return; }
+                if (!r.ok) {
+                    alert(r.error === 'Stock insuficiente' ? `Stock insuficiente de "${r.name}". Disponible: ${r.available}` : 'No se pudo cargar el insumo: ' + r.error);
+                    await refreshProductsFromCloud();
+                    return;
+                }
+                product.stock = r.stocks[String(product.id)];
+            } else {
+                if (product.stock < qty) { alert(`Stock insuficiente de "${product.name}". Disponible: ${product.stock}`); return; }
+                product.stock -= qty;
+            }
+            if (!repair.materials) repair.materials = [];
+            repair.materials.push({
+                id: 'm' + Date.now() + Math.floor(Math.random() * 1000),
+                productId: product.id, code: product.code, name: product.name, qty,
+                unitPrice: product.price, date: new Date().toLocaleString(),
+                user: currentUser ? currentUser.name : '', returned: false
+            });
+            saveAllData();
+            renderReparaciones();
+        }
+
+        async function returnRepairMaterial(repairId, materialId) {
+            if (!isAdmin()) { alert('⛔ Solo el Administrador puede devolver insumos al stock.'); return; }
+            const repair = repairs.find(r => r.id === repairId);
+            const m = repair && (repair.materials || []).find(x => x.id === materialId);
+            if (!m || m.returned) return;
+            if (!confirm(`¿Devolver ${m.qty} × ${m.name} al stock?`)) return;
+            const product = products.find(p => p.id === m.productId);
+            if (sb && cloudAuth) {
+                const r = await cloudRpc('dm_return_stock', { p_product: m.productId, p_qty: m.qty, p_repair: repairId, p_detail: 'Devuelto desde ' + repairLabel(repair) });
+                if (!r.ok) { alert('No se pudo devolver: ' + (r.error || '')); return; }
+                if (product && r.stock != null) product.stock = r.stock;
+            } else if (product) {
+                product.stock += m.qty;
+            }
+            m.returned = true;
+            m.returnedAt = new Date().toLocaleString();
+            saveAllData();
+            renderReparaciones();
+        }
+
+        // ── Pestaña Log (solo Administrador; la base además lo impide para el Operador) ──
+        let logRows = [];
+        const LOG_LABELS = {
+            consumo: ['🔧 Consumo taller', 'bg-orange-100 text-orange-800'], consumo_rechazado: ['⛔ Consumo rechazado', 'bg-red-100 text-red-800'],
+            devolucion: ['↩ Devolución', 'bg-teal-100 text-teal-800'], reparacion_alta: ['📝 Reparación nueva', 'bg-blue-100 text-blue-800'],
+            estado: ['🔄 Cambio de estado', 'bg-indigo-100 text-indigo-800'], ingreso: ['➕ Ingreso stock', 'bg-green-100 text-green-800'],
+            ajuste: ['✏️ Ajuste manual', 'bg-yellow-100 text-yellow-800'], cambio_stock: ['✏️ Cambio de stock', 'bg-yellow-100 text-yellow-800'],
+            edicion: ['✏️ Edición producto', 'bg-yellow-100 text-yellow-800'], alta: ['🆕 Alta producto', 'bg-emerald-100 text-emerald-800'],
+            baja: ['🗑️ Baja producto', 'bg-red-100 text-red-800'], venta: ['🛒 Venta', 'bg-purple-100 text-purple-800'],
+            venta_rechazada: ['⛔ Venta rechazada', 'bg-red-100 text-red-800'], denegado: ['⛔ Acceso denegado', 'bg-red-100 text-red-800'],
+            login: ['🔓 Ingreso', 'bg-gray-100 text-gray-700'], logout: ['🔒 Salida', 'bg-gray-100 text-gray-700'],
+            control_estricto: ['🛡️ Control estricto', 'bg-gray-100 text-gray-700'], backup: ['💾 Backup', 'bg-gray-100 text-gray-700'],
+            restauracion: ['📥 Restauración', 'bg-red-100 text-red-800'], importacion: ['📊 Importación', 'bg-gray-100 text-gray-700']
+        };
+
+        async function renderLog() {
+            if (!isAdmin()) return;
+            await refreshCloudStatus();
+            if (sb && cloudAuth) {
+                const { data, error } = await sb.from('dm_log').select('*').order('ts', { ascending: false }).limit(3000);
+                if (error) { document.getElementById('log-count-info').textContent = 'No se pudo leer el Log: ' + error.message; return; }
+                logRows = data || [];
+            } else {
+                logRows = [];
+                document.getElementById('log-count-info').textContent = 'Para ver el Log necesitás iniciar sesión con conexión a la nube.';
+            }
+            drawLog();
+        }
+
+        function filteredLog() {
+            const cat = document.getElementById('log-filter-category').value;
+            const from = document.getElementById('log-filter-from').value;
+            const to = document.getElementById('log-filter-to').value;
+            const text = document.getElementById('log-filter-text').value.trim().toLowerCase();
+            return logRows.filter(e => {
+                if (cat !== 'all' && e.category !== cat) return false;
+                const d = new Date(e.ts);
+                const key = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+                if (from && key < from) return false;
+                if (to && key > to) return false;
+                if (text && ![e.product_code, e.product_name, e.detail, e.user_email, e.type].join(' ').toLowerCase().includes(text)) return false;
+                return true;
+            });
+        }
+
+        function drawLog() {
+            const list = filteredLog();
+            document.getElementById('log-stat-total').textContent = logRows.length;
+            document.getElementById('log-stat-workshop').textContent = logRows.filter(e => e.category === 'taller' && e.type === 'consumo').length;
+            document.getElementById('log-stat-ingresos').textContent = logRows.filter(e => e.type === 'ingreso').length;
+            document.getElementById('log-stat-denied').textContent = logRows.filter(e => e.type === 'denegado').length;
+
+            const agg = {};
+            list.filter(e => e.category === 'taller' && (e.type === 'consumo' || e.type === 'devolucion')).forEach(e => {
+                const k = e.product_code || e.product_name;
+                if (!agg[k]) agg[k] = { name: e.product_name, code: e.product_code, qty: 0 };
+                agg[k].qty += -Number(e.qty);
+            });
+            const aggList = Object.values(agg).filter(a => a.qty !== 0).sort((a, b) => b.qty - a.qty);
+            document.getElementById('log-workshop-summary').innerHTML = aggList.length === 0
+                ? '<p class="text-sm text-gray-500">Sin consumo de taller en este filtro.</p>'
+                : aggList.map(a => `<span class="inline-block bg-orange-50 border border-orange-200 text-orange-800 rounded-lg px-3 py-1 text-sm mr-2 mb-2"><strong>${escH(a.name)}</strong> (${escH(a.code)}): ${a.qty}</span>`).join('');
+
+            document.getElementById('log-count-info').textContent = `Mostrando ${Math.min(list.length, 500)} de ${list.length} movimientos filtrados (${logRows.length} cargados)`;
+            document.getElementById('log-table').innerHTML = list.length === 0
+                ? '<tr><td colspan="7" class="p-8 text-center text-gray-500">📜 No hay movimientos para mostrar</td></tr>'
+                : list.slice(0, 500).map(e => {
+                    const info = LOG_LABELS[e.type] || [e.type, 'bg-gray-100 text-gray-700'];
+                    const q = Number(e.qty);
+                    return `<tr class="border-b hover:bg-gray-50">
+                        <td class="p-3 text-sm whitespace-nowrap">${escH(new Date(e.ts).toLocaleString())}</td>
+                        <td class="p-3 text-sm font-semibold">${escH(e.user_email || '')}<div class="text-xs text-gray-400">${escH(e.role || '')}</div></td>
+                        <td class="p-3"><span class="px-2 py-1 rounded-full text-xs font-bold ${info[1]}">${info[0]}</span></td>
+                        <td class="p-3 text-sm">${e.product_name ? `<strong>${escH(e.product_name)}</strong> <span class="text-gray-500">(${escH(e.product_code)})</span>` : '—'}</td>
+                        <td class="p-3 text-right font-bold ${q > 0 ? 'text-green-600' : q < 0 ? 'text-red-600' : 'text-gray-400'}">${q ? (q > 0 ? '+' : '') + q : '—'}</td>
+                        <td class="p-3 text-right text-sm">${e.stock_after == null ? '—' : e.stock_after}</td>
+                        <td class="p-3 text-sm text-gray-700">${escH(e.detail || '')}</td></tr>`;
+                }).join('');
+        }
+
+        function clearLogFilters() {
+            document.getElementById('log-filter-category').value = 'all';
+            document.getElementById('log-filter-from').value = '';
+            document.getElementById('log-filter-to').value = '';
+            document.getElementById('log-filter-text').value = '';
+            drawLog();
+        }
+
+        function exportLogExcel() {
+            const rows = filteredLog().map(e => ({
+                Fecha: new Date(e.ts).toLocaleString(), Usuario: e.user_email, Rol: e.role, Categoria: e.category,
+                Tipo: (LOG_LABELS[e.type] || [e.type])[0], Codigo: e.product_code, Producto: e.product_name,
+                Cantidad: e.qty, StockResultante: e.stock_after == null ? '' : e.stock_after, Detalle: e.detail
+            }));
+            if (rows.length === 0) { alert('No hay movimientos para exportar'); return; }
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(rows), 'Log_Movimientos');
+            XLSX.writeFile(wb, `log_movimientos_duran_motos_${new Date().toISOString().split('T')[0]}.xlsx`);
+        }
+
+        function updateEnforceCard() {
+            const st = document.getElementById('enforce-status');
+            const btn = document.getElementById('enforce-toggle');
+            if (!st || !btn) return;
+            if (cloudInfo.enforced) {
+                st.innerHTML = '🛡️ <strong class="text-green-700">ACTIVADO</strong>: el Operador solo puede sumar stock; la base rechaza cualquier otro cambio.';
+                btn.textContent = 'Desactivar control estricto';
+                btn.className = 'bg-gray-500 text-white px-5 py-2 rounded-xl font-bold hover:bg-gray-600';
+            } else {
+                st.innerHTML = '⚠️ <strong class="text-orange-700">DESACTIVADO</strong>: por ahora las restricciones del Operador solo están en la pantalla. Activalo cuando todos los equipos usen esta versión.';
+                btn.textContent = 'Activar control estricto';
+                btn.className = 'bg-green-600 text-white px-5 py-2 rounded-xl font-bold hover:bg-green-700';
+            }
+        }
+
+        async function toggleEnforcement() {
+            if (!isAdmin()) return;
+            const turnOn = !cloudInfo.enforced;
+            if (!confirm(turnOn
+                ? 'Al activar el control estricto, los equipos que sigan usando una versión anterior no podrán descontar stock por ventas del Operador. ¿Todos los equipos ya usan esta versión?'
+                : '¿Desactivar el control estricto del Operador?')) return;
+            const r = await cloudRpc('dm_set_enforcement', { p_on: turnOn });
+            if (!r.ok) { alert('No se pudo cambiar: ' + (r.error || '')); return; }
+            await refreshCloudStatus();
+            renderLog();
+        }
+        // ────────────────────────────────────────────────────────────────────────────
+
         function saveAllData() {
             localStorage.setItem('duran_motos_products', JSON.stringify(products));
             localStorage.setItem('duran_motos_sales', JSON.stringify(sales));
@@ -4447,7 +4862,9 @@ No cubre daños por mal uso, humedad, golpes o sobrecarga eléctrica.</textarea>
         function setActiveTab(tab) {
             activeTab = tab;
             
-            const tabs = ['dashboard', 'ventas', 'inventario', 'etiquetas', 'calendario', 'clientes', 'reparaciones', 'backup', 'reportes', 'presupuesto'];
+            if ((tab === 'log' || tab === 'backup') && !isAdmin()) { alert('⛔ Solo el Administrador puede abrir esta sección.'); tab = 'dashboard'; }
+            activeTab = tab;
+            const tabs = ['dashboard', 'ventas', 'inventario', 'etiquetas', 'calendario', 'clientes', 'reparaciones', 'backup', 'log', 'reportes', 'presupuesto'];
             tabs.forEach(t => {
                 document.getElementById(t + '-content').style.display = 'none';
                 const tabButton = document.getElementById('tab-' + t);
@@ -4465,9 +4882,11 @@ No cubre daños por mal uso, humedad, golpes o sobrecarga eléctrica.</textarea>
                     break;
                 case 'ventas':
                     renderVentas();
+                    refreshProductsFromCloud().then(ok => { if (ok && activeTab === 'ventas') renderVentas(); });
                     break;
                 case 'inventario':
                     renderInventario();
+                    refreshProductsFromCloud().then(ok => { if (ok && activeTab === 'inventario') renderInventario(); });
                     break;
                 case 'etiquetas':
                     renderEtiquetas();
@@ -4482,10 +4901,14 @@ No cubre daños por mal uso, humedad, golpes o sobrecarga eléctrica.</textarea>
                     break;
                 case 'reparaciones':
                     renderReparaciones();
+                    refreshProductsFromCloud().then(ok => { if (ok && activeTab === 'reparaciones') renderReparaciones(); });
                     break;
                 case 'backup':
                     renderBackupHistory();
                     updateBackupStatus();
+                    break;
+                case 'log':
+                    renderLog();
                     break;
                 case 'reportes':
                     renderReportes();
@@ -5149,8 +5572,36 @@ window.onload = function() {
         }
 
         // Funciones de ventas
-        function processSale() {
+        async function processSale() {
             if (cart.length === 0) return;
+            if (window.__saleBusy) return;
+            window.__saleBusy = true;
+            let cloudRes = null;
+            try {
+                if (sb && cloudAuth) {
+                    cloudRes = await cloudRpc('dm_consume_stock', {
+                        p_items: cart.map(i => ({ id: i.id, qty: i.quantity })),
+                        p_category: 'venta',
+                        p_detail: 'Venta' + (selectedClient ? ' a ' + selectedClient.name : ''),
+                        p_repair: null
+                    });
+                    if (cloudRes.network) {
+                        alert('⚠️ Sin conexión con la nube: la venta se guarda solo en este equipo.');
+                        cloudRes = null;
+                    } else if (!cloudRes.ok) {
+                        alert(cloudRes.error === 'Stock insuficiente'
+                            ? `Stock insuficiente de "${cloudRes.name}" (disponible: ${cloudRes.available}). Se actualizó el stock.`
+                            : 'No se pudo registrar la venta: ' + cloudRes.error);
+                        await refreshProductsFromCloud();
+                        cart = cart.filter(i => { const p = products.find(x => x.id === i.id); return p && p.stock > 0; })
+                                   .map(i => { const p = products.find(x => x.id === i.id); return { ...i, quantity: Math.min(i.quantity, p.stock) }; });
+                        renderVentas();
+                        return;
+                    }
+                }
+            } finally {
+                window.__saleBusy = false;
+            }
 
             const totals = getCartTotals();
             const newSale = {
@@ -5166,14 +5617,19 @@ window.onload = function() {
                 itemCount: cart.reduce((count, item) => count + item.quantity, 0)
             };
 
-            // Actualizar stock
-            products = products.map(product => {
-                const cartItem = cart.find(item => item.id === product.id);
-                if (cartItem) {
-                    return { ...product, stock: product.stock - cartItem.quantity };
-                }
-                return product;
-            });
+            // Actualizar stock (si la nube ya lo descontó, se toma el valor oficial del servidor)
+            if (cloudRes && cloudRes.ok && cloudRes.stocks) {
+                products = products.map(product => (cloudRes.stocks[String(product.id)] !== undefined)
+                    ? { ...product, stock: cloudRes.stocks[String(product.id)] } : product);
+            } else {
+                products = products.map(product => {
+                    const cartItem = cart.find(item => item.id === product.id);
+                    if (cartItem) {
+                        return { ...product, stock: product.stock - cartItem.quantity };
+                    }
+                    return product;
+                });
+            }
 
             sales.unshift(newSale);
             completedSale = newSale;
@@ -5506,7 +5962,7 @@ window.onload = function() {
                                 🗑️
                             </button>
                         </div>
-                        ` : '<span class="text-xs text-gray-400 font-medium">🔒 Solo lectura</span>'}
+                        ` : `<div class="flex flex-col items-center gap-1"><button onclick="prefillStockIn(${JSON.stringify(String(product.code)).replace(/"/g, '&quot;')})" class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-3 py-1.5 rounded-lg font-bold text-sm">➕ Sumar stock</button><span class="text-xs text-gray-400 font-medium">🔒 Solo lectura</span></div>`}
                     </td>
                 </tr>
             `).join('');
@@ -5555,7 +6011,7 @@ window.onload = function() {
                                 🗑️
                             </button>
                         </div>
-                        ` : '<span class="text-xs text-gray-400 font-medium">🔒 Solo lectura</span>'}
+                        ` : `<div class="flex flex-col items-center gap-1"><button onclick="prefillStockIn(${JSON.stringify(String(product.code)).replace(/"/g, '&quot;')})" class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-3 py-1.5 rounded-lg font-bold text-sm">➕ Sumar stock</button><span class="text-xs text-gray-400 font-medium">🔒 Solo lectura</span></div>`}
                     </td>
                 </tr>
             `).join('');
@@ -5713,6 +6169,7 @@ window.onload = function() {
         }
 
         function handleExcelImport(event) {
+            if (!isAdmin()) { alert('⛔ Solo el Administrador puede importar productos.'); event.target.value = ''; return; }
             const file = event.target.files[0];
             if (!file) return;
 
@@ -5989,6 +6446,7 @@ window.onload = function() {
                             📱 WhatsApp
                         </button>
                     </div>
+                    ${renderMaterialsBlock(repair)}
                 </div>
             `).join('');
         }
@@ -6026,6 +6484,7 @@ window.onload = function() {
             };
             
             repairs.unshift(newRepair);
+            cloudLog('reparacion_alta', `Reparación registrada: ${repairLabel(newRepair)}`, newRepair.id);
             
             // Limpiar formulario
             document.getElementById('new-repair-client').value = '';
@@ -6055,6 +6514,8 @@ window.onload = function() {
                 return repair;
             });
             
+            const _r = repairs.find(r => r.id === repairId);
+            if (_r) cloudLog('estado', `${repairLabel(_r)} → ${getStatusText(newStatus)}`, repairId);
             saveAllData();
             renderReparaciones();
             showSaveIndicator();
@@ -6482,6 +6943,7 @@ window.onload = function() {
 
         // Funciones para restaurar backup
         function handleBackupRestore(event) {
+            if (!isAdmin()) { alert('⛔ Solo el Administrador puede restaurar backups.'); event.target.value = ''; return; }
             const file = event.target.files[0];
             if (!file) return;
 
