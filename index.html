@@ -3741,15 +3741,23 @@ No cubre daños por mal uso, humedad, golpes o sobrecarga eléctrica.</textarea>
                     const { data: { session } } = await sb.auth.getSession();
                     if (session) {
                         const email = session.user.email;
-                        const username = Object.keys(USER_AUTH_MAP).find(k => USER_AUTH_MAP[k].email === email);
-                        const entry = username ? USER_AUTH_MAP[username] : null;
-                        if (entry) {
-                            currentUser = { id: session.user.id, username, role: entry.role, name: entry.name };
-                            cloudAuth = true;
+                        cloudAuth = true;
+                        const who = await cloudRpc('dm_whoami', {});
+                        if (who && who.username) {
+                            currentUser = { id: session.user.id, username: who.username, role: who.role === 'admin' ? 'admin' : 'operator', name: who.name };
                             showApp();
                             refreshCloudStatus();
                             return;
                         }
+                        const username = Object.keys(USER_AUTH_MAP).find(k => USER_AUTH_MAP[k].email === email);
+                        const entry = username ? USER_AUTH_MAP[username] : null;
+                        if (entry) {
+                            currentUser = { id: session.user.id, username, role: entry.role, name: entry.name };
+                            showApp();
+                            refreshCloudStatus();
+                            return;
+                        }
+                        cloudAuth = false;
                     }
                 } catch(e) { console.warn('Supabase session check:', e); }
             }
@@ -3810,13 +3818,21 @@ No cubre daños por mal uso, humedad, golpes o sobrecarga eléctrica.</textarea>
             if (btnLogin) { btnLogin.disabled = true; btnLogin.textContent = '⏳ Verificando...'; }
 
             // --- Supabase Auth ---
-            if (sb && USER_AUTH_MAP[username]) {
-                const { email } = USER_AUTH_MAP[username];
+            let authEmail = null;
+            if (sb) {
+                try { const r = await sb.rpc('dm_resolve_user', { p_username: username }); if (typeof r.data === 'string' && r.data) authEmail = r.data; } catch (e) {}
+            }
+            if (!authEmail && USER_AUTH_MAP[username]) authEmail = USER_AUTH_MAP[username].email;
+            if (sb && authEmail) {
+                const email = authEmail;
                 const { data, error } = await sb.auth.signInWithPassword({ email, password });
                 if (data?.session && !error) {
-                    const entry = USER_AUTH_MAP[username];
+                    const entry = USER_AUTH_MAP[username] || { role: 'operator', name: username };
                     currentUser = { id: data.user.id, username, role: entry.role, name: entry.name };
                     cloudAuth = true;
+                    const who = await cloudRpc('dm_whoami', {});
+                    if (who && who.username) { currentUser.role = who.role === 'admin' ? 'admin' : 'operator'; currentUser.name = who.name; currentUser.username = who.username; }
+                    else if (!USER_AUTH_MAP[username]) currentUser.role = 'operator';
                     localStorage.setItem('duran_motos_session', JSON.stringify(currentUser));
                     errEl.style.display = 'none';
                     if (btnLogin) { btnLogin.disabled = false; btnLogin.textContent = '🔓 Ingresar al Sistema'; }
@@ -3890,7 +3906,8 @@ No cubre daños por mal uso, humedad, golpes o sobrecarga eléctrica.</textarea>
         }
 
         // ===== GESTIÓN DE USUARIOS (modal) =====
-        function openUsersModal() {
+        async function openUsersModal() {
+            await loadCloudUsers();
             renderUsersList();
             clearUserForm();
             document.getElementById('users-modal').style.cssText = 'display:flex!important;';
@@ -3899,7 +3916,7 @@ No cubre daños por mal uso, humedad, golpes o sobrecarga eléctrica.</textarea>
             document.getElementById('users-modal').style.cssText = 'display:none!important;';
         }
 
-        function renderUsersList() {
+        function renderUsersListLocal() {
             const container = document.getElementById('users-list-container');
             container.innerHTML = usersData.map(u => `
                 <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-200">
@@ -3925,9 +3942,11 @@ No cubre daños por mal uso, humedad, golpes o sobrecarga eléctrica.</textarea>
             document.getElementById('user-form-password').value = '';
             document.getElementById('user-form-role').value = 'operator';
             document.getElementById('pass-hint').textContent = '';
+            const _un = document.getElementById('user-form-username'); if (_un) _un.disabled = false;
+            const _pw = document.getElementById('user-form-password'); if (_pw) _pw.disabled = false;
         }
 
-        function editUserForm(userId) {
+        function editUserFormLocal(userId) {
             const u = usersData.find(u => u.id === userId);
             if (!u) return;
             document.getElementById('edit-user-id').value = u.id;
@@ -3939,7 +3958,7 @@ No cubre daños por mal uso, humedad, golpes o sobrecarga eléctrica.</textarea>
             document.getElementById('user-form-name').focus();
         }
 
-        function saveUserForm() {
+        function saveUserFormLocal() {
             const editId = document.getElementById('edit-user-id').value;
             const name = document.getElementById('user-form-name').value.trim();
             const username = document.getElementById('user-form-username').value.trim().toLowerCase();
@@ -3980,11 +3999,119 @@ No cubre daños por mal uso, humedad, golpes o sobrecarga eléctrica.</textarea>
             clearUserForm();
         }
 
-        function deleteUser(userId) {
+        function deleteUserLocal(userId) {
             if (currentUser && currentUser.id === userId) { alert('No podés eliminar el usuario con el que estás logueado'); return; }
             if (!confirm('¿Eliminar este usuario?')) return;
             usersData = usersData.filter(u => u.id !== userId);
             saveUsersData();
+            renderUsersList();
+        }
+
+
+        // ─── V22: usuarios compartidos entre todos los dispositivos (Supabase Auth + tabla dm_users) ───
+        let cloudUsers = null;
+        const cloudUsersOn = () => !!(sb && cloudAuth);
+
+        async function loadCloudUsers() {
+            cloudUsers = null;
+            if (!cloudUsersOn()) return;
+            const r = await cloudRpc('dm_list_users', {});
+            if (Array.isArray(r)) cloudUsers = r;
+        }
+
+        function renderUsersList() {
+            if (!cloudUsersOn() || !cloudUsers) {
+                renderUsersListLocal();
+                if (cloudUsersOn()) document.getElementById('users-list-container').insertAdjacentHTML('afterbegin',
+                    '<div class="p-3 rounded-xl bg-yellow-50 border border-yellow-200 text-xs text-yellow-800">⚠️ No se pudo leer la lista de usuarios de la nube. Falta aplicar la actualización V22 en Supabase.</div>');
+                return;
+            }
+            document.getElementById('users-list-container').innerHTML = cloudUsers.map(u => {
+                const me = currentUser && currentUser.username === u.username;
+                return `
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-200">
+                    <div>
+                        <span class="font-bold text-gray-800">${escH(u.name)}</span>
+                        <span class="ml-2 text-xs text-gray-500">@${escH(u.username)}</span>
+                        <span class="ml-2 px-2 py-0.5 rounded-full text-xs font-bold ${u.role === 'admin' ? 'bg-yellow-100 text-yellow-800' : 'bg-indigo-100 text-indigo-800'}">${u.role === 'admin' ? '👑 Admin' : '👤 Operador'}</span>
+                        ${me ? '<span class="ml-1 text-xs text-green-700 font-bold">(vos)</span>' : ''}
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="editUserForm('${escH(u.username)}')" class="bg-blue-500 text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-blue-600 transition-all">✏️</button>
+                        ${me ? '' : `<button onclick="deleteUser('${escH(u.username)}')" class="bg-red-500 text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-red-600 transition-all">🗑️</button>`}
+                    </div>
+                </div>`;
+            }).join('') + '<p class="text-xs text-gray-400">☁️ Estos usuarios se guardan en la nube y funcionan en cualquier dispositivo.</p>';
+        }
+
+        function editUserForm(key) {
+            if (!cloudUsersOn() || !cloudUsers) return editUserFormLocal(key);
+            const u = cloudUsers.find(x => x.username === key);
+            if (!u) return;
+            const me = currentUser && currentUser.username === u.username;
+            document.getElementById('edit-user-id').value = u.username;
+            document.getElementById('user-form-name').value = u.name;
+            document.getElementById('user-form-username').value = u.username;
+            document.getElementById('user-form-username').disabled = true;
+            document.getElementById('user-form-password').value = '';
+            document.getElementById('user-form-role').value = u.role === 'admin' ? 'admin' : 'operator';
+            document.getElementById('pass-hint').textContent = me ? '(dejar vacío = no cambiar)' : '(solo el propio usuario puede cambiar su clave)';
+            document.getElementById('user-form-password').disabled = !me;
+            document.getElementById('user-form-name').focus();
+        }
+
+        async function saveUserForm() {
+            if (!cloudUsersOn() || !cloudUsers) return saveUserFormLocal();
+            const editId = document.getElementById('edit-user-id').value;
+            const name = document.getElementById('user-form-name').value.trim();
+            const username = document.getElementById('user-form-username').value.trim().toLowerCase();
+            const password = document.getElementById('user-form-password').value;
+            const role = document.getElementById('user-form-role').value === 'admin' ? 'admin' : 'operador';
+            if (!name || !username) { alert('Completá el nombre y el usuario'); return; }
+            if (!/^[a-z0-9._-]{2,30}$/.test(username)) { alert('El usuario solo puede tener letras minúsculas, números, punto, guion y guion bajo (2 a 30 caracteres)'); return; }
+
+            if (editId) {
+                const r = await cloudRpc('dm_update_user', { p_username: editId, p_name: name, p_role: role });
+                if (!r.ok) { alert('No se pudo guardar: ' + (r.error || 'error')); return; }
+                if (password) {
+                    if (currentUser && currentUser.username === editId) {
+                        if (password.length < 6) { alert('La contraseña debe tener al menos 6 caracteres'); return; }
+                        const { error } = await sb.auth.updateUser({ password });
+                        if (error) { alert('No se pudo cambiar la contraseña: ' + error.message); return; }
+                    }
+                }
+                if (currentUser && currentUser.username === editId) { currentUser.name = name; updateUserUI(); }
+            } else {
+                if (password.length < 6) { alert('La contraseña debe tener al menos 6 caracteres'); return; }
+                const email = username + '.' + Math.random().toString(36).slice(2, 6) + '@duranmotos.ar';
+                const reg = await cloudRpc('dm_register_user', { p_username: username, p_name: name, p_role: role, p_email: email });
+                if (!reg.ok) { alert('No se pudo crear: ' + (reg.error || 'error')); return; }
+                let errMsg = null;
+                try {
+                    const tmp = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } });
+                    const { data, error } = await tmp.auth.signUp({ email, password });
+                    if (error) errMsg = error.message;
+                    else if (!data.session) errMsg = 'CONFIRM';
+                } catch (e) { errMsg = String(e); }
+                if (errMsg) {
+                    await cloudRpc('dm_delete_user', { p_username: username });
+                    if (errMsg === 'CONFIRM') alert('Supabase pide confirmar el email de cada cuenta nueva, y estas cuentas no tienen email real.\n\nSolución: en Supabase entrá a Authentication → Sign In / Providers → Email y desactivá "Confirm email". Después volvé a crear el usuario.');
+                    else alert('No se pudo crear la cuenta de acceso: ' + errMsg);
+                    return;
+                }
+            }
+            await loadCloudUsers();
+            renderUsersList();
+            clearUserForm();
+            const pw = document.getElementById('user-form-password'); if (pw) pw.disabled = false;
+        }
+
+        async function deleteUser(key) {
+            if (!cloudUsersOn() || !cloudUsers) return deleteUserLocal(key);
+            if (!confirm('¿Eliminar este usuario? Ya no podrá ingresar desde ningún dispositivo.')) return;
+            const r = await cloudRpc('dm_delete_user', { p_username: key });
+            if (!r.ok) { alert('No se pudo eliminar: ' + (r.error || 'error')); return; }
+            await loadCloudUsers();
             renderUsersList();
         }
 
@@ -4730,7 +4857,8 @@ No cubre daños por mal uso, humedad, golpes o sobrecarga eléctrica.</textarea>
             venta_rechazada: ['⛔ Venta rechazada', 'bg-red-100 text-red-800'], denegado: ['⛔ Acceso denegado', 'bg-red-100 text-red-800'],
             login: ['🔓 Ingreso', 'bg-gray-100 text-gray-700'], logout: ['🔒 Salida', 'bg-gray-100 text-gray-700'],
             control_estricto: ['🛡️ Control estricto', 'bg-gray-100 text-gray-700'], backup: ['💾 Backup', 'bg-gray-100 text-gray-700'],
-            restauracion: ['📥 Restauración', 'bg-red-100 text-red-800'], importacion: ['📊 Importación', 'bg-gray-100 text-gray-700']
+            restauracion: ['📥 Restauración', 'bg-red-100 text-red-800'], importacion: ['📊 Importación', 'bg-gray-100 text-gray-700'],
+            usuario_alta: ['👤 Usuario creado', 'bg-green-100 text-green-800'], usuario_edicion: ['👤 Usuario modificado', 'bg-yellow-100 text-yellow-800'], usuario_baja: ['👤 Usuario eliminado', 'bg-red-100 text-red-800']
         };
 
         async function renderLog() {
