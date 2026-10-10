@@ -1825,7 +1825,7 @@
                         <label class="block text-sm font-bold text-gray-600 mb-1">Rol</label>
                         <select id="user-form-role" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-400">
                             <option value="admin">👑 Administrador – Acceso total</option>
-                            <option value="operator">👤 Operador – Lectura de stock</option>
+                            <option value="operator">👤 Usuario – Suma stock y usa el taller</option>
                         </select>
                     </div>
                 </div>
@@ -2203,7 +2203,7 @@
                     <h3 class="font-bold mb-2 text-xl text-gray-800">➕ Sumar stock</h3>
                     <p class="text-sm text-gray-600 mb-3">Suma unidades a un producto existente. Cada ingreso queda registrado en el Log.</p>
                     <div class="operator-only bg-blue-50 border border-blue-200 text-blue-800 text-xs p-3 rounded-lg mb-3">
-                        🧑‍🔧 <strong>Modo Operador:</strong> solo podés <strong>sumar</strong> stock. Correcciones, bajas y cambios de precio los hace el Administrador.
+                        🧑‍🔧 <strong>Modo Usuario:</strong> solo podés <strong>sumar</strong> stock. Correcciones, bajas y cambios de precio los hace el Administrador.
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                         <input type="text" id="stockin-product" list="products-datalist" onfocus="refreshDatalist()" placeholder="Código o nombre (ej: ACE001)" class="px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-400" />
@@ -2836,7 +2836,7 @@
 
                 <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-4 mb-6 flex flex-wrap items-center justify-between gap-3">
                     <div>
-                        <p class="font-bold text-indigo-900">Control estricto del Operador</p>
+                        <p class="font-bold text-indigo-900">Control estricto del Usuario</p>
                         <p class="text-sm text-indigo-800" id="enforce-status">Consultando…</p>
                     </div>
                     <button id="enforce-toggle" onclick="toggleEnforcement()" class="bg-green-600 text-white px-5 py-2 rounded-xl font-bold">Activar control estricto</button>
@@ -3712,12 +3712,12 @@ No cubre daños por mal uso, humedad, golpes o sobrecarga eléctrica.</textarea>
         // Mapeo username → email de Supabase Auth (actualizar si se cambian los usuarios)
         const USER_AUTH_MAP = {
             'admin':    { email: 'admin@duranmotos.ar',    role: 'admin',    name: 'Administrador' },
-            'operador': { email: 'operador@duranmotos.ar', role: 'operator', name: 'Operador' }
+            'operador': { email: 'operador@duranmotos.ar', role: 'operator', name: 'Usuario' }
         };
 
         let usersData = [
             { id: 1, username: 'admin', password: 'admin123', role: 'admin', name: 'Administrador' },
-            { id: 2, username: 'operador', password: '123456', role: 'operator', name: 'Operador' }
+            { id: 2, username: 'operador', password: '123456', role: 'operator', name: 'Usuario' }
         ];
         let currentUser = null; // { id, username, role, name }
 
@@ -3744,7 +3744,7 @@ No cubre daños por mal uso, humedad, golpes o sobrecarga eléctrica.</textarea>
                         cloudAuth = true;
                         const who = await cloudRpc('dm_whoami', {});
                         if (who && who.username) {
-                            currentUser = { id: session.user.id, username: who.username, role: who.role === 'admin' ? 'admin' : 'operator', name: who.name };
+                            currentUser = { id: session.user.id, username: who.username, role: who.role === 'admin' ? 'admin' : 'operator', name: (who.name === 'Operador' ? 'Usuario' : who.name) };
                             showApp();
                             refreshCloudStatus();
                             return;
@@ -3831,7 +3831,7 @@ No cubre daños por mal uso, humedad, golpes o sobrecarga eléctrica.</textarea>
                     currentUser = { id: data.user.id, username, role: entry.role, name: entry.name };
                     cloudAuth = true;
                     const who = await cloudRpc('dm_whoami', {});
-                    if (who && who.username) { currentUser.role = who.role === 'admin' ? 'admin' : 'operator'; currentUser.name = who.name; currentUser.username = who.username; }
+                    if (who && who.username) { currentUser.role = who.role === 'admin' ? 'admin' : 'operator'; currentUser.name = (who.name === 'Operador' ? 'Usuario' : who.name); currentUser.username = who.username; }
                     else if (!USER_AUTH_MAP[username]) currentUser.role = 'operator';
                     localStorage.setItem('duran_motos_session', JSON.stringify(currentUser));
                     errEl.style.display = 'none';
@@ -3924,7 +3924,7 @@ No cubre daños por mal uso, humedad, golpes o sobrecarga eléctrica.</textarea>
                         <span class="font-bold text-gray-800">${u.name}</span>
                         <span class="ml-2 text-xs text-gray-500">@${u.username}</span>
                         <span class="ml-2 px-2 py-0.5 rounded-full text-xs font-bold ${u.role === 'admin' ? 'bg-yellow-100 text-yellow-800' : 'bg-indigo-100 text-indigo-800'}">
-                            ${u.role === 'admin' ? '👑 Admin' : '👤 Operador'}
+                            ${u.role === 'admin' ? '👑 Admin' : '👤 Usuario'}
                         </span>
                     </div>
                     <div class="flex gap-2">
@@ -4031,9 +4031,9 @@ No cubre daños por mal uso, humedad, golpes o sobrecarga eléctrica.</textarea>
                 return `
                 <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-200">
                     <div>
-                        <span class="font-bold text-gray-800">${escH(u.name)}</span>
+                        <span class="font-bold text-gray-800">${escH(u.name === 'Operador' ? 'Usuario' : u.name)}</span>
                         <span class="ml-2 text-xs text-gray-500">@${escH(u.username)}</span>
-                        <span class="ml-2 px-2 py-0.5 rounded-full text-xs font-bold ${u.role === 'admin' ? 'bg-yellow-100 text-yellow-800' : 'bg-indigo-100 text-indigo-800'}">${u.role === 'admin' ? '👑 Admin' : '👤 Operador'}</span>
+                        <span class="ml-2 px-2 py-0.5 rounded-full text-xs font-bold ${u.role === 'admin' ? 'bg-yellow-100 text-yellow-800' : 'bg-indigo-100 text-indigo-800'}">${u.role === 'admin' ? '👑 Admin' : '👤 Usuario'}</span>
                         ${me ? '<span class="ml-1 text-xs text-green-700 font-bold">(vos)</span>' : ''}
                     </div>
                     <div class="flex gap-2">
@@ -4951,11 +4951,11 @@ No cubre daños por mal uso, humedad, golpes o sobrecarga eléctrica.</textarea>
             const btn = document.getElementById('enforce-toggle');
             if (!st || !btn) return;
             if (cloudInfo.enforced) {
-                st.innerHTML = '🛡️ <strong class="text-green-700">ACTIVADO</strong>: el Operador solo puede sumar stock; la base rechaza cualquier otro cambio.';
+                st.innerHTML = '🛡️ <strong class="text-green-700">ACTIVADO</strong>: el Usuario solo puede sumar stock; la base rechaza cualquier otro cambio.';
                 btn.textContent = 'Desactivar control estricto';
                 btn.className = 'bg-gray-500 text-white px-5 py-2 rounded-xl font-bold hover:bg-gray-600';
             } else {
-                st.innerHTML = '⚠️ <strong class="text-orange-700">DESACTIVADO</strong>: por ahora las restricciones del Operador solo están en la pantalla. Activalo cuando todos los equipos usen esta versión.';
+                st.innerHTML = '⚠️ <strong class="text-orange-700">DESACTIVADO</strong>: por ahora las restricciones del Usuario solo están en la pantalla. Activalo cuando todos los equipos usen esta versión.';
                 btn.textContent = 'Activar control estricto';
                 btn.className = 'bg-green-600 text-white px-5 py-2 rounded-xl font-bold hover:bg-green-700';
             }
@@ -4965,8 +4965,8 @@ No cubre daños por mal uso, humedad, golpes o sobrecarga eléctrica.</textarea>
             if (!isAdmin()) return;
             const turnOn = !cloudInfo.enforced;
             if (!confirm(turnOn
-                ? 'Al activar el control estricto, los equipos que sigan usando una versión anterior no podrán descontar stock por ventas del Operador. ¿Todos los equipos ya usan esta versión?'
-                : '¿Desactivar el control estricto del Operador?')) return;
+                ? 'Al activar el control estricto, los equipos que sigan usando una versión anterior no podrán descontar stock por ventas del Usuario. ¿Todos los equipos ya usan esta versión?'
+                : '¿Desactivar el control estricto del Usuario?')) return;
             const r = await cloudRpc('dm_set_enforcement', { p_on: turnOn });
             if (!r.ok) { alert('No se pudo cambiar: ' + (r.error || '')); return; }
             await refreshCloudStatus();
