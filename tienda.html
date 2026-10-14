@@ -15,7 +15,7 @@
   --r:14px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;scroll-padding-top:76px}
+html{scroll-behavior:smooth;scroll-padding-top:110px}
 body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--tx);line-height:1.5}
 a{color:inherit;text-decoration:none}
 img{max-width:100%;display:block}
@@ -142,6 +142,40 @@ footer a:hover{color:#fff}
 .mapbox iframe{display:block;width:100%;height:380px;border:0;background:#e9edf3}
 .mapcta{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:14px 18px}
 @media(max-width:640px){.mapbox iframe{height:300px}}
+
+/* V28: barra superior, categorías, carrito */
+.topbar{background:#ff5a1f;color:#fff;font-size:.78rem;font-weight:600}
+.topbar .wrap{display:flex;gap:6px 26px;justify-content:center;align-items:center;min-height:32px;flex-wrap:wrap;padding-top:4px;padding-bottom:4px}
+@media(max-width:640px){.topbar .tb{display:none}.topbar .tb.on{display:block}}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 12px;text-align:center;cursor:pointer;font-family:inherit;transition:.2s}
+.tile:hover{border-color:var(--acc);transform:translateY(-3px);box-shadow:0 12px 26px rgba(16,24,40,.1)}
+.tile i{font-style:normal;font-size:2rem;display:block;margin-bottom:6px}
+.tile b{font-family:'Bebas Neue';font-weight:400;font-size:1.25rem;letter-spacing:.03em;color:var(--tx)}
+.old{color:var(--mut);text-decoration:line-through;font-family:Inter;font-size:.85rem;margin-right:6px}
+.badge.off{background:#d11a2a}
+.addbtn{margin:8px 0 0;width:100%;justify-content:center;padding:9px 14px;font-size:.85rem}
+.sect-sub{display:none}
+.mchips{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px;align-items:center}
+.mchips span{color:var(--mut);font-size:.85rem;margin-right:4px}
+.cartbtn{position:fixed;right:16px;bottom:72px;z-index:61;background:#12151b;color:#fff;border:0;border-radius:99px;padding:12px 16px;font-weight:700;cursor:pointer;box-shadow:0 6px 24px rgba(0,0,0,.4);display:none;font-family:inherit}
+.cartbtn.on{display:block}
+.cartbtn em{font-style:normal;background:var(--acc);border-radius:99px;padding:1px 8px;margin-left:6px}
+.drawer{position:fixed;inset:0;z-index:110;display:none}
+.drawer.on{display:block}
+.drawer .bg{position:absolute;inset:0;background:rgba(0,0,0,.6)}
+.drawer .pn{position:absolute;right:0;top:0;bottom:0;width:min(440px,100%);background:#fff;display:flex;flex-direction:column}
+.pn header{position:static;background:#12151b;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;border:0}
+.pn h2{font-size:1.7rem}
+.pn .body{padding:14px 18px;overflow:auto;flex:1;display:flex;flex-direction:column;gap:10px}
+.crow{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:8px}
+.crow img,.crow .nophoto{width:52px;height:52px;border-radius:8px;object-fit:cover;background:#eef1f6;display:grid;place-items:center;flex:none}
+.crow .t{flex:1;font-size:.88rem;font-weight:600;line-height:1.25}
+.qty{display:flex;align-items:center;gap:6px}
+.qty button{width:28px;height:28px;border-radius:50%;border:1px solid var(--line);background:#fff;font-size:1rem;cursor:pointer}
+.pn input,.pn textarea{width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;font:inherit}
+.pn .foot{padding:14px 18px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:8px}
+.total{display:flex;justify-content:space-between;font-weight:700;font-size:1.1rem}
 /* modal */
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:100;display:none;align-items:center;justify-content:center;padding:14px}
 .modal.on{display:flex}
@@ -166,10 +200,11 @@ footer a:hover{color:#fff}
 <body>
 
 <header>
+  <div class="topbar"><div class="wrap"><span class="tb on">🚚 Envíos a todo el país</span><span class="tb">💳 Consultá cuotas y formas de pago</span><span class="tb">🏅 Concesionario oficial RVM</span><span class="tb">💬 Atención por WhatsApp</span></div></div>
   <div class="wrap bar">
     <a href="#inicio" class="brand"><span>DURAN<b>MOTOS</b></span><small>CONCESIONARIA OFICIAL RVM</small></a>
     <nav>
-      <a href="#motos">Motos</a><a href="#marcas">Marcas</a><a href="#repuestos">Repuestos</a><a href="#manuales">Manuales</a><a href="#contacto">Contacto</a>
+      <a href="#motos">Motos</a><a href="#categorias">Categorías</a><a href="#marcas">Marcas</a><a href="#repuestos">Repuestos</a><a href="#manuales">Manuales</a><a href="#contacto">Contacto</a>
     </nav>
     <a class="btn btn-wa" id="waTop" target="_blank" rel="noopener">💬 WhatsApp</a>
   </div>
@@ -212,6 +247,27 @@ footer a:hover{color:#fff}
   </div></div>
 </div>
 
+<section id="categorias">
+  <div class="wrap">
+    <div class="head"><div><h2>Comprá por <em>categoría</em></h2><p>Elegí el rubro y te mostramos lo que tenemos.</p></div></div>
+    <div class="tiles" id="tiles"></div>
+  </div>
+</section>
+
+<section id="vendidos" class="alt" style="display:none">
+  <div class="wrap">
+    <div class="head"><div><h2>Los más <em>vendidos</em></h2><p>Lo que más se llevan nuestros clientes.</p></div></div>
+    <div class="grid" id="vendGrid"></div>
+  </div>
+</section>
+
+<section id="imperdibles" style="display:none">
+  <div class="wrap">
+    <div class="head"><div><h2>Impe<em>rdibles</em></h2><p>Ofertas por tiempo limitado o hasta agotar stock.</p></div></div>
+    <div class="grid" id="impGrid"></div>
+  </div>
+</section>
+
 <section id="marcas" class="alt">
   <div class="wrap">
     <div class="head"><div><h2>Nuestras <em>marcas</em></h2><p>Concesionaria oficial y venta de motos de primeras marcas.</p></div></div>
@@ -221,6 +277,7 @@ footer a:hover{color:#fff}
       <div class="marca"><div class="logo">Otras marcas</div><p>También tenemos motos de otras marcas y repuestos para todos los modelos. Consultanos lo que buscás.</p>
         <a class="btn btn-line" href="#motos" onclick="setMarca('')">Ver todas</a></div>
     </div>
+    <div class="mchips" id="marcasChips" style="display:none"></div>
   </div>
 </section>
 
@@ -239,7 +296,7 @@ footer a:hover{color:#fff}
 <section id="repuestos" class="alt">
   <div class="wrap">
     <div class="head"><div><h2>Repuestos y <em>accesorios</em></h2><p>¿No ves el que buscás? Consultanos, tenemos muchos más.</p></div></div>
-    <div class="tools"><input id="rq" type="search" placeholder="Buscar repuesto..." aria-label="Buscar repuesto"></div>
+    <div class="tools"><input id="rq" type="search" placeholder="Buscar repuesto..." aria-label="Buscar repuesto"><input id="rmoto" type="search" placeholder="🏍️ Buscá por tu moto (ej: Honda Wave 110)" aria-label="Buscar por tu moto"></div>
     <div class="chips" id="rchips"></div>
     <div class="grid" id="repGrid"></div>
   </div>
@@ -298,6 +355,18 @@ footer a:hover{color:#fff}
 
 <a class="wa-float" id="waFloat" target="_blank" rel="noopener" aria-label="WhatsApp">💬 Consultar</a>
 
+<button class="cartbtn" id="cartBtn" onclick="openCart()">🛒 Mi pedido<em id="cartN">0</em></button>
+<div class="drawer" id="drawer"><div class="bg" onclick="closeCart()"></div>
+  <div class="pn"><header><h2>Mi pedido</h2><button class="x" style="position:static" onclick="closeCart()" aria-label="Cerrar">×</button></header>
+    <div class="body" id="cartBody"></div>
+    <div class="foot">
+      <input id="cartCp" placeholder="📍 Código postal o localidad (para el envío)" inputmode="text">
+      <textarea id="cartNote" rows="2" placeholder="Notas (modelo de tu moto, color, etc.)"></textarea>
+      <div class="total"><span>Total estimado</span><span id="cartTotal">$ 0</span></div>
+      <span class="meta">No se cobra nada en la web: te confirmamos disponibilidad, envío y forma de pago por WhatsApp. ¿No sabés tu código postal? <a style="color:var(--acc2)" target="_blank" rel="noopener" href="https://www.correoargentino.com.ar/formularios/cpa">Buscalo acá</a>.</span>
+      <button class="btn btn-wa" style="justify-content:center" onclick="sendCart()">💬 Enviar pedido por WhatsApp</button>
+    </div></div></div>
+
 <div class="modal" id="modal" role="dialog" aria-modal="true">
   <button class="x" onclick="closeM()" aria-label="Cerrar">×</button>
   <div class="mbox" id="mbox"></div>
@@ -326,19 +395,21 @@ async function load() {
       rest('dm_manuales?select=*&publicado=eq.true&order=marca,titulo&limit=1000')
     ]);
   } catch (e) { ITEMS = []; MANUALES = []; }
-  fillMarcas(); renderMotos(); renderChips(); renderRep(); renderMan(); heroDestacados(); stats();
+  fillMarcas(); renderMotos(); renderChips(); renderRep(); renderMan(); heroDestacados(); stats(); renderExtras(); cartUi();
 }
 
 function card(it) {
   const f = (it.fotos || [])[0];
   const meta = [it.anio, it.km != null ? Number(it.km).toLocaleString('es-AR') + ' km' : (it.tipo === 'moto' ? '0 km' : ''), it.cilindrada].filter(Boolean).join(' · ');
   return `<article class="card" onclick="openM(${it.id})" tabindex="0" onkeydown="if(event.key==='Enter')openM(${it.id})">
-    <div class="ph ${f ? '' : 'noimg'}">${it.tipo === 'moto' && it.marca ? `<span class="brandtag">${esc(it.marca)}</span>` : ''}${f ? `<img loading="lazy" src="${esc(f)}" alt="${esc(it.titulo)}">` : '<span style="font-size:3rem">' + (it.tipo === 'moto' ? '🏍️' : '🔧') + '</span>'}${it.destacado ? '<span class="badge">Destacado</span>' : ''}</div>
+    <div class="ph ${f ? '' : 'noimg'}">${it.tipo === 'moto' && it.marca ? `<span class="brandtag">${esc(it.marca)}</span>` : ''}${f ? `<img loading="lazy" src="${esc(f)}" alt="${esc(it.titulo)}">` : '<span style="font-size:3rem">' + (it.tipo === 'moto' ? '🏍️' : '🔧') + '</span>'}${it.oferta && it.precio_anterior > it.precio ? '<span class="badge off">-' + Math.round((1 - it.precio / it.precio_anterior) * 100) + '%</span>' : (it.destacado ? '<span class="badge">Destacado</span>' : '')}</div>
     <div class="info"><h3>${esc(it.titulo)}</h3>
       <div class="meta">${esc(it.tipo === 'moto' ? [it.marca, it.modelo].filter(Boolean).join(' ') : (it.categoria || ''))}</div>
       ${meta ? `<div class="meta">${esc(meta)}</div>` : ''}
-      <div class="price">${money(it.precio, it.moneda)}</div></div></article>`;
+      <div class="price">${priceHtml(it)}</div>
+      ${it.tipo !== 'moto' ? `<button class="btn btn-ghost addbtn" onclick="event.stopPropagation();addCart(${it.id})">🛒 Agregar a mi pedido</button>` : ''}</div></article>`;
 }
+function priceHtml(it) { return (it.precio_anterior > it.precio ? `<span class="old">${money(it.precio_anterior, it.moneda)}</span>` : '') + money(it.precio, it.moneda); }
 
 function fillMarcas() {
   const sel = document.getElementById('mmarca');
@@ -357,10 +428,16 @@ function renderChips() {
   document.getElementById('rchips').innerHTML = cats.length ? ['', ...cats].map(c => `<button class="chip ${c === repCat ? 'on' : ''}" data-c="${esc(c)}">${c ? esc(c) : 'Todos'}</button>`).join('') : '';
 }
 function renderRep() {
-  const q = norm(document.getElementById('rq').value);
-  const l = ITEMS.filter(i => i.tipo !== 'moto' && (!repCat || i.categoria === repCat) && (!q || norm(i.titulo + ' ' + i.categoria + ' ' + i.descripcion).includes(q)));
+  const rqEl = document.getElementById('rq'), raw = rqEl.value;
+  const terms = (rqEl.dataset.alt && rqEl.dataset.alt.split('|')[0] === raw ? rqEl.dataset.alt.split('|') : [raw]).map(norm).filter(Boolean);
+  const mt = norm(document.getElementById('rmoto').value).split(/\s+/).filter(Boolean);
+  const l = ITEMS.filter(i => { if (i.tipo === 'moto' || (repCat && i.categoria !== repCat)) return false;
+    const txt = norm(i.titulo + ' ' + i.categoria + ' ' + i.descripcion);
+    if (terms.length && !terms.some(t => txt.includes(t))) return false;
+    if (mt.length) { const ct = norm(i.compatibles + ' ' + i.titulo + ' ' + i.descripcion); if (!mt.every(t => ct.includes(t))) return false; }
+    return true; });
   document.getElementById('repGrid').innerHTML = l.map(card).join('') ||
-    `<div class="empty">No encontramos ese repuesto en la web, pero seguro lo tenemos o lo conseguimos.<br><a class="btn btn-wa" style="margin-top:12px" target="_blank" rel="noopener" href="${wa('Hola! Estoy buscando un repuesto: ' + document.getElementById('rq').value)}">Consultar por WhatsApp</a></div>`;
+    `<div class="empty">No encontramos ese repuesto en la web, pero seguro lo tenemos o lo conseguimos.<br><a class="btn btn-wa" style="margin-top:12px" target="_blank" rel="noopener" href="${wa('Hola! Estoy buscando un repuesto: ' + raw + ' ' + document.getElementById('rmoto').value)}">Consultar por WhatsApp</a></div>`;
 }
 function renderMan() {
   const q = norm(document.getElementById('manq').value);
@@ -408,6 +485,64 @@ function stats() {
   ['stM','stP','stD'].forEach(id => { const e = document.getElementById(id); if (e.textContent === '+') e.textContent = '—'; });
 }
 
+// ---- V28: categorías, más vendidos, imperdibles, marcas, carrito
+const TILES = [['🛞','Cubiertas y cámaras','cubierta|camara|cámara|llanta'],['⚙️','Transmisión','transmision|cadena|corona|piñon|kit'],['🛑','Frenos y embrague','freno|embrague|pastilla'],['🧴','Aceites y lubricantes','aceite|lubricante|liquido'],['🔍','Filtros','filtro'],['🔋','Eléctricos y baterías','electr|bateria|lampara|bujia'],['⛑️','Cascos e indumentaria','casco|guante|bota|campera|indumentaria'],['🧰','Accesorios','accesorio|baul|portaequipaje|espejo']];
+function renderTiles() {
+  document.getElementById('tiles').innerHTML = TILES.map((t, i) => `<button class="tile" onclick="pickTile(${i})"><i>${t[0]}</i><b>${t[1]}</b></button>`).join('');
+}
+function pickTile(i) {
+  const q = TILES[i][2], rq = document.getElementById('rq');
+  repCat = ''; document.getElementById('rmoto').value = '';
+  rq.value = q.split('|')[0]; rq.dataset.alt = q;
+  renderChips(); renderRep(); document.getElementById('repuestos').scrollIntoView({ behavior: 'smooth' });
+}
+function renderExtras() {
+  const v = ITEMS.filter(i => i.mas_vendido), o = ITEMS.filter(i => i.oferta);
+  document.getElementById('vendidos').style.display = v.length ? '' : 'none'; document.getElementById('vendGrid').innerHTML = v.map(card).join('');
+  document.getElementById('imperdibles').style.display = o.length ? '' : 'none'; document.getElementById('impGrid').innerHTML = o.map(card).join('');
+  const ms = [...new Set(ITEMS.map(i => i.marca).filter(Boolean))].sort(), box = document.getElementById('marcasChips');
+  box.style.display = ms.length ? '' : 'none';
+  box.innerHTML = ms.length ? '<span>Marcas que trabajamos:</span>' + ms.map(m => `<button class="chip" onclick="pickMarca('${esc(m).replace(/'/g, '&#39;')}')">${esc(m)}</button>`).join('') : '';
+}
+function pickMarca(m) {
+  if (ITEMS.some(i => i.tipo === 'moto' && i.marca === m)) { setMarca(m); document.getElementById('motos').scrollIntoView({ behavior: 'smooth' }); return; }
+  const rq = document.getElementById('rq'); rq.value = m; rq.dataset.alt = ''; repCat = ''; renderChips(); renderRep(); document.getElementById('repuestos').scrollIntoView({ behavior: 'smooth' });
+}
+// barra superior móvil
+(function () { const t = [...document.querySelectorAll('.topbar .tb')]; let k = 0; setInterval(() => { t[k].classList.remove('on'); k = (k + 1) % t.length; t[k].classList.add('on'); }, 3500); })();
+
+// carrito (se guarda en el navegador del cliente)
+let CART = {};
+try { CART = JSON.parse(localStorage.getItem('dm_cart') || '{}') || {}; } catch (e) { CART = {}; }
+function saveCart() { try { localStorage.setItem('dm_cart', JSON.stringify(CART)); } catch (e) {} cartUi(); }
+function cartItems() { return Object.entries(CART).map(([id, q]) => ({ it: ITEMS.find(x => x.id == id), q })).filter(x => x.it); }
+function addCart(id) { CART[id] = (CART[id] || 0) + 1; saveCart(); const b = document.getElementById('cartBtn'); b.animate([{ transform: 'scale(1.15)' }, { transform: 'scale(1)' }], 250); }
+function cartQty(id, d) { CART[id] = (CART[id] || 0) + d; if (CART[id] <= 0) delete CART[id]; saveCart(); renderCart(); }
+function cartUi() { const n = cartItems().reduce((a, x) => a + x.q, 0); document.getElementById('cartN').textContent = n; document.getElementById('cartBtn').classList.toggle('on', n > 0); }
+function cartTotals() {
+  let ars = 0, usd = 0, sin = 0;
+  cartItems().forEach(({ it, q }) => { if (it.precio == null) sin++; else if (it.moneda === 'USD') usd += it.precio * q; else ars += it.precio * q; });
+  return { ars, usd, sin };
+}
+function renderCart() {
+  const l = cartItems(), t = cartTotals();
+  document.getElementById('cartBody').innerHTML = l.map(({ it, q }) => `<div class="crow">${(it.fotos || [])[0] ? `<img src="${esc(it.fotos[0])}" alt="">` : '<div class="nophoto">🔧</div>'}
+    <div class="t">${esc(it.titulo)}<div class="meta">${money(it.precio, it.moneda)}</div></div>
+    <div class="qty"><button onclick="cartQty(${it.id},-1)" aria-label="Menos">−</button><b>${q}</b><button onclick="cartQty(${it.id},1)" aria-label="Más">+</button></div></div>`).join('') || '<p style="color:var(--mut)">Todavía no agregaste nada. Tocá "Agregar a mi pedido" en los repuestos.</p>';
+  document.getElementById('cartTotal').textContent = [t.ars ? '$ ' + t.ars.toLocaleString('es-AR') : '', t.usd ? 'US$ ' + t.usd.toLocaleString('es-AR') : '', t.sin ? '+ a consultar' : ''].filter(Boolean).join(' · ') || '$ 0';
+}
+function openCart() { renderCart(); document.getElementById('drawer').classList.add('on'); document.body.style.overflow = 'hidden'; }
+function closeCart() { document.getElementById('drawer').classList.remove('on'); document.body.style.overflow = ''; }
+function sendCart() {
+  const l = cartItems(); if (!l.length) { alert('Agregá al menos un producto.'); return; }
+  const t = cartTotals(), cp = document.getElementById('cartCp').value.trim(), nota = document.getElementById('cartNote').value.trim();
+  const msg = 'Hola! Quiero hacer este pedido desde la web:\n' + l.map(({ it, q }) => `• ${q} x ${it.titulo}${it.precio != null ? ' (' + money(it.precio, it.moneda) + ' c/u)' : ' (precio a consultar)'}`).join('\n') +
+    '\nTotal estimado: ' + document.getElementById('cartTotal').textContent + (cp ? '\nEnvío a: ' + cp : '\nRetiro por el local') + (nota ? '\nNotas: ' + nota : '') + '\n¿Me confirman disponibilidad, envío y forma de pago?';
+  window.open(wa(msg), '_blank', 'noopener');
+}
+document.getElementById('rmoto').addEventListener('input', renderRep);
+document.getElementById('rq').addEventListener('input', () => {});
+
 let galIdx = 0, galList = [];
 function openM(id) {
   const it = ITEMS.find(x => x.id === id); if (!it) return;
@@ -416,9 +551,11 @@ function openM(id) {
   document.getElementById('mbox').innerHTML = `
     <div class="gal"><div class="big" id="gbig">${galList[0] ? `<img src="${esc(galList[0])}" alt="${esc(it.titulo)}">` : '<span style="font-size:4rem">' + (it.tipo === 'moto' ? '🏍️' : '🔧') + '</span>'}</div>
       ${galList.length > 1 ? `<div class="thumbs">${galList.map((u, i) => `<img src="${esc(u)}" class="${i ? '' : 'on'}" onclick="gal(${i})" alt="Foto ${i + 1}">`).join('')}</div>` : ''}</div>
-    <div class="det"><h2>${esc(it.titulo)}</h2><div class="price" style="font-size:2rem">${money(it.precio, it.moneda)}</div>
+    <div class="det"><h2>${esc(it.titulo)}</h2><div class="price" style="font-size:2rem">${priceHtml(it)}</div>
       ${rows.length ? `<dl>${rows.map(r => `<dt>${r[0]}</dt><dd>${esc(r[1])}</dd>`).join('')}</dl>` : ''}
       ${it.descripcion ? `<p>${esc(it.descripcion)}</p>` : ''}
+      ${it.compatibles ? `<p><b>Compatible con:</b> ${esc(it.compatibles)}</p>` : ''}
+      ${it.tipo !== 'moto' ? `<button class="btn btn-acc" onclick="addCart(${it.id});closeM()">🛒 Agregar a mi pedido</button>` : ''}
       <a class="btn btn-wa" target="_blank" rel="noopener" href="${wa('Hola! Me interesa: ' + it.titulo + (it.precio != null ? ' (' + money(it.precio, it.moneda) + ')' : '') + '. ¿Está disponible?')}">💬 Consultar por WhatsApp</a></div>`;
   document.getElementById('modal').classList.add('on'); document.body.style.overflow = 'hidden';
 }
@@ -428,7 +565,7 @@ function gal(i) {
 }
 function closeM() { document.getElementById('modal').classList.remove('on'); document.body.style.overflow = ''; }
 document.getElementById('modal').addEventListener('click', e => { if (e.target.id === 'modal') closeM(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeM(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeM(); closeCart(); } });
 
 ['mq', 'mmarca', 'mord'].forEach(i => document.getElementById(i).addEventListener('input', renderMotos));
 document.getElementById('rq').addEventListener('input', renderRep);
@@ -437,6 +574,7 @@ document.getElementById('rchips').addEventListener('click', e => { const b = e.t
 const hi = wa('Hola! Vi la página de DURANMOTOS y quiero hacer una consulta.');
 ['waTop', 'waLink', 'waFloat', 'waHero'].forEach(i => document.getElementById(i).href = hi);
 document.getElementById('waRep').href = wa('Hola! Estoy buscando un repuesto para mi moto.');
+renderTiles();
 buildDots();
 load();
 </script>

@@ -2862,12 +2862,16 @@
                         <input id="tw-cc" placeholder="Cilindrada (ej: 150cc)" style="padding:8px;border:1px solid #d1d5db;border-radius:8px;">
                         <input id="tw-cat" placeholder="Categoría (repuestos)" style="padding:8px;border:1px solid #d1d5db;border-radius:8px;">
                         <input id="tw-precio" type="number" placeholder="Precio (vacío = consultar)" style="padding:8px;border:1px solid #d1d5db;border-radius:8px;">
+                        <input id="tw-prev" type="number" placeholder="Precio anterior (tachado, p/ oferta)" style="padding:8px;border:1px solid #d1d5db;border-radius:8px;">
                         <select id="tw-moneda" style="padding:8px;border:1px solid #d1d5db;border-radius:8px;"><option>ARS</option><option>USD</option></select>
                     </div>
                     <textarea id="tw-desc" rows="2" placeholder="Descripción" style="width:100%;margin-top:8px;padding:8px;border:1px solid #d1d5db;border-radius:8px;"></textarea>
+                    <input id="tw-compat" placeholder="Compatible con (ej: Honda Wave 110, Gilera Smash 110) — para la búsqueda 'por tu moto'" style="width:100%;margin-top:6px;padding:8px;border:1px solid #d1d5db;border-radius:8px;">
                     <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px;">
                         <label style="font-size:.85rem;">📷 Fotos: <input id="tw-fotos" type="file" accept="image/*" multiple></label>
                         <label style="font-size:.85rem;"><input id="tw-dest" type="checkbox"> Destacado</label>
+                        <label style="font-size:.85rem;"><input id="tw-mv" type="checkbox"> Más vendido</label>
+                        <label style="font-size:.85rem;"><input id="tw-of" type="checkbox"> Imperdible (oferta)</label>
                         <button onclick="twSave()" id="tw-save" style="padding:8px 16px;border-radius:10px;background:#2563eb;color:#fff;font-weight:700;">Guardar</button>
                         <button onclick="twReset()" style="padding:8px 12px;border-radius:10px;background:#e5e7eb;font-weight:600;">Limpiar</button>
                     </div>
@@ -8717,16 +8721,16 @@ function twRender() {
 }
 function twReset() {
     twEditId = null;
-    ['titulo','marca','modelo','anio','km','cc','cat','precio','desc'].forEach(k => document.getElementById('tw-' + k).value = '');
-    document.getElementById('tw-fotos').value = ''; document.getElementById('tw-dest').checked = false;
+    ['titulo','marca','modelo','anio','km','cc','cat','precio','prev','desc','compat'].forEach(k => document.getElementById('tw-' + k).value = '');
+    document.getElementById('tw-fotos').value = ''; ['dest','mv','of'].forEach(k => document.getElementById('tw-' + k).checked = false);
     document.getElementById('tw-form-title').textContent = '➕ Agregar moto / repuesto';
 }
 function twEdit(id) {
     const r = twRows.find(x => x.id === id); if (!r) return; twEditId = id;
     document.getElementById('tw-tipo').value = r.tipo; document.getElementById('tw-moneda').value = r.moneda;
-    const m = { titulo: r.titulo, marca: r.marca, modelo: r.modelo, anio: r.anio, km: r.km, cc: r.cilindrada, cat: r.categoria, precio: r.precio, desc: r.descripcion };
+    const m = { titulo: r.titulo, marca: r.marca, modelo: r.modelo, anio: r.anio, km: r.km, cc: r.cilindrada, cat: r.categoria, precio: r.precio, prev: r.precio_anterior, desc: r.descripcion, compat: r.compatibles };
     Object.entries(m).forEach(([k, v]) => document.getElementById('tw-' + k).value = v ?? '');
-    document.getElementById('tw-dest').checked = !!r.destacado;
+    document.getElementById('tw-dest').checked = !!r.destacado; document.getElementById('tw-mv').checked = !!r.mas_vendido; document.getElementById('tw-of').checked = !!r.oferta;
     document.getElementById('tw-form-title').textContent = '✏️ Editando (si subís fotos nuevas se agregan a las actuales)';
     window.scrollTo({ top: document.getElementById('tienda-content').offsetTop, behavior: 'smooth' });
 }
@@ -8747,6 +8751,7 @@ async function twSave() {
         for (const f of document.getElementById('tw-fotos').files) nuevas.push(await twUpload(f, 'fotos'));
         const rec = { tipo: twV('tw-tipo'), titulo: twV('tw-titulo'), marca: twV('tw-marca') || null, modelo: twV('tw-modelo') || null, anio: twNum('tw-anio'), km: twNum('tw-km'),
             cilindrada: twV('tw-cc') || null, categoria: twV('tw-cat') || null, precio: twNum('tw-precio'), moneda: twV('tw-moneda'), descripcion: twV('tw-desc') || null,
+            precio_anterior: twNum('tw-prev'), compatibles: twV('tw-compat') || null, mas_vendido: document.getElementById('tw-mv').checked, oferta: document.getElementById('tw-of').checked,
             fotos: [...prev, ...nuevas], destacado: document.getElementById('tw-dest').checked, updated_at: new Date().toISOString() };
         const q = twEditId ? sb.from('dm_tienda').update(rec).eq('id', twEditId) : sb.from('dm_tienda').insert(rec);
         const { error } = await q; if (error) throw error;
