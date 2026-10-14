@@ -8859,5 +8859,34 @@ async function twDel(tbl, id) {
     if (error) { alert(error.message); return; } twInit();
 }
 </script>
+<script id="v31-eliminar-cliente">
+// V31: eliminar clientes (aditivo: no modifica el render original, solo agrega el boton 🗑️)
+(function(){
+  function addDelBtns(){
+    document.querySelectorAll('#clients-grid button[onclick^="selectClient("]').forEach(function(b){
+      var row=b.parentElement; if(!row||row.querySelector('.btn-del-cli'))return;
+      var m=b.getAttribute('onclick').match(/selectClient\((-?\d+)\)/); if(!m)return;
+      var d=document.createElement('button'); d.type='button'; d.className='btn-del-cli';
+      d.title='Eliminar cliente'; d.textContent='🗑️';
+      d.setAttribute('style','background:linear-gradient(90deg,#ef4444,#b91c1c);color:#fff;padding:8px 14px;border-radius:8px;font-weight:700;cursor:pointer');
+      d.onclick=function(){deleteClient(Number(m[1]));};
+      row.appendChild(d);
+    });
+  }
+  window.deleteClient=function(id){
+    var c=clients.find(function(x){return x.id===id}); if(!c)return;
+    if(!confirm('¿Eliminar al cliente "'+c.name+'"?\n\nLas ventas y reparaciones ya hechas no se borran.'))return;
+    clients=clients.filter(function(x){return x.id!==id});
+    if(selectedClient&&selectedClient.id===id){selectedClient=null;}
+    try{deleteFromSupabase('dm_clients',id);}catch(e){}
+    try{saveAllData();}catch(e){}
+    renderClientes();
+    try{showSaveIndicator();}catch(e){}
+  };
+  var r0=window.renderClientes, f0=window.filterClientes;
+  window.renderClientes=function(){r0.apply(this,arguments);addDelBtns();};
+  window.filterClientes=function(){f0.apply(this,arguments);addDelBtns();};
+})();
+</script>
 </body>
 </html>
