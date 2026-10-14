@@ -1926,6 +1926,9 @@
                 <button onclick="setActiveTab('presupuesto')" id="tab-presupuesto" class="tab-button tab-inactive" style="flex:1;padding:7px 4px;border-radius:8px;font-size:0.8rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap;transition:all .25s;">
                     📋 Presupuesto
                 </button>
+                <button onclick="setActiveTab('catalogo')" id="tab-catalogo" class="tab-button tab-inactive admin-only" style="flex:1;padding:7px 4px;border-radius:8px;font-size:0.8rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap;transition:all .25s;">
+                    📚 Catálogo ref.
+                </button>
             </div>
         </div>
         <!-- Separador visual entre nav y contenido -->
@@ -2823,6 +2826,21 @@
         </div>
 
         <!-- V21: Log de movimientos (solo Administrador) -->
+        <!-- V23: Catálogo de referencia (privado, solo admin) -->
+        <div id="catalogo-content" class="px-8 pb-8 admin-only" style="display: none;">
+            <div class="bg-white bg-opacity-90 backdrop-blur-sm rounded-2xl shadow-2xl p-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-2">📚 Catálogo de referencia</h2>
+                <p style="color:#6b7280;font-size:.85rem;margin-bottom:14px;">Repuestos de consulta (privado). Podés cargarle tu foto, precio y notas, y pasarlos a tu inventario con un clic.</p>
+                <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+                    <input id="cat-search" oninput="catRender()" placeholder="🔍 Buscar descripción o modelo..." style="flex:2;min-width:200px;padding:9px 12px;border:1px solid #d1d5db;border-radius:10px;">
+                    <select id="cat-rubro" onchange="catRender()" style="flex:1;min-width:160px;padding:9px 12px;border:1px solid #d1d5db;border-radius:10px;"><option value="">Todos los rubros</option></select>
+                </div>
+                <p id="cat-count" style="font-size:.8rem;color:#6b7280;margin-bottom:8px;"></p>
+                <div id="cat-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;"></div>
+                <div id="cat-more" style="text-align:center;margin-top:12px;"></div>
+            </div>
+        </div>
+
         <div id="log-content" class="px-8 pb-8 admin-only" style="display: none;">
             <div class="bg-white bg-opacity-90 backdrop-blur-sm rounded-2xl shadow-2xl p-8">
                 <h2 class="text-3xl font-bold text-gray-800 mb-6">📜 Log de Movimientos</h2>
@@ -4990,9 +5008,9 @@ No cubre daños por mal uso, humedad, golpes o sobrecarga eléctrica.</textarea>
         function setActiveTab(tab) {
             activeTab = tab;
             
-            if ((tab === 'log' || tab === 'backup') && !isAdmin()) { alert('⛔ Solo el Administrador puede abrir esta sección.'); tab = 'dashboard'; }
+            if ((tab === 'log' || tab === 'backup' || tab === 'catalogo') && !isAdmin()) { alert('⛔ Solo el Administrador puede abrir esta sección.'); tab = 'dashboard'; }
             activeTab = tab;
-            const tabs = ['dashboard', 'ventas', 'inventario', 'etiquetas', 'calendario', 'clientes', 'reparaciones', 'backup', 'log', 'reportes', 'presupuesto'];
+            const tabs = ['dashboard', 'ventas', 'inventario', 'etiquetas', 'calendario', 'clientes', 'reparaciones', 'backup', 'log', 'reportes', 'presupuesto', 'catalogo'];
             tabs.forEach(t => {
                 document.getElementById(t + '-content').style.display = 'none';
                 const tabButton = document.getElementById('tab-' + t);
@@ -5043,6 +5061,9 @@ No cubre daños por mal uso, humedad, golpes o sobrecarga eléctrica.</textarea>
                     break;
                 case 'presupuesto':
                     initPresupuesto();
+                    break;
+                case 'catalogo':
+                    catInit();
                     break;
             }
         }
@@ -8543,5 +8564,76 @@ function resizeLogo(delta) {
   <img id="lbImg" src="" alt="" onclick="event.stopPropagation()">
   <div class="lb-caption" id="lbCaption"></div>
 </div>
+<script id="v23-catalogo">
+// V23: Catálogo de referencia (tabla dm_catalogo_ref). Solo lectura de datos base; admin edita foto/precio/notas.
+let catRows = null, catLimit = 60;
+async function catInit() {
+    if (catRows) { catRender(); return; }
+    const box = document.getElementById('cat-list');
+    box.innerHTML = '<p style="color:#6b7280">Cargando...</p>';
+    try {
+        if (!sb) throw new Error('Sin conexión a la nube');
+        let all = [], from = 0;
+        while (true) {
+            const { data, error } = await sb.from('dm_catalogo_ref').select('*').order('rubro').order('descripcion').range(from, from + 999);
+            if (error) throw error;
+            all = all.concat(data); if (data.length < 1000) break; from += 1000;
+        }
+        catRows = all;
+        const sel = document.getElementById('cat-rubro');
+        [...new Set(all.map(r => r.rubro))].forEach(r => { const o = document.createElement('option'); o.value = r; o.textContent = r; sel.appendChild(o); });
+        catRender();
+    } catch (e) {
+        box.innerHTML = '<p style="color:#b91c1c">No se pudo cargar el catálogo: ' + escH(e.message || String(e)) + '. Iniciá sesión con usuario de la nube.</p>';
+    }
+}
+function catFiltered() {
+    const q = (document.getElementById('cat-search').value || '').toLowerCase().trim();
+    const ru = document.getElementById('cat-rubro').value;
+    return (catRows || []).filter(r => (!ru || r.rubro === ru) && (!q || (r.descripcion + ' ' + (r.modelos || '') + ' ' + (r.notas || '')).toLowerCase().includes(q)));
+}
+function catRender(more) {
+    if (!more) catLimit = 60;
+    const rows = catFiltered();
+    document.getElementById('cat-count').textContent = rows.length + ' repuestos';
+    document.getElementById('cat-list').innerHTML = rows.slice(0, catLimit).map(r => `
+        <div style="border:1px solid #e5e7eb;border-radius:12px;padding:10px;background:#fff;display:flex;flex-direction:column;gap:6px;">
+            ${r.foto_url ? `<img src="${escH(r.foto_url)}" loading="lazy" style="width:100%;height:120px;object-fit:contain;border-radius:8px;background:#f9fafb;">` : ''}
+            <div style="font-size:.7rem;color:#2563eb;font-weight:600;">${escH(r.rubro)}</div>
+            <div style="font-weight:700;font-size:.9rem;">${escH(r.descripcion)}</div>
+            ${r.modelos ? `<div style="font-size:.75rem;color:#4b5563;">Modelos: ${escH(r.modelos)}</div>` : ''}
+            ${r.precio != null ? `<div style="font-weight:700;color:#16a34a;">$${Number(r.precio).toLocaleString('es-AR')}</div>` : ''}
+            ${r.notas ? `<div style="font-size:.75rem;color:#92400e;">📝 ${escH(r.notas)}</div>` : ''}
+            <div style="display:flex;gap:6px;margin-top:auto;flex-wrap:wrap;">
+                <button onclick="catEdit(${r.id})" style="font-size:.75rem;padding:5px 8px;border-radius:8px;background:#e5e7eb;font-weight:600;">✏️ Editar</button>
+                <button onclick="catToInventory(${r.id})" style="font-size:.75rem;padding:5px 8px;border-radius:8px;background:#2563eb;color:#fff;font-weight:600;">➕ A mi inventario</button>
+                ${r.fuente_url ? `<a href="${escH(r.fuente_url)}" target="_blank" rel="noopener" style="font-size:.75rem;padding:5px 8px;color:#6b7280;">origen ↗</a>` : ''}
+            </div>
+        </div>`).join('') || '<p style="color:#6b7280">Sin resultados.</p>';
+    document.getElementById('cat-more').innerHTML = rows.length > catLimit ? '<button onclick="catLimit+=60;catRender(true)" style="padding:8px 16px;border-radius:10px;background:#e5e7eb;font-weight:600;">Ver más</button>' : '';
+}
+async function catEdit(id) {
+    const r = catRows.find(x => x.id === id); if (!r) return;
+    const foto = prompt('URL de TU foto (vacío = sin foto):', r.foto_url || ''); if (foto === null) return;
+    const pr = prompt('Precio (número, vacío = sin precio):', r.precio ?? ''); if (pr === null) return;
+    const no = prompt('Notas:', r.notas || ''); if (no === null) return;
+    const upd = { foto_url: foto.trim() || null, precio: pr.trim() === '' ? null : parseFloat(pr.replace(',', '.')), notas: no.trim() || null, updated_at: new Date().toISOString() };
+    if (upd.precio !== null && isNaN(upd.precio)) { alert('Precio inválido'); return; }
+    const { error } = await sb.from('dm_catalogo_ref').update(upd).eq('id', id);
+    if (error) { alert('No se pudo guardar: ' + error.message); return; }
+    Object.assign(r, upd); catRender(true);
+}
+function catToInventory(id) {
+    const r = catRows.find(x => x.id === id); if (!r) return;
+    const dup = products.find(p => p.name.toLowerCase() === r.descripcion.toLowerCase());
+    if (dup) { alert('Ya existe en tu inventario: ' + dup.code); return; }
+    const pre = (r.rubro.replace(/[^A-Za-z]/g, '').slice(0, 3) || 'REP').toUpperCase();
+    let n = 1, code; do { code = pre + String(n++).padStart(3, '0'); } while (products.some(p => p.code === code));
+    if (!confirm('Agregar "' + r.descripcion + '" al inventario con código ' + code + ', stock 0 y precio $' + (r.precio || 0) + '?')) return;
+    products.push({ id: Date.now(), name: r.descripcion, code, price: Number(r.precio) || 0, stock: 0, category: r.rubro });
+    saveAllData(); showSaveIndicator();
+    alert('✅ Agregado. Completá precio y stock en Inventario.');
+}
+</script>
 </body>
 </html>
