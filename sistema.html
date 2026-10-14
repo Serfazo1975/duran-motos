@@ -8888,5 +8888,37 @@ async function twDel(tbl, id) {
   window.filterClientes=function(){f0.apply(this,arguments);addDelBtns();};
 })();
 </script>
+<script id="v31-eliminar-reparacion">
+// V31: eliminar reparaciones (aditivo; solo Administrador; avisa si hay insumos sin devolver al stock)
+(function(){
+  function addDelBtns(){
+    document.querySelectorAll('#repairs-container button[onclick^="sendWhatsApp("]').forEach(function(w){
+      var row=w.parentElement; if(!row||row.querySelector('.btn-del-rep'))return;
+      var any=row.querySelector('button[onclick^="updateRepairStatus("]'); if(!any)return;
+      var m=any.getAttribute('onclick').match(/updateRepairStatus\((-?\d+)/); if(!m)return;
+      var d=document.createElement('button'); d.type='button'; d.className='btn-del-rep'; d.textContent='🗑️ Eliminar';
+      d.setAttribute('style','background:linear-gradient(90deg,#ef4444,#b91c1c);color:#fff;padding:8px 16px;border-radius:8px;font-weight:700;cursor:pointer');
+      d.onclick=function(){deleteRepair(Number(m[1]));};
+      row.appendChild(d);
+    });
+  }
+  window.deleteRepair=function(id){
+    try{ if(typeof isAdmin==='function' && !isAdmin()){alert('⛔ Solo el Administrador puede eliminar reparaciones.');return;} }catch(e){}
+    var r=repairs.find(function(x){return x.id===id}); if(!r)return;
+    var pend=(r.materials||[]).filter(function(m){return !m.returned});
+    var msg='¿Eliminar la reparación de "'+(r.client||'')+'" ('+(r.vehicle||'')+')?\n\nEsta acción no se puede deshacer.';
+    if(pend.length) msg+='\n\n⚠️ Tiene '+pend.length+' insumo(s) cargado(s) que NO fueron devueltos al stock. Si querés recuperarlos, cancelá y usá "Devolver" primero.';
+    if(!confirm(msg))return;
+    repairs=repairs.filter(function(x){return x.id!==id});
+    try{deleteFromSupabase('dm_repairs',id);}catch(e){}
+    try{cloudLog('eliminar','Reparación eliminada: '+(r.client||'')+' · '+(r.vehicle||''),id);}catch(e){}
+    try{saveAllData();}catch(e){}
+    renderReparaciones();
+    try{showSaveIndicator();}catch(e){}
+  };
+  var r0=window.renderReparaciones;
+  window.renderReparaciones=function(){r0.apply(this,arguments);addDelBtns();};
+})();
+</script>
 </body>
 </html>
