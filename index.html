@@ -1929,6 +1929,9 @@
                 <button onclick="setActiveTab('catalogo')" id="tab-catalogo" class="tab-button tab-inactive admin-only" style="flex:1;padding:7px 4px;border-radius:8px;font-size:0.8rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap;transition:all .25s;">
                     📚 Catálogo ref.
                 </button>
+                <button onclick="setActiveTab('tienda')" id="tab-tienda" class="tab-button tab-inactive admin-only" style="flex:1;padding:7px 4px;border-radius:8px;font-size:0.8rem;font-weight:600;display:flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap;transition:all .25s;">
+                    🏪 Tienda web
+                </button>
             </div>
         </div>
         <!-- Separador visual entre nav y contenido -->
@@ -2838,6 +2841,56 @@
                 <p id="cat-count" style="font-size:.8rem;color:#6b7280;margin-bottom:8px;"></p>
                 <div id="cat-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;"></div>
                 <div id="cat-more" style="text-align:center;margin-top:12px;"></div>
+            </div>
+        </div>
+
+        <!-- V24: Administración de la tienda pública (tienda.html), solo admin -->
+        <div id="tienda-content" class="px-8 pb-8 admin-only" style="display: none;">
+            <div class="bg-white bg-opacity-90 backdrop-blur-sm rounded-2xl shadow-2xl p-8">
+                <h2 class="text-3xl font-bold text-gray-800 mb-1">🏪 Tienda web pública</h2>
+                <p style="color:#6b7280;font-size:.85rem;margin-bottom:14px;">Lo que cargues acá se ve en <a href="tienda.html" target="_blank" style="color:#2563eb;font-weight:600;">tienda.html</a>. Podés ocultar o mostrar cada ítem sin borrarlo.</p>
+
+                <div style="border:1px solid #e5e7eb;border-radius:12px;padding:14px;margin-bottom:16px;background:#fff;">
+                    <h3 style="font-weight:700;margin-bottom:8px;" id="tw-form-title">➕ Agregar moto / repuesto</h3>
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;">
+                        <select id="tw-tipo" style="padding:8px;border:1px solid #d1d5db;border-radius:8px;"><option value="moto">Moto</option><option value="repuesto">Repuesto</option><option value="accesorio">Accesorio</option></select>
+                        <input id="tw-titulo" placeholder="Título *" style="padding:8px;border:1px solid #d1d5db;border-radius:8px;grid-column:span 2;">
+                        <input id="tw-marca" placeholder="Marca" style="padding:8px;border:1px solid #d1d5db;border-radius:8px;">
+                        <input id="tw-modelo" placeholder="Modelo" style="padding:8px;border:1px solid #d1d5db;border-radius:8px;">
+                        <input id="tw-anio" type="number" placeholder="Año" style="padding:8px;border:1px solid #d1d5db;border-radius:8px;">
+                        <input id="tw-km" type="number" placeholder="Km (vacío = 0 km)" style="padding:8px;border:1px solid #d1d5db;border-radius:8px;">
+                        <input id="tw-cc" placeholder="Cilindrada (ej: 150cc)" style="padding:8px;border:1px solid #d1d5db;border-radius:8px;">
+                        <input id="tw-cat" placeholder="Categoría (repuestos)" style="padding:8px;border:1px solid #d1d5db;border-radius:8px;">
+                        <input id="tw-precio" type="number" placeholder="Precio (vacío = consultar)" style="padding:8px;border:1px solid #d1d5db;border-radius:8px;">
+                        <select id="tw-moneda" style="padding:8px;border:1px solid #d1d5db;border-radius:8px;"><option>ARS</option><option>USD</option></select>
+                    </div>
+                    <textarea id="tw-desc" rows="2" placeholder="Descripción" style="width:100%;margin-top:8px;padding:8px;border:1px solid #d1d5db;border-radius:8px;"></textarea>
+                    <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px;">
+                        <label style="font-size:.85rem;">📷 Fotos: <input id="tw-fotos" type="file" accept="image/*" multiple></label>
+                        <label style="font-size:.85rem;"><input id="tw-dest" type="checkbox"> Destacado</label>
+                        <button onclick="twSave()" id="tw-save" style="padding:8px 16px;border-radius:10px;background:#2563eb;color:#fff;font-weight:700;">Guardar</button>
+                        <button onclick="twReset()" style="padding:8px 12px;border-radius:10px;background:#e5e7eb;font-weight:600;">Limpiar</button>
+                    </div>
+                    <p id="tw-msg" style="font-size:.8rem;margin-top:6px;"></p>
+                </div>
+
+                <div style="border:1px solid #e5e7eb;border-radius:12px;padding:14px;margin-bottom:16px;background:#fff;">
+                    <h3 style="font-weight:700;margin-bottom:8px;">📄 Subir manual (PDF)</h3>
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;">
+                        <input id="tm-titulo" placeholder="Título *" style="padding:8px;border:1px solid #d1d5db;border-radius:8px;grid-column:span 2;">
+                        <input id="tm-marca" placeholder="Marca" style="padding:8px;border:1px solid #d1d5db;border-radius:8px;">
+                        <input id="tm-modelo" placeholder="Modelo" style="padding:8px;border:1px solid #d1d5db;border-radius:8px;">
+                        <select id="tm-tipo" style="padding:8px;border:1px solid #d1d5db;border-radius:8px;"><option>Manual de usuario</option><option>Manual de servicio</option><option>Catálogo de despiece</option><option>Otro</option></select>
+                        <input id="tm-file" type="file" accept="application/pdf" style="font-size:.85rem;">
+                        <button onclick="tmSave()" style="padding:8px 16px;border-radius:10px;background:#2563eb;color:#fff;font-weight:700;">Subir</button>
+                    </div>
+                    <p id="tm-msg" style="font-size:.8rem;margin-top:6px;"></p>
+                </div>
+
+                <h3 style="font-weight:700;margin-bottom:6px;">Publicado en la tienda</h3>
+                <div id="tw-list" style="display:grid;gap:6px;margin-bottom:16px;"></div>
+                <h3 style="font-weight:700;margin-bottom:6px;">Manuales</h3>
+                <div id="tm-list" style="display:grid;gap:6px;"></div>
             </div>
         </div>
 
@@ -5008,9 +5061,9 @@ No cubre daños por mal uso, humedad, golpes o sobrecarga eléctrica.</textarea>
         function setActiveTab(tab) {
             activeTab = tab;
             
-            if ((tab === 'log' || tab === 'backup' || tab === 'catalogo') && !isAdmin()) { alert('⛔ Solo el Administrador puede abrir esta sección.'); tab = 'dashboard'; }
+            if ((tab === 'log' || tab === 'backup' || tab === 'catalogo' || tab === 'tienda') && !isAdmin()) { alert('⛔ Solo el Administrador puede abrir esta sección.'); tab = 'dashboard'; }
             activeTab = tab;
-            const tabs = ['dashboard', 'ventas', 'inventario', 'etiquetas', 'calendario', 'clientes', 'reparaciones', 'backup', 'log', 'reportes', 'presupuesto', 'catalogo'];
+            const tabs = ['dashboard', 'ventas', 'inventario', 'etiquetas', 'calendario', 'clientes', 'reparaciones', 'backup', 'log', 'reportes', 'presupuesto', 'catalogo', 'tienda'];
             tabs.forEach(t => {
                 document.getElementById(t + '-content').style.display = 'none';
                 const tabButton = document.getElementById('tab-' + t);
@@ -5064,6 +5117,9 @@ No cubre daños por mal uso, humedad, golpes o sobrecarga eléctrica.</textarea>
                     break;
                 case 'catalogo':
                     catInit();
+                    break;
+                case 'tienda':
+                    twInit();
                     break;
             }
         }
@@ -8633,6 +8689,90 @@ function catToInventory(id) {
     products.push({ id: Date.now(), name: r.descripcion, code, price: Number(r.precio) || 0, stock: 0, category: r.rubro });
     saveAllData(); showSaveIndicator();
     alert('✅ Agregado. Completá precio y stock en Inventario.');
+}
+</script>
+<script id="v24-tienda">
+// V24: administración de la tienda pública (tablas dm_tienda / dm_manuales, bucket 'tienda')
+let twRows = [], tmRows = [], twEditId = null;
+const twV = id => document.getElementById(id).value.trim();
+const twNum = id => { const v = twV(id); return v === '' ? null : Number(v); };
+async function twInit() {
+    try {
+        if (!sb) throw new Error('Sin conexión a la nube');
+        const [a, b] = await Promise.all([
+            sb.from('dm_tienda').select('*').order('created_at', { ascending: false }),
+            sb.from('dm_manuales').select('*').order('created_at', { ascending: false })]);
+        if (a.error) throw a.error; if (b.error) throw b.error;
+        twRows = a.data; tmRows = b.data; twRender();
+    } catch (e) { document.getElementById('tw-list').innerHTML = '<p style="color:#b91c1c">' + escH(e.message || String(e)) + '</p>'; }
+}
+function twRender() {
+    const row = (t, sub, id, pub, tbl, extra) => `<div style="display:flex;gap:8px;align-items:center;border:1px solid #e5e7eb;border-radius:10px;padding:8px;background:#fff;flex-wrap:wrap;">
+        <div style="flex:1;min-width:160px;"><b>${escH(t)}</b><div style="font-size:.75rem;color:#6b7280;">${escH(sub)}</div></div>
+        ${extra}
+        <button onclick="twToggle('${tbl}',${id},${!pub})" style="font-size:.75rem;padding:4px 8px;border-radius:8px;background:${pub ? '#dcfce7' : '#fee2e2'};font-weight:600;">${pub ? '👁 Visible' : '🚫 Oculto'}</button>
+        <button onclick="twDel('${tbl}',${id})" style="font-size:.75rem;padding:4px 8px;border-radius:8px;background:#e5e7eb;">🗑</button></div>`;
+    document.getElementById('tw-list').innerHTML = twRows.map(r => row(r.titulo, [r.tipo, r.marca, r.modelo, r.precio != null ? (r.moneda === 'USD' ? 'US$' : '$') + r.precio : 'sin precio', (r.fotos || []).length + ' fotos'].filter(Boolean).join(' · '), r.id, r.publicado, 'dm_tienda', `<button onclick="twEdit(${r.id})" style="font-size:.75rem;padding:4px 8px;border-radius:8px;background:#e5e7eb;">✏️</button>`)).join('') || '<p style="color:#6b7280">Todavía no cargaste nada.</p>';
+    document.getElementById('tm-list').innerHTML = tmRows.map(r => row(r.titulo, [r.marca, r.modelo, r.tipo].filter(Boolean).join(' · '), r.id, r.publicado, 'dm_manuales', '')).join('') || '<p style="color:#6b7280">Sin manuales.</p>';
+}
+function twReset() {
+    twEditId = null;
+    ['titulo','marca','modelo','anio','km','cc','cat','precio','desc'].forEach(k => document.getElementById('tw-' + k).value = '');
+    document.getElementById('tw-fotos').value = ''; document.getElementById('tw-dest').checked = false;
+    document.getElementById('tw-form-title').textContent = '➕ Agregar moto / repuesto';
+}
+function twEdit(id) {
+    const r = twRows.find(x => x.id === id); if (!r) return; twEditId = id;
+    document.getElementById('tw-tipo').value = r.tipo; document.getElementById('tw-moneda').value = r.moneda;
+    const m = { titulo: r.titulo, marca: r.marca, modelo: r.modelo, anio: r.anio, km: r.km, cc: r.cilindrada, cat: r.categoria, precio: r.precio, desc: r.descripcion };
+    Object.entries(m).forEach(([k, v]) => document.getElementById('tw-' + k).value = v ?? '');
+    document.getElementById('tw-dest').checked = !!r.destacado;
+    document.getElementById('tw-form-title').textContent = '✏️ Editando (si subís fotos nuevas se agregan a las actuales)';
+    window.scrollTo({ top: document.getElementById('tienda-content').offsetTop, behavior: 'smooth' });
+}
+async function twUpload(file, folder) {
+    const ext = (file.name.split('.').pop() || 'bin').toLowerCase().replace(/[^a-z0-9]/g, '');
+    const path = folder + '/' + Date.now() + '-' + Math.random().toString(36).slice(2, 7) + '.' + ext;
+    const { error } = await sb.storage.from('tienda').upload(path, file, { contentType: file.type });
+    if (error) throw error;
+    return sb.storage.from('tienda').getPublicUrl(path).data.publicUrl;
+}
+async function twSave() {
+    const msg = document.getElementById('tw-msg');
+    if (!twV('tw-titulo')) { msg.textContent = 'Falta el título'; return; }
+    msg.style.color = '#6b7280'; msg.textContent = 'Guardando...';
+    try {
+        const prev = twEditId ? (twRows.find(x => x.id === twEditId)?.fotos || []) : [];
+        const nuevas = [];
+        for (const f of document.getElementById('tw-fotos').files) nuevas.push(await twUpload(f, 'fotos'));
+        const rec = { tipo: twV('tw-tipo'), titulo: twV('tw-titulo'), marca: twV('tw-marca') || null, modelo: twV('tw-modelo') || null, anio: twNum('tw-anio'), km: twNum('tw-km'),
+            cilindrada: twV('tw-cc') || null, categoria: twV('tw-cat') || null, precio: twNum('tw-precio'), moneda: twV('tw-moneda'), descripcion: twV('tw-desc') || null,
+            fotos: [...prev, ...nuevas], destacado: document.getElementById('tw-dest').checked, updated_at: new Date().toISOString() };
+        const q = twEditId ? sb.from('dm_tienda').update(rec).eq('id', twEditId) : sb.from('dm_tienda').insert(rec);
+        const { error } = await q; if (error) throw error;
+        msg.style.color = '#16a34a'; msg.textContent = '✅ Guardado'; twReset(); twInit();
+    } catch (e) { msg.style.color = '#b91c1c'; msg.textContent = 'Error: ' + (e.message || e); }
+}
+async function tmSave() {
+    const msg = document.getElementById('tm-msg'), f = document.getElementById('tm-file').files[0];
+    if (!twV('tm-titulo') || !f) { msg.textContent = 'Falta el título o el PDF'; return; }
+    msg.style.color = '#6b7280'; msg.textContent = 'Subiendo...';
+    try {
+        const url = await twUpload(f, 'manuales');
+        const { error } = await sb.from('dm_manuales').insert({ titulo: twV('tm-titulo'), marca: twV('tm-marca') || null, modelo: twV('tm-modelo') || null, tipo: twV('tm-tipo'), archivo_url: url });
+        if (error) throw error;
+        msg.style.color = '#16a34a'; msg.textContent = '✅ Manual subido';
+        ['titulo','marca','modelo'].forEach(k => document.getElementById('tm-' + k).value = ''); document.getElementById('tm-file').value = ''; twInit();
+    } catch (e) { msg.style.color = '#b91c1c'; msg.textContent = 'Error: ' + (e.message || e); }
+}
+async function twToggle(tbl, id, val) {
+    const { error } = await sb.from(tbl).update({ publicado: val }).eq('id', id);
+    if (error) { alert(error.message); return; } twInit();
+}
+async function twDel(tbl, id) {
+    if (!confirm('¿Borrar definitivamente? (si solo querés sacarlo de la web, usá Ocultar)')) return;
+    const { error } = await sb.from(tbl).delete().eq('id', id);
+    if (error) { alert(error.message); return; } twInit();
 }
 </script>
 </body>

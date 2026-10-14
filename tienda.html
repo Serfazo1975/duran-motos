@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DURANMOTOS · Motos y repuestos en Río Gallegos</title>
+<meta name="description" content="Motos en venta, repuestos y manuales de motos en Río Gallegos, Santa Cruz. Consultá por WhatsApp.">
+<meta name="theme-color" content="#0f1115">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f1115; --bg2:#171a20; --card:#1c2027; --line:#2a2f38;
+  --tx:#f2f3f5; --mut:#9aa1ad; --acc:#ff5a1f; --acc2:#ff8a3d; --ok:#25d366;
+  --r:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:76px}
+body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--tx);line-height:1.5}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px}
+h1,h2,h3,.brand{font-family:'Barlow Condensed',Inter,sans-serif;text-transform:uppercase;letter-spacing:.02em}
+
+/* header */
+header{position:sticky;top:0;z-index:50;background:rgba(15,17,21,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.bar{display:flex;align-items:center;gap:16px;height:64px}
+.brand{font-size:1.7rem;font-weight:800}
+.brand b{color:var(--acc)}
+nav{display:flex;gap:4px;margin-left:auto}
+nav a{padding:8px 12px;border-radius:8px;font-weight:500;color:var(--mut);font-size:.95rem}
+nav a:hover{color:var(--tx);background:var(--bg2)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:10px;font-weight:600;border:0;cursor:pointer;font-size:.95rem;font-family:inherit}
+.btn-wa{background:var(--ok);color:#06240f}
+.btn-acc{background:var(--acc);color:#fff}
+.btn-ghost{background:transparent;color:var(--tx);border:1px solid var(--line)}
+.btn:hover{filter:brightness(1.08)}
+@media(max-width:760px){nav{display:none}.bar .btn-wa{margin-left:auto}}
+
+/* hero */
+.hero{position:relative;overflow:hidden;padding:72px 0 64px;background:
+  radial-gradient(900px 400px at 85% -10%,rgba(255,90,31,.28),transparent 60%),
+  linear-gradient(180deg,#14171c,var(--bg))}
+.hero:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,transparent 0 38px,rgba(255,255,255,.025) 38px 40px);pointer-events:none}
+.hero .wrap{position:relative;z-index:1}
+.tag{display:inline-block;background:rgba(255,90,31,.14);color:var(--acc2);border:1px solid rgba(255,90,31,.4);padding:4px 12px;border-radius:99px;font-size:.8rem;font-weight:600;margin-bottom:16px}
+.hero h1{font-size:clamp(2.6rem,8vw,5.2rem);line-height:.95;font-weight:800;max-width:14ch}
+.hero h1 span{color:var(--acc)}
+.hero p{color:var(--mut);max-width:52ch;margin:18px 0 26px;font-size:1.05rem}
+.cta{display:flex;gap:10px;flex-wrap:wrap}
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:44px}
+.strip div{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;font-size:.9rem;color:var(--mut)}
+.strip b{display:block;color:var(--tx);font-size:1rem}
+
+/* secciones */
+section{padding:56px 0}
+section.alt{background:var(--bg2)}
+.head{display:flex;flex-wrap:wrap;gap:12px;align-items:end;justify-content:space-between;margin-bottom:22px}
+.head h2{font-size:clamp(1.9rem,5vw,2.8rem);font-weight:800;line-height:1}
+.head h2 em{font-style:normal;color:var(--acc)}
+.head p{color:var(--mut);font-size:.95rem}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.tools input,.tools select{background:var(--card);border:1px solid var(--line);color:var(--tx);padding:10px 12px;border-radius:10px;font:inherit;min-width:0}
+.tools input{flex:2;min-width:180px}.tools select{flex:1;min-width:140px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
+.chip{background:var(--card);border:1px solid var(--line);color:var(--mut);padding:6px 14px;border-radius:99px;font-size:.85rem;cursor:pointer;font-family:inherit}
+.chip.on{background:var(--acc);border-color:var(--acc);color:#fff}
+
+/* cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;cursor:pointer;transition:transform .2s,border-color .2s}
+.card:hover{transform:translateY(-3px);border-color:var(--acc)}
+.ph{aspect-ratio:4/3;background:#10131a;position:relative;overflow:hidden}
+.ph img{width:100%;height:100%;object-fit:cover}
+.ph.noimg{display:grid;place-items:center;color:#3a414d}
+.ph .badge{position:absolute;top:10px;left:10px;background:var(--acc);color:#fff;font-size:.7rem;font-weight:700;padding:3px 9px;border-radius:99px;text-transform:uppercase}
+.info{padding:14px;display:flex;flex-direction:column;gap:6px;flex:1}
+.info h3{font-size:1.25rem;font-weight:700;line-height:1.1}
+.meta{color:var(--mut);font-size:.82rem}
+.price{font-family:'Barlow Condensed';font-size:1.6rem;font-weight:700;color:var(--acc2);margin-top:auto}
+.price small{font-size:.8rem;color:var(--mut);font-family:Inter;font-weight:400}
+.empty{grid-column:1/-1;text-align:center;padding:36px 16px;color:var(--mut);border:1px dashed var(--line);border-radius:var(--r)}
+
+/* manuales */
+.man{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+.mrow{display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px}
+.mico{flex:none;width:44px;height:52px;border-radius:6px;background:var(--acc);display:grid;place-items:center;font-weight:800;font-size:.7rem;color:#fff}
+.mrow h3{font-family:Inter;text-transform:none;font-size:.95rem;font-weight:600;letter-spacing:0;line-height:1.25}
+.mrow .meta{margin-top:2px}
+.mrow .btn{margin-left:auto;padding:8px 12px;font-size:.85rem;flex:none}
+
+/* contacto */
+.contact{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.contact div{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.contact h3{font-size:1.1rem;color:var(--acc2);margin-bottom:6px}
+footer{border-top:1px solid var(--line);padding:22px 0;color:var(--mut);font-size:.85rem}
+footer .wrap{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between}
+footer a:hover{color:var(--tx)}
+
+/* modal */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:100;display:none;align-items:center;justify-content:center;padding:14px}
+.modal.on{display:flex}
+.mbox{background:var(--bg2);border:1px solid var(--line);border-radius:18px;max-width:880px;width:100%;max-height:92vh;overflow:auto;display:grid;grid-template-columns:1.1fr 1fr}
+@media(max-width:720px){.mbox{grid-template-columns:1fr}}
+.gal .big{aspect-ratio:4/3;background:#10131a;display:grid;place-items:center}
+.gal .big img{width:100%;height:100%;object-fit:contain}
+.thumbs{display:flex;gap:6px;padding:8px;overflow-x:auto}
+.thumbs img{width:64px;height:48px;object-fit:cover;border-radius:6px;border:2px solid transparent;cursor:pointer;flex:none}
+.thumbs img.on{border-color:var(--acc)}
+.det{padding:20px;display:flex;flex-direction:column;gap:10px}
+.det h2{font-size:2rem;font-weight:800;line-height:1}
+.det dl{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:.9rem}
+.det dt{color:var(--mut)}
+.det p{color:var(--mut);font-size:.92rem;white-space:pre-line}
+.x{position:absolute;top:14px;right:18px;background:var(--bg);border:1px solid var(--line);color:var(--tx);width:38px;height:38px;border-radius:50%;font-size:1.2rem;cursor:pointer;z-index:2}
+.wa-float{position:fixed;right:16px;bottom:16px;z-index:60;background:var(--ok);color:#06240f;border-radius:99px;padding:13px 18px;font-weight:700;box-shadow:0 6px 24px rgba(0,0,0,.45)}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <a href="#inicio" class="brand">DURAN<b>MOTOS</b></a>
+    <nav>
+      <a href="#motos">Motos</a><a href="#repuestos">Repuestos</a><a href="#manuales">Manuales</a><a href="#contacto">Contacto</a>
+    </nav>
+    <a class="btn btn-wa" id="waTop" target="_blank" rel="noopener">💬 WhatsApp</a>
+  </div>
+</header>
+
+<main id="inicio">
+<div class="hero">
+  <div class="wrap">
+    <span class="tag">Río Gallegos · Santa Cruz</span>
+    <h1>Tu moto y sus repuestos, <span>en un solo lugar</span></h1>
+    <p>Motos en venta, repuestos para tu moto y manuales para descargar gratis. Consultanos por WhatsApp y te respondemos al toque.</p>
+    <div class="cta">
+      <a class="btn btn-acc" href="#motos">Ver motos</a>
+      <a class="btn btn-ghost" href="#repuestos">Buscar repuestos</a>
+      <a class="btn btn-ghost" href="#manuales">Descargar manuales</a>
+    </div>
+    <div class="strip">
+      <div><b>🏍️ Motos en venta</b>Consultá stock y financiación</div>
+      <div><b>🔧 Repuestos</b>Bujías, cadenas, filtros, cubiertas y más</div>
+      <div><b>📄 Manuales gratis</b>Descargá el de tu modelo en PDF</div>
+      <div><b>📍 Pasteur 628</b>Río Gallegos, Santa Cruz</div>
+    </div>
+  </div>
+</div>
+
+<section id="motos">
+  <div class="wrap">
+    <div class="head"><div><h2>Motos <em>en venta</em></h2><p>Tocá una moto para ver fotos y detalles.</p></div></div>
+    <div class="tools">
+      <input id="mq" type="search" placeholder="Buscar marca o modelo..." aria-label="Buscar moto">
+      <select id="mmarca" aria-label="Marca"><option value="">Todas las marcas</option></select>
+      <select id="mord" aria-label="Ordenar"><option value="rec">Más recientes</option><option value="pa">Precio: menor a mayor</option><option value="pd">Precio: mayor a menor</option></select>
+    </div>
+    <div class="grid" id="motosGrid"></div>
+  </div>
+</section>
+
+<section id="repuestos" class="alt">
+  <div class="wrap">
+    <div class="head"><div><h2>Repuestos y <em>accesorios</em></h2><p>¿No ves el que buscás? Consultanos, tenemos muchos más.</p></div></div>
+    <div class="tools"><input id="rq" type="search" placeholder="Buscar repuesto..." aria-label="Buscar repuesto"></div>
+    <div class="chips" id="rchips"></div>
+    <div class="grid" id="repGrid"></div>
+  </div>
+</section>
+
+<section id="manuales">
+  <div class="wrap">
+    <div class="head"><div><h2>Descarga de <em>manuales</em></h2><p>Manuales de usuario, de servicio y catálogos de despiece en PDF.</p></div></div>
+    <div class="tools"><input id="manq" type="search" placeholder="Buscar por marca o modelo..." aria-label="Buscar manual"></div>
+    <div class="man" id="manGrid"></div>
+  </div>
+</section>
+
+<section id="contacto" class="alt">
+  <div class="wrap">
+    <div class="head"><div><h2>Dónde <em>encontrarnos</em></h2></div></div>
+    <div class="contact">
+      <div><h3>📍 Local</h3>Pasteur 628<br>Río Gallegos, Santa Cruz</div>
+      <div><h3>💬 WhatsApp</h3><a id="waLink" target="_blank" rel="noopener" style="color:var(--ok);font-weight:600">2966 520261</a><br><span class="meta">Respondemos consultas y presupuestos</span></div>
+      <div><h3>🛠️ Servicio</h3>Reparación y mantenimiento de motos. Pedí tu turno por WhatsApp.</div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© DURANMOTOS · Pasteur 628, Río Gallegos</span>
+    <a href="index.html">Acceso al sistema</a>
+  </div>
+</footer>
+
+<a class="wa-float" id="waFloat" target="_blank" rel="noopener" aria-label="WhatsApp">💬 Consultar</a>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true">
+  <button class="x" onclick="closeM()" aria-label="Cerrar">×</button>
+  <div class="mbox" id="mbox"></div>
+</div>
+
+<script>
+const SB_URL = 'https://ezkzhhtnxxlcpqucacgo.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV6a3poaHRueHhsY3BxdWNhY2dvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE1MDY2ODIsImV4cCI6MjEwNzA4MjY4Mn0.B2kgBcMuswhq2FCESQqOJ3RgkIpCOeFHZc4J8nCghBQ';
+const WA = '542966520261';
+const wa = t => `https://wa.me/${WA}?text=${encodeURIComponent(t)}`;
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money = (n, m) => n == null ? 'Consultar precio' : (m === 'USD' ? 'US$ ' : '$ ') + Number(n).toLocaleString('es-AR');
+const norm = s => String(s ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+
+let ITEMS = [], MANUALES = [], repCat = '';
+
+async function rest(path) {
+  const r = await fetch(SB_URL + '/rest/v1/' + path, { headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY } });
+  if (!r.ok) throw new Error(r.status);
+  return r.json();
+}
+async function load() {
+  try {
+    [ITEMS, MANUALES] = await Promise.all([
+      rest('dm_tienda?select=*&publicado=eq.true&order=destacado.desc,created_at.desc&limit=1000'),
+      rest('dm_manuales?select=*&publicado=eq.true&order=marca,titulo&limit=1000')
+    ]);
+  } catch (e) { ITEMS = []; MANUALES = []; }
+  fillMarcas(); renderMotos(); renderChips(); renderRep(); renderMan();
+}
+
+function card(it) {
+  const f = (it.fotos || [])[0];
+  const meta = [it.anio, it.km != null ? Number(it.km).toLocaleString('es-AR') + ' km' : (it.tipo === 'moto' ? '0 km' : ''), it.cilindrada].filter(Boolean).join(' · ');
+  return `<article class="card" onclick="openM(${it.id})" tabindex="0" onkeydown="if(event.key==='Enter')openM(${it.id})">
+    <div class="ph ${f ? '' : 'noimg'}">${f ? `<img loading="lazy" src="${esc(f)}" alt="${esc(it.titulo)}">` : '<span style="font-size:3rem">' + (it.tipo === 'moto' ? '🏍️' : '🔧') + '</span>'}${it.destacado ? '<span class="badge">Destacado</span>' : ''}</div>
+    <div class="info"><h3>${esc(it.titulo)}</h3>
+      <div class="meta">${esc(it.tipo === 'moto' ? [it.marca, it.modelo].filter(Boolean).join(' ') : (it.categoria || ''))}</div>
+      ${meta ? `<div class="meta">${esc(meta)}</div>` : ''}
+      <div class="price">${money(it.precio, it.moneda)}</div></div></article>`;
+}
+
+function fillMarcas() {
+  const sel = document.getElementById('mmarca');
+  [...new Set(ITEMS.filter(i => i.tipo === 'moto' && i.marca).map(i => i.marca))].sort().forEach(m => sel.add(new Option(m, m)));
+}
+function renderMotos() {
+  const q = norm(document.getElementById('mq').value), mk = document.getElementById('mmarca').value, o = document.getElementById('mord').value;
+  let l = ITEMS.filter(i => i.tipo === 'moto' && (!mk || i.marca === mk) && (!q || norm(i.titulo + ' ' + i.marca + ' ' + i.modelo).includes(q)));
+  if (o === 'pa') l.sort((a, b) => (a.precio ?? 1e12) - (b.precio ?? 1e12));
+  if (o === 'pd') l.sort((a, b) => (b.precio ?? -1) - (a.precio ?? -1));
+  document.getElementById('motosGrid').innerHTML = l.map(card).join('') ||
+    `<div class="empty">Por ahora no hay motos publicadas con ese filtro.<br><a class="btn btn-wa" style="margin-top:12px" target="_blank" rel="noopener" href="${wa('Hola! Quiero consultar por motos disponibles.')}">Preguntanos qué tenemos</a></div>`;
+}
+function renderChips() {
+  const cats = [...new Set(ITEMS.filter(i => i.tipo !== 'moto' && i.categoria).map(i => i.categoria))].sort();
+  document.getElementById('rchips').innerHTML = cats.length ? ['', ...cats].map(c => `<button class="chip ${c === repCat ? 'on' : ''}" data-c="${esc(c)}">${c ? esc(c) : 'Todos'}</button>`).join('') : '';
+}
+function renderRep() {
+  const q = norm(document.getElementById('rq').value);
+  const l = ITEMS.filter(i => i.tipo !== 'moto' && (!repCat || i.categoria === repCat) && (!q || norm(i.titulo + ' ' + i.categoria + ' ' + i.descripcion).includes(q)));
+  document.getElementById('repGrid').innerHTML = l.map(card).join('') ||
+    `<div class="empty">No encontramos ese repuesto en la web, pero seguro lo tenemos o lo conseguimos.<br><a class="btn btn-wa" style="margin-top:12px" target="_blank" rel="noopener" href="${wa('Hola! Estoy buscando un repuesto: ' + document.getElementById('rq').value)}">Consultar por WhatsApp</a></div>`;
+}
+function renderMan() {
+  const q = norm(document.getElementById('manq').value);
+  const l = MANUALES.filter(m => !q || norm(m.titulo + ' ' + m.marca + ' ' + m.modelo + ' ' + m.tipo).includes(q));
+  document.getElementById('manGrid').innerHTML = l.map(m => `<div class="mrow"><div class="mico">PDF</div>
+    <div><h3>${esc(m.titulo)}</h3><div class="meta">${esc([m.marca, m.modelo, m.tipo].filter(Boolean).join(' · '))}</div></div>
+    <a class="btn btn-acc" href="${esc(m.archivo_url)}" target="_blank" rel="noopener" download>⬇ Descargar</a></div>`).join('') ||
+    `<div class="empty" style="grid-column:1/-1">${MANUALES.length ? 'No hay manuales para esa búsqueda.' : 'Estamos cargando los manuales.'} ¿Necesitás uno en particular? <a style="color:var(--acc2)" target="_blank" rel="noopener" href="${wa('Hola! Necesito el manual de: ')}">Pedilo por WhatsApp</a>.</div>`;
+}
+
+let galIdx = 0, galList = [];
+function openM(id) {
+  const it = ITEMS.find(x => x.id === id); if (!it) return;
+  galList = it.fotos || []; galIdx = 0;
+  const rows = [['Marca', it.marca], ['Modelo', it.modelo], ['Año', it.anio], ['Kilometraje', it.tipo === 'moto' ? (it.km != null ? Number(it.km).toLocaleString('es-AR') + ' km' : '0 km') : null], ['Cilindrada', it.cilindrada], ['Categoría', it.categoria]].filter(r => r[1] != null && r[1] !== '');
+  document.getElementById('mbox').innerHTML = `
+    <div class="gal"><div class="big" id="gbig">${galList[0] ? `<img src="${esc(galList[0])}" alt="${esc(it.titulo)}">` : '<span style="font-size:4rem">' + (it.tipo === 'moto' ? '🏍️' : '🔧') + '</span>'}</div>
+      ${galList.length > 1 ? `<div class="thumbs">${galList.map((u, i) => `<img src="${esc(u)}" class="${i ? '' : 'on'}" onclick="gal(${i})" alt="Foto ${i + 1}">`).join('')}</div>` : ''}</div>
+    <div class="det"><h2>${esc(it.titulo)}</h2><div class="price" style="font-size:2rem">${money(it.precio, it.moneda)}</div>
+      ${rows.length ? `<dl>${rows.map(r => `<dt>${r[0]}</dt><dd>${esc(r[1])}</dd>`).join('')}</dl>` : ''}
+      ${it.descripcion ? `<p>${esc(it.descripcion)}</p>` : ''}
+      <a class="btn btn-wa" target="_blank" rel="noopener" href="${wa('Hola! Me interesa: ' + it.titulo + (it.precio != null ? ' (' + money(it.precio, it.moneda) + ')' : '') + '. ¿Está disponible?')}">💬 Consultar por WhatsApp</a></div>`;
+  document.getElementById('modal').classList.add('on'); document.body.style.overflow = 'hidden';
+}
+function gal(i) {
+  galIdx = i; document.querySelector('#gbig img').src = galList[i];
+  document.querySelectorAll('.thumbs img').forEach((t, k) => t.classList.toggle('on', k === i));
+}
+function closeM() { document.getElementById('modal').classList.remove('on'); document.body.style.overflow = ''; }
+document.getElementById('modal').addEventListener('click', e => { if (e.target.id === 'modal') closeM(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeM(); });
+
+['mq', 'mmarca', 'mord'].forEach(i => document.getElementById(i).addEventListener('input', renderMotos));
+document.getElementById('rq').addEventListener('input', renderRep);
+document.getElementById('manq').addEventListener('input', renderMan);
+document.getElementById('rchips').addEventListener('click', e => { const b = e.target.closest('.chip'); if (!b) return; repCat = b.dataset.c; renderChips(); renderRep(); });
+const hi = wa('Hola! Vi la página de DURANMOTOS y quiero hacer una consulta.');
+['waTop', 'waLink', 'waFloat'].forEach(i => document.getElementById(i).href = hi);
+load();
+</script>
+</body>
+</html>
