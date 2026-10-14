@@ -7,6 +7,7 @@
      Netlify hosting facts for this site: static/SSR served via Netlify Edge. -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DURAN MOTOS - Repuestos y Accesorios</title>
+    <script>try{if(localStorage.getItem("dm_ui_style")!=="classic")document.documentElement.classList.add("racing")}catch(e){document.documentElement.classList.add("racing")}</script>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏍️</text></svg>">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.5/JsBarcode.all.min.js"></script>
@@ -1757,7 +1758,64 @@
 .bg-indigo-100{background:#e0e7ff}.text-indigo-800{color:#3730a3}.bg-green-100{background:#dcfce7}.text-green-800{color:#166534}.text-green-700{color:#15803d}
 .bg-yellow-100{background:#fef9c3}.text-yellow-800{color:#854d0e}.bg-emerald-100{background:#d1fae5}.text-emerald-800{color:#065f46}
 .bg-purple-100{background:#f3e8ff}.text-purple-800{color:#6b21a8}.bg-gray-100{background:#f3f4f6}.text-gray-700{color:#374151}
-</style></head>
+</style><style id="v30-racing">
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+/* V30 · Estilo "Racing" (se activa con html.racing; el botón 🎨 vuelve al diseño clásico) */
+html.racing{--rc-red:#e11d2e;--rc-gold:#ffc21a;--rc-line:#2b2b32;--rc-cut:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px))}
+html.racing ::selection{background:var(--rc-red);color:#fff}
+html.racing body.gradient-bg{background:
+  repeating-linear-gradient(90deg,transparent 0 22px,rgba(255,255,255,.016) 22px 24px),
+  radial-gradient(900px 480px at 90% -8%,rgba(225,29,46,.22),transparent 60%),
+  radial-gradient(700px 420px at 0% 100%,rgba(255,194,26,.07),transparent 60%),
+  linear-gradient(165deg,var(--app-bg-start),var(--app-bg-end)) fixed !important;min-height:100vh}
+html.racing #app>div:first-child{background:linear-gradient(180deg,rgba(0,0,0,.55),rgba(0,0,0,.25));border-bottom:3px solid var(--app-accent-start);padding-top:10px!important;padding-bottom:8px!important}
+html.racing #site-title{font-family:'Bebas Neue',Impact,sans-serif!important;font-weight:400!important;font-size:2.7rem!important;letter-spacing:.05em;line-height:1;
+  background:linear-gradient(90deg,var(--app-accent-start) 0 47%,var(--app-title-color) 47% 100%);-webkit-background-clip:text;background-clip:text;color:transparent!important;-webkit-text-fill-color:transparent}
+html.racing #site-subtitle{text-transform:uppercase;letter-spacing:.18em;font-size:.66rem!important;color:#c9c9d1!important}
+html.racing #site-company-info{color:#8d8d97!important}
+html.racing #header-icon-left,html.racing #header-icon-right{opacity:.9;filter:saturate(1.2)}
+html.racing #backupStatus,html.racing #lastBackupInfo{background:rgba(255,255,255,.07)!important;color:#c9c9d1!important}
+html.racing #app>div:nth-child(2){background:rgba(0,0,0,.45)!important;border-top:0!important;border-bottom:1px solid var(--rc-line)!important}
+html.racing .tab-button{border-radius:0!important;clip-path:var(--rc-cut);text-transform:uppercase;letter-spacing:.05em;font-weight:700!important;font-size:.72rem!important;background:rgba(255,255,255,.06)!important;color:#c9c9d1!important;transition:.2s}
+html.racing .tab-button:hover{background:rgba(255,255,255,.14)!important;color:#fff!important}
+html.racing .tab-active{background:linear-gradient(135deg,var(--app-accent-start),var(--app-accent-end))!important;color:#fff!important;box-shadow:inset 0 -3px 0 var(--app-title-color)!important}
+/* paneles claros con filo de color */
+html.racing [class*="bg-opacity-90"][class*="rounded-2xl"]{border-radius:14px!important;border-top:4px solid var(--app-accent-start);background:rgba(255,255,255,.96)!important;box-shadow:0 14px 40px rgba(0,0,0,.45)!important}
+html.racing [class*="bg-opacity-90"][class*="rounded-2xl"] h2{font-family:'Bebas Neue',Impact,sans-serif!important;font-weight:400!important;font-size:2.5rem!important;letter-spacing:.04em;text-transform:uppercase;color:#111!important;line-height:1}
+html.racing [class*="bg-opacity-90"][class*="rounded-2xl"] h2:after{content:"";display:block;width:70px;height:5px;margin-top:8px;background:linear-gradient(90deg,var(--app-accent-start) 0 58%,var(--app-title-color) 58% 100%);transform:skewX(-30deg)}
+html.racing [class*="bg-opacity-90"][class*="rounded-2xl"] h3{font-family:'Bebas Neue',Impact,sans-serif!important;font-weight:400!important;font-size:1.65rem!important;letter-spacing:.04em;text-transform:uppercase;color:#111!important}
+/* tarjetas de números (dashboard y resúmenes) */
+html.racing div[class*="bg-gradient-to-r"][class*="text-white"],html.racing div[style*="667eea"][class*="text-white"]{background:linear-gradient(160deg,#1d1d23,#0f0f12)!important;border:1px solid var(--rc-line);border-top:4px solid var(--rc-red);border-radius:12px!important;box-shadow:0 12px 30px rgba(0,0,0,.45)!important}
+html.racing div[class*="from-green"][class*="text-white"]{border-top-color:#22c55e}
+html.racing div[class*="from-blue"][class*="text-white"]{border-top-color:#60a5fa}
+html.racing div[class*="from-purple"][class*="text-white"]{border-top-color:#a78bfa}
+html.racing div[class*="from-orange"][class*="text-white"]{border-top-color:var(--rc-red)}
+html.racing div[class*="bg-gradient-to-r"][class*="text-white"] h3{font-family:'Bebas Neue',Impact,sans-serif!important;font-weight:400!important;letter-spacing:.06em;text-transform:uppercase;color:#c9c9d1!important;font-size:1.25rem!important}
+html.racing div[class*="bg-gradient-to-r"][class*="text-white"] p[class*="text-3xl"]{font-family:'Bebas Neue',Impact,sans-serif!important;font-weight:400!important;font-size:2.8rem!important;color:var(--rc-gold)!important;line-height:1;letter-spacing:.03em}
+/* acceso rápido */
+html.racing #dashboard-content button[class*="bg-gradient-to-r"]{background:#17171c!important;color:#fff!important;border-radius:0!important;clip-path:var(--rc-cut);border-left:5px solid var(--rc-red);text-align:left;padding-left:18px!important;text-transform:uppercase;letter-spacing:.05em;font-size:.85rem;transition:.2s}
+html.racing #dashboard-content button[class*="from-green"]{border-left-color:#22c55e}
+html.racing #dashboard-content button[class*="from-blue"]{border-left-color:#60a5fa}
+html.racing #dashboard-content button[class*="from-purple"],html.racing #dashboard-content button[class*="from-indigo"]{border-left-color:var(--rc-gold)}
+html.racing #dashboard-content button[class*="bg-gradient-to-r"]:hover{background:linear-gradient(90deg,var(--app-accent-start),var(--app-accent-end))!important;transform:translateX(3px)}
+/* otros bloques violeta fijos (escáner, etc.) */
+html.racing [style*="667eea"][class*="rounded"]{background:linear-gradient(160deg,#1d1d23,#0f0f12)!important;border:1px solid var(--rc-line);border-left:5px solid var(--rc-gold)}
+/* detalles */
+html.racing ::-webkit-scrollbar{width:10px;height:10px}html.racing ::-webkit-scrollbar-track{background:#0d0d10}html.racing ::-webkit-scrollbar-thumb{background:#3a3a44;border-radius:6px}html.racing ::-webkit-scrollbar-thumb:hover{background:var(--rc-red)}
+html.racing input:focus,html.racing select:focus,html.racing textarea:focus{outline:2px solid var(--rc-gold);outline-offset:1px}
+html.racing #btn-style{background:rgba(255,255,255,.12)}
+html.racing #dashboard-content .md\:grid-cols-4{grid-template-columns:repeat(2,1fr)!important;gap:12px!important}
+@media(min-width:768px){html.racing #dashboard-content .md\:grid-cols-4{grid-template-columns:repeat(4,1fr)!important;gap:16px!important}}
+html.racing #dashboard-content div[class*="bg-gradient-to-r"][class*="text-white"]{padding:16px!important}
+html.racing #login-title{font-family:'Bebas Neue',Impact,sans-serif!important;font-weight:400!important;font-size:2.4rem!important;letter-spacing:.06em;color:#111!important}
+html.racing #app>div:nth-child(2)>div{overflow-x:auto;scrollbar-width:none}
+html.racing #app>div:nth-child(2)>div::-webkit-scrollbar{display:none}
+html.racing .tab-button{font-size:.64rem!important;letter-spacing:.02em!important;padding-left:3px!important;padding-right:3px!important;min-width:max-content}
+/* botones azul→violeta pasan a la paleta Racing (rojo → amarillo en hover) */
+html.racing button[class*="from-blue-500"][class*="to-purple-600"],html.racing button[class*="from-purple-500"][class*="to-purple-600"]{background:linear-gradient(135deg,var(--app-accent-start),var(--app-accent-end))!important;color:#fff!important;border-radius:8px!important}
+html.racing button[class*="from-blue-500"][class*="to-purple-600"]:hover,html.racing button[class*="from-purple-500"][class*="to-purple-600"]:hover{box-shadow:0 0 0 2px var(--rc-gold)!important}
+</style>
+</head>
 <body class="gradient-bg">
 
     <!-- ===== PANTALLA DE LOGIN ===== -->
@@ -1860,6 +1918,7 @@
             <!-- Barra superior: usuario actual + botones de acción -->
             <div class="no-print absolute top-2 right-2 md:top-2 md:right-4 flex items-center gap-1.5">
                 <div id="current-user-info" class="flex items-center gap-1.5"></div>
+                <button id="btn-style" onclick="toggleUiStyle()" title="Cambiar entre diseño Racing y clásico" class="bg-white bg-opacity-15 hover:bg-opacity-30 backdrop-blur-sm text-white px-2 py-1.5 rounded-lg font-semibold text-xs flex items-center gap-1">🎨 <span class="hidden sm:inline">Estilo</span></button>
                 <button id="btn-config" onclick="openCompanySettings()" class="bg-white bg-opacity-15 hover:bg-opacity-30 backdrop-blur-sm text-white px-2 py-1.5 rounded-lg font-semibold text-xs flex items-center gap-1 transition-all duration-300 shadow-md" title="Configurar datos de la empresa / sitio" style="display:none;">
                     ⚙️ <span class="hidden sm:inline">Config</span>
                 </button>
@@ -3700,7 +3759,9 @@ No cubre daños por mal uso, humedad, golpes o sobrecarga eléctrica.</textarea>
         };
 
         // Diseños predefinidos para elegir rápido
+        const RACING_THEME = { bgStart: '#0a0a0c', bgEnd: '#17171c', accentStart: '#e11d2e', accentEnd: '#b5121f', titleColor: '#ffc21a' };
         const themePresets = {
+            racing:   { label: '🏁 Duran Racing',     bgStart: '#0a0a0c', bgEnd: '#17171c', accentStart: '#e11d2e', accentEnd: '#b5121f', titleColor: '#ffc21a' },
             purpura:  { label: '🟣 Morado Clásico',   bgStart: '#667eea', bgEnd: '#764ba2', accentStart: '#10b981', accentEnd: '#059669', titleColor: '#facc15' },
             azul:     { label: '🔵 Azul Corporativo', bgStart: '#1e3a8a', bgEnd: '#1d4ed8', accentStart: '#3b82f6', accentEnd: '#1d4ed8', titleColor: '#fde047' },
             verde:    { label: '🟢 Verde Taller',     bgStart: '#14532d', bgEnd: '#15803d', accentStart: '#22c55e', accentEnd: '#16a34a', titleColor: '#fde047' },
@@ -4598,6 +4659,8 @@ No cubre daños por mal uso, humedad, golpes o sobrecarga eléctrica.</textarea>
 
         function applyTheme(theme) {
             if (!theme) return;
+            // En estilo Racing, el morado original (sin personalizar) se muestra con la paleta Racing
+            if (document.documentElement.classList.contains('racing') && theme.bgStart === '#667eea' && theme.bgEnd === '#764ba2') theme = RACING_THEME;
             const root = document.documentElement;
             root.style.setProperty('--app-bg-start', theme.bgStart);
             root.style.setProperty('--app-bg-end', theme.bgEnd);
@@ -4605,6 +4668,12 @@ No cubre daños por mal uso, humedad, golpes o sobrecarga eléctrica.</textarea>
             root.style.setProperty('--app-accent-end', theme.accentEnd);
             root.style.setProperty('--app-accent-shadow', hexToRgba(theme.accentStart, 0.4));
             root.style.setProperty('--app-title-color', theme.titleColor);
+        }
+
+        function toggleUiStyle() {
+            const root = document.documentElement, racing = root.classList.toggle('racing');
+            try { localStorage.setItem('dm_ui_style', racing ? 'racing' : 'classic'); } catch (e) {}
+            applyTheme(companyData.theme || defaultTheme);
         }
 
         function previewTheme() {
