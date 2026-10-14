@@ -7,7 +7,7 @@
 <meta name="description" content="Concesionaria oficial RVM. Motos en venta, repuestos y manuales de motos en Río Gallegos, Santa Cruz. Consultá por WhatsApp.">
 <meta name="theme-color" content="#0c0e13">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Exo+2:ital,wght@1,800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#f4f6fa; --bg2:#ffffff; --card:#ffffff; --line:#e2e6ee;
@@ -42,14 +42,14 @@ nav a:hover{color:#fff;background:rgba(255,255,255,.08)}
 @media(max-width:760px){nav{display:none}.bar .btn-wa{margin-left:auto}}
 
 /* hero slider */
-.hero{position:relative;overflow:hidden;background:var(--dk);color:#fff;min-height:max(88vh,780px);display:flex}
+.hero{position:relative;overflow:hidden;background:var(--dk) url('img/fachada.jpg') center 35%/cover no-repeat;color:#fff;min-height:max(88vh,780px);display:flex}
 .slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .8s ease,visibility .8s;background-size:cover;background-position:center}
 .slide.on{opacity:1;visibility:visible}
-.slide:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,10,14,.92) 0%,rgba(8,10,14,.62) 55%,rgba(8,10,14,.35) 100%),linear-gradient(0deg,rgba(8,10,14,.9),transparent 45%)}
-.slide.s1{background-image:radial-gradient(800px 460px at 82% 20%,rgba(255,90,31,.45),transparent 60%),linear-gradient(135deg,#161a24,#0c0e13)}
-.slide.s2{background-image:radial-gradient(800px 460px at 15% 90%,rgba(255,90,31,.35),transparent 60%),linear-gradient(225deg,#1b2030,#0c0e13)}
-.slide.s3{background-image:radial-gradient(700px 420px at 90% 80%,rgba(80,140,255,.30),transparent 60%),linear-gradient(135deg,#141a26,#0c0e13)}
-.slide.s4{background-image:radial-gradient(700px 420px at 20% 15%,rgba(37,211,102,.22),transparent 60%),linear-gradient(135deg,#131a1a,#0c0e13)}
+.slide:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,10,14,.86) 0%,rgba(8,10,14,.62) 55%,rgba(8,10,14,.46) 100%),linear-gradient(0deg,rgba(8,10,14,.85),transparent 45%)}
+.slide.s1{background-image:radial-gradient(800px 460px at 82% 20%,rgba(255,90,31,.30),transparent 60%)}
+.slide.s2{background-image:radial-gradient(800px 460px at 15% 90%,rgba(255,90,31,.28),transparent 60%)}
+.slide.s3{background-image:radial-gradient(700px 420px at 90% 80%,rgba(80,140,255,.22),transparent 60%)}
+.slide.s4{background-image:radial-gradient(700px 420px at 20% 15%,rgba(37,211,102,.16),transparent 60%)}
 .slide .mark{position:absolute;right:-2%;bottom:-8%;font-family:'Bebas Neue';font-size:clamp(12rem,34vw,30rem);line-height:.8;color:transparent;-webkit-text-stroke:2px rgba(255,255,255,.07);pointer-events:none;user-select:none}
 .slide .wrap{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;justify-content:center;padding-top:56px;padding-bottom:200px}
 .pill{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.07);backdrop-filter:blur(6px);padding:6px 14px;border-radius:99px;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:18px}
@@ -72,8 +72,10 @@ nav a:hover{color:#fff;background:rgba(255,255,255,.08)}
 .stats .wrap{display:flex;gap:clamp(20px,6vw,64px);padding-top:14px;padding-bottom:14px;flex-wrap:wrap}
 .stats b{display:block;font-family:'Bebas Neue';font-size:1.9rem;line-height:1;color:var(--acc);font-weight:400}
 .stats span{font-size:.8rem;color:#c3c9d4}
-.oficial{display:inline-flex;align-items:center;gap:10px;background:#fff;color:#12151b;border-radius:12px;padding:8px 14px;font-weight:700;font-size:.85rem;align-self:flex-start;margin-bottom:18px}
-.oficial b{font-family:'Bebas Neue';font-weight:400;font-size:1.5rem;color:#fff;background:#d11a2a;padding:0 10px;border-radius:6px;letter-spacing:.06em;line-height:1.35}
+.oficial{display:inline-flex;align-items:center;gap:14px;align-self:flex-start;margin-bottom:18px;background:rgba(8,10,14,.55);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:10px 16px}
+.oficial img{height:46px;width:auto}
+.oficial span{font-family:'Exo 2',Inter,sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;color:#ec2a2a;font-size:1.25rem;line-height:1;letter-spacing:.02em}
+.oficial span em{display:block;color:#fff;font-style:italic}
 @media(max-width:640px){.hero{min-height:max(92vh,740px)}.slide .wrap{padding-bottom:170px}.hnav{bottom:84px}.arr{display:none}.slide p{font-size:1rem}
 .stats .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding-top:10px;padding-bottom:10px}.stats b{font-size:1.4rem}.stats span{font-size:.62rem;line-height:1.2;display:block}}
 
@@ -172,7 +174,7 @@ footer a:hover{color:#fff}
 <main id="inicio">
 <div class="hero" id="hero" aria-roledescription="carousel">
   <div class="slide s1 on"><div class="mark">RVM</div><div class="wrap">
-    <div class="oficial"><b>RVM</b> Concesionaria oficial</div>
+    <div class="oficial"><img src="img/rvm-logo.png" alt="RVM Motocicletas"><span>Concesionario<em>oficial</em></span></div>
     <span class="pill"><i></i>Río Gallegos, Santa Cruz — Argentina</span>
     <h1>Tu próxima <span>moto</span> te está esperando.</h1>
     <p>Concesionaria oficial RVM y tienda especializada en motos, repuestos y accesorios en Río Gallegos.</p>
@@ -199,7 +201,7 @@ footer a:hover{color:#fff}
   <div class="hnav"><div class="wrap"><div class="dots" id="dots"></div>
     <div class="arr"><button onclick="slide(-1)" aria-label="Anterior">‹</button><button onclick="slide(1)" aria-label="Siguiente">›</button></div></div></div>
   <div class="stats"><div class="wrap">
-    <div><b>RVM</b><span>Concesionaria oficial</span></div>
+    <div><img src="img/rvm-logo.png" alt="RVM" style="height:34px;width:auto;display:block;margin-bottom:2px"><span>Concesionario oficial</span></div>
     <div><b id="stM">+</b><span>Motos disponibles</span></div>
     <div><b id="stP">+</b><span>Repuestos publicados</span></div>
     <div><b id="stD">+</b><span>Manuales gratis</span></div>
@@ -210,7 +212,7 @@ footer a:hover{color:#fff}
   <div class="wrap">
     <div class="head"><div><h2>Nuestras <em>marcas</em></h2><p>Concesionaria oficial y venta de motos de primeras marcas.</p></div></div>
     <div class="marcas">
-      <div class="marca"><div class="logo rvm">R<b>V</b>M</div><p>Concesionaria oficial RVM en Río Gallegos: motos nuevas, garantía oficial, service y repuestos originales.</p>
+      <div class="marca"><img src="img/rvm-logo.png" alt="RVM Motocicletas" style="height:84px;width:auto;margin-bottom:4px"><div style="font-family:'Exo 2',Inter,sans-serif;font-style:italic;font-weight:800;text-transform:uppercase;color:#ec2a2a;font-size:1.15rem;margin-top:6px">Concesionario oficial</div><p>Concesionaria oficial RVM en Río Gallegos: motos nuevas, garantía oficial, service y repuestos originales.</p>
         <a class="btn btn-acc" href="#motos" onclick="setMarca('RVM')">Ver motos RVM</a></div>
       <div class="marca"><div class="logo">Otras marcas</div><p>También tenemos motos de otras marcas y repuestos para todos los modelos. Consultanos lo que buscás.</p>
         <a class="btn btn-line" href="#motos" onclick="setMarca('')">Ver todas</a></div>
@@ -264,7 +266,7 @@ footer a:hover{color:#fff}
   <div class="wrap">
     <div class="head"><div><h2>Dónde <em>encontrarnos</em></h2></div></div>
     <div class="contact">
-      <div><h3>📍 Local</h3>Pasteur 628<br>Río Gallegos, Santa Cruz</div>
+      <div><h3>📍 Local</h3>Pasteur 628<br>Río Gallegos, Santa Cruz<br><span class="meta">Horario: 9:30 a 12:30 y 15:00 a 19:00</span></div>
       <div><h3>💬 WhatsApp</h3><a id="waLink" target="_blank" rel="noopener" style="color:var(--ok);font-weight:600">2966 520261</a><br><span class="meta">Respondemos consultas y presupuestos</span></div>
       <div><h3>🛠️ Servicio</h3>Reparación y mantenimiento de motos. Pedí tu turno por WhatsApp.</div>
     </div>
@@ -274,7 +276,7 @@ footer a:hover{color:#fff}
 
 <footer>
   <div class="wrap">
-    <span>© DURANMOTOS · Concesionaria oficial RVM · Pasteur 628, Río Gallegos</span>
+    <span style="display:flex;align-items:center;gap:10px"><img src="img/rvm-logo.png" alt="RVM" style="height:26px"> © DURANMOTOS · Concesionario oficial RVM · Pasteur 628, Río Gallegos</span>
     <a href="index.html">Acceso al sistema</a>
   </div>
 </footer>
