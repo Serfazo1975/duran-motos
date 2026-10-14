@@ -138,6 +138,10 @@ footer{background:var(--dk);padding:26px 0;color:#9aa1ad;font-size:.85rem}
 footer .wrap{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between}
 footer a:hover{color:#fff}
 
+.mapbox{margin-top:16px;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:#fff}
+.mapbox iframe{display:block;width:100%;height:380px;border:0;background:#e9edf3}
+.mapcta{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;padding:14px 18px}
+@media(max-width:640px){.mapbox iframe{height:300px}}
 /* modal */
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:100;display:none;align-items:center;justify-content:center;padding:14px}
 .modal.on{display:flex}
@@ -269,6 +273,17 @@ footer a:hover{color:#fff}
       <div><h3>📍 Local</h3>Pasteur 628<br>Río Gallegos, Santa Cruz<br><span class="meta">Horario: 9:30 a 12:30 y 15:00 a 19:00</span></div>
       <div><h3>💬 WhatsApp</h3><a id="waLink" target="_blank" rel="noopener" style="color:var(--ok);font-weight:600">2966 520261</a><br><span class="meta">Respondemos consultas y presupuestos</span></div>
       <div><h3>🛠️ Servicio</h3>Reparación y mantenimiento de motos. Pedí tu turno por WhatsApp.</div>
+    </div>
+    <div class="mapbox">
+      <iframe title="Mapa: DURANMOTOS, Pasteur 628, Río Gallegos" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen
+        src="https://maps.google.com/maps?q=Pasteur%20628%2C%20R%C3%ADo%20Gallegos%2C%20Santa%20Cruz%2C%20Argentina&hl=es&z=16&output=embed"></iframe>
+      <div class="mapcta">
+        <div><b>Cómo llegar</b><br><span class="meta">Pasteur 628, Río Gallegos, Santa Cruz</span></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <a class="btn btn-acc" target="_blank" rel="noopener" href="https://www.google.com/maps/dir/?api=1&destination=Pasteur%20628%2C%20R%C3%ADo%20Gallegos%2C%20Santa%20Cruz%2C%20Argentina">📍 Cómo llegar</a>
+          <a class="btn btn-ghost" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=Pasteur%20628%2C%20R%C3%ADo%20Gallegos%2C%20Santa%20Cruz%2C%20Argentina">Abrir en Google Maps</a>
+        </div>
+      </div>
     </div>
   </div>
 </section>
