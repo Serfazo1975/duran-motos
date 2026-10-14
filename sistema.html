@@ -8920,5 +8920,34 @@ async function twDel(tbl, id) {
   window.renderReparaciones=function(){r0.apply(this,arguments);addDelBtns();};
 })();
 </script>
+<script id="v31-reset-ventas">
+// V31: boton admin "Poner ventas en cero" (descarga backup antes, pide escribir BORRAR)
+(function(){
+  function inject(){
+    if(document.getElementById('btn-reset-ventas'))return;
+    var c=document.getElementById('sales-history-container'); if(!c)return;
+    var d=document.createElement('div'); d.style.cssText='display:flex;justify-content:flex-end;margin:0 0 12px';
+    d.innerHTML='<button id="btn-reset-ventas" type="button" style="background:linear-gradient(90deg,#ef4444,#b91c1c);color:#fff;padding:10px 18px;border-radius:10px;font-weight:700;cursor:pointer">🗑️ Poner ventas en cero</button>';
+    c.parentNode.insertBefore(d,c);
+    d.firstChild.onclick=resetVentas;
+  }
+  async function resetVentas(){
+    try{ if(typeof isAdmin==='function'&&!isAdmin()){alert('⛔ Solo el Administrador puede borrar las ventas.');return;} }catch(e){}
+    if(!sales.length){alert('No hay ventas para borrar.');return;}
+    if(!confirm('Vas a borrar '+sales.length+' venta(s) y los reportes quedarán en cero.\n\nPrimero se descargará una copia de respaldo. ¿Continuar?'))return;
+    var t=prompt('Para confirmar escribí: BORRAR'); if((t||'').trim().toUpperCase()!=='BORRAR'){alert('Cancelado. No se borró nada.');return;}
+    try{exportBackup();}catch(e){}
+    var ids=sales.map(function(x){return x.id});
+    sales=[];
+    for(var i=0;i<ids.length;i++){ try{await deleteFromSupabase('dm_sales',ids[i]);}catch(e){} }
+    try{saveAllData();}catch(e){}
+    try{cloudLog('eliminar','Ventas puestas en cero ('+ids.length+')',null);}catch(e){}
+    renderReportes();
+    alert('✅ Ventas en cero.');
+  }
+  var r0=window.renderReportes;
+  window.renderReportes=function(){r0.apply(this,arguments);inject();};
+})();
+</script>
 </body>
 </html>
