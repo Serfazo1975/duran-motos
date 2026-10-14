@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>DURANMOTOS · Motos y repuestos en Río Gallegos</title>
-<meta name="description" content="Motos en venta, repuestos y manuales de motos en Río Gallegos, Santa Cruz. Consultá por WhatsApp.">
-<meta name="theme-color" content="#0f1115">
+<title>DURANMOTOS · Concesionaria oficial RVM · Río Gallegos</title>
+<meta name="description" content="Concesionaria oficial RVM. Motos en venta, repuestos y manuales de motos en Río Gallegos, Santa Cruz. Consultá por WhatsApp.">
+<meta name="theme-color" content="#0c0e13">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0f1115; --bg2:#171a20; --card:#1c2027; --line:#2a2f38;
-  --tx:#f2f3f5; --mut:#9aa1ad; --acc:#ff5a1f; --acc2:#ff8a3d; --ok:#25d366;
+  --bg:#f4f6fa; --bg2:#ffffff; --card:#ffffff; --line:#e2e6ee;
+  --tx:#12151b; --mut:#5d6675; --acc:#ff5a1f; --acc2:#e8460c; --ok:#25d366; --dk:#0c0e13; --dk2:#171a22;
   --r:14px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
@@ -20,100 +20,140 @@ body{font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--tx)
 a{color:inherit;text-decoration:none}
 img{max-width:100%;display:block}
 .wrap{max-width:1180px;margin:0 auto;padding:0 16px}
-h1,h2,h3,.brand{font-family:'Barlow Condensed',Inter,sans-serif;text-transform:uppercase;letter-spacing:.02em}
+h1,h2,h3,.brand{font-family:'Bebas Neue',Impact,sans-serif;text-transform:uppercase;letter-spacing:.03em;font-weight:400}
+h1,h2,h3,.brand,.price{font-weight:400!important}
 
 /* header */
-header{position:sticky;top:0;z-index:50;background:rgba(15,17,21,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+header{position:sticky;top:0;z-index:50;background:rgba(12,14,19,.88);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08);color:#f2f3f5}
 .bar{display:flex;align-items:center;gap:16px;height:64px}
-.brand{font-size:1.7rem;font-weight:800}
+.brand{font-size:2rem;line-height:1;display:flex;flex-direction:column}
+.brand small{font-family:Inter;font-size:.58rem;letter-spacing:.14em;color:#aab1bd;font-weight:600;margin-top:2px}
 .brand b{color:var(--acc)}
 nav{display:flex;gap:4px;margin-left:auto}
-nav a{padding:8px 12px;border-radius:8px;font-weight:500;color:var(--mut);font-size:.95rem}
-nav a:hover{color:var(--tx);background:var(--bg2)}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:10px;font-weight:600;border:0;cursor:pointer;font-size:.95rem;font-family:inherit}
+nav a{padding:8px 12px;border-radius:8px;font-weight:500;color:#aab1bd;font-size:.95rem}
+nav a:hover{color:#fff;background:rgba(255,255,255,.08)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 22px;border-radius:99px;font-weight:600;border:0;cursor:pointer;font-size:.95rem;font-family:inherit}
 .btn-wa{background:var(--ok);color:#06240f}
 .btn-acc{background:var(--acc);color:#fff}
 .btn-ghost{background:transparent;color:var(--tx);border:1px solid var(--line)}
+.btn-white{background:#fff;color:#12151b}
+.btn-line{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.28)}
 .btn:hover{filter:brightness(1.08)}
 @media(max-width:760px){nav{display:none}.bar .btn-wa{margin-left:auto}}
 
-/* hero */
-.hero{position:relative;overflow:hidden;padding:72px 0 64px;background:
-  radial-gradient(900px 400px at 85% -10%,rgba(255,90,31,.28),transparent 60%),
-  linear-gradient(180deg,#14171c,var(--bg))}
-.hero:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,transparent 0 38px,rgba(255,255,255,.025) 38px 40px);pointer-events:none}
-.hero .wrap{position:relative;z-index:1}
-.tag{display:inline-block;background:rgba(255,90,31,.14);color:var(--acc2);border:1px solid rgba(255,90,31,.4);padding:4px 12px;border-radius:99px;font-size:.8rem;font-weight:600;margin-bottom:16px}
-.hero h1{font-size:clamp(2.6rem,8vw,5.2rem);line-height:.95;font-weight:800;max-width:14ch}
-.hero h1 span{color:var(--acc)}
-.hero p{color:var(--mut);max-width:52ch;margin:18px 0 26px;font-size:1.05rem}
+/* hero slider */
+.hero{position:relative;overflow:hidden;background:var(--dk);color:#fff;min-height:max(88vh,780px);display:flex}
+.slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .8s ease,visibility .8s;background-size:cover;background-position:center}
+.slide.on{opacity:1;visibility:visible}
+.slide:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,10,14,.92) 0%,rgba(8,10,14,.62) 55%,rgba(8,10,14,.35) 100%),linear-gradient(0deg,rgba(8,10,14,.9),transparent 45%)}
+.slide.s1{background-image:radial-gradient(800px 460px at 82% 20%,rgba(255,90,31,.45),transparent 60%),linear-gradient(135deg,#161a24,#0c0e13)}
+.slide.s2{background-image:radial-gradient(800px 460px at 15% 90%,rgba(255,90,31,.35),transparent 60%),linear-gradient(225deg,#1b2030,#0c0e13)}
+.slide.s3{background-image:radial-gradient(700px 420px at 90% 80%,rgba(80,140,255,.30),transparent 60%),linear-gradient(135deg,#141a26,#0c0e13)}
+.slide.s4{background-image:radial-gradient(700px 420px at 20% 15%,rgba(37,211,102,.22),transparent 60%),linear-gradient(135deg,#131a1a,#0c0e13)}
+.slide .mark{position:absolute;right:-2%;bottom:-8%;font-family:'Bebas Neue';font-size:clamp(12rem,34vw,30rem);line-height:.8;color:transparent;-webkit-text-stroke:2px rgba(255,255,255,.07);pointer-events:none;user-select:none}
+.slide .wrap{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;justify-content:center;padding-top:56px;padding-bottom:200px}
+.pill{display:inline-flex;align-items:center;gap:8px;align-self:flex-start;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.07);backdrop-filter:blur(6px);padding:6px 14px;border-radius:99px;font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:18px}
+.pill i{width:7px;height:7px;border-radius:50%;background:var(--acc);display:inline-block}
+.slide h1{font-size:clamp(3.4rem,10.5vw,8rem);line-height:.9;max-width:12ch}
+.slide h1 span{color:var(--acc)}
+.slide p{color:#d3d8e1;max-width:50ch;margin:18px 0 26px;font-size:1.1rem;font-weight:300}
 .cta{display:flex;gap:10px;flex-wrap:wrap}
-.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:44px}
-.strip div{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;font-size:.9rem;color:var(--mut)}
-.strip b{display:block;color:var(--tx);font-size:1rem}
+.hnav{position:absolute;left:0;right:0;bottom:88px;z-index:3}
+.hnav .wrap{display:flex;align-items:center;gap:12px}
+.dots{display:flex;gap:8px}
+.dots button{width:34px;height:4px;border-radius:4px;border:0;background:rgba(255,255,255,.3);cursor:pointer;padding:0;overflow:hidden;position:relative}
+.dots button.on{background:rgba(255,255,255,.3)}
+.dots button.on:after{content:"";position:absolute;inset:0;background:var(--acc);transform-origin:left;animation:fill 6s linear forwards}
+@keyframes fill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.arr{margin-left:auto;display:flex;gap:8px}
+.arr button{width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.08);color:#fff;font-size:1.1rem;cursor:pointer}
+.arr button:hover{background:var(--acc);border-color:var(--acc)}
+.stats{position:absolute;left:0;right:0;bottom:0;z-index:3;border-top:1px solid rgba(255,255,255,.12);background:rgba(8,10,14,.55);backdrop-filter:blur(8px)}
+.stats .wrap{display:flex;gap:clamp(20px,6vw,64px);padding-top:14px;padding-bottom:14px;flex-wrap:wrap}
+.stats b{display:block;font-family:'Bebas Neue';font-size:1.9rem;line-height:1;color:var(--acc);font-weight:400}
+.stats span{font-size:.8rem;color:#c3c9d4}
+.oficial{display:inline-flex;align-items:center;gap:10px;background:#fff;color:#12151b;border-radius:12px;padding:8px 14px;font-weight:700;font-size:.85rem;align-self:flex-start;margin-bottom:18px}
+.oficial b{font-family:'Bebas Neue';font-weight:400;font-size:1.5rem;color:#fff;background:#d11a2a;padding:0 10px;border-radius:6px;letter-spacing:.06em;line-height:1.35}
+@media(max-width:640px){.hero{min-height:max(92vh,740px)}.slide .wrap{padding-bottom:170px}.hnav{bottom:84px}.arr{display:none}.slide p{font-size:1rem}
+.stats .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding-top:10px;padding-bottom:10px}.stats b{font-size:1.4rem}.stats span{font-size:.62rem;line-height:1.2;display:block}}
+
+/* marcas y beneficios */
+.marcas{display:flex;gap:14px;flex-wrap:wrap}
+.marca{flex:1;min-width:240px;background:var(--dk);color:#fff;border-radius:18px;padding:28px;position:relative;overflow:hidden}
+.marca .logo{font-family:'Bebas Neue';font-size:4rem;line-height:1;letter-spacing:.06em}
+.marca .logo.rvm{color:#fff}.marca .logo.rvm b{color:#e32636;font-weight:400}
+.marca p{color:#c3c9d4;margin:8px 0 16px;font-size:.95rem}
+.marca:after{content:"";position:absolute;right:-40px;top:-40px;width:160px;height:160px;border-radius:50%;background:rgba(255,90,31,.18)}
+.ben{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.ben div{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px}
+.ben i{font-style:normal;font-size:1.6rem;display:block;margin-bottom:8px}
+.ben h3{font-size:1.5rem;margin-bottom:4px}
+.ben p{color:var(--mut);font-size:.92rem}
 
 /* secciones */
-section{padding:56px 0}
-section.alt{background:var(--bg2)}
+section{padding:72px 0}
+section.alt{background:#fff}
 .head{display:flex;flex-wrap:wrap;gap:12px;align-items:end;justify-content:space-between;margin-bottom:22px}
-.head h2{font-size:clamp(1.9rem,5vw,2.8rem);font-weight:800;line-height:1}
+.head h2{font-size:clamp(2.4rem,6vw,3.8rem);line-height:.95}
 .head h2 em{font-style:normal;color:var(--acc)}
 .head p{color:var(--mut);font-size:.95rem}
 .tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
-.tools input,.tools select{background:var(--card);border:1px solid var(--line);color:var(--tx);padding:10px 12px;border-radius:10px;font:inherit;min-width:0}
+.tools input,.tools select{background:#fff;border:1px solid var(--line);color:var(--tx);padding:10px 12px;border-radius:10px;font:inherit;min-width:0}
 .tools input{flex:2;min-width:180px}.tools select{flex:1;min-width:140px}
 .chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px}
-.chip{background:var(--card);border:1px solid var(--line);color:var(--mut);padding:6px 14px;border-radius:99px;font-size:.85rem;cursor:pointer;font-family:inherit}
+.chip{background:#fff;border:1px solid var(--line);color:var(--mut);padding:6px 14px;border-radius:99px;font-size:.85rem;cursor:pointer;font-family:inherit}
 .chip.on{background:var(--acc);border-color:var(--acc);color:#fff}
 
 /* cards */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;cursor:pointer;transition:transform .2s,border-color .2s}
-.card:hover{transform:translateY(-3px);border-color:var(--acc)}
-.ph{aspect-ratio:4/3;background:#10131a;position:relative;overflow:hidden}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 1px 2px rgba(16,24,40,.04);display:flex;flex-direction:column;cursor:pointer;transition:transform .2s,border-color .2s}
+.card:hover{transform:translateY(-4px);border-color:var(--acc);box-shadow:0 14px 32px rgba(16,24,40,.12)}
+.ph{aspect-ratio:4/3;background:#eef1f6;position:relative;overflow:hidden}
 .ph img{width:100%;height:100%;object-fit:cover}
-.ph.noimg{display:grid;place-items:center;color:#3a414d}
+.ph.noimg{display:grid;place-items:center;color:#b5bcc8}
+.ph .brandtag{position:absolute;top:10px;right:10px;background:#12151b;color:#fff;font-size:.7rem;font-weight:700;padding:3px 9px;border-radius:99px}
 .ph .badge{position:absolute;top:10px;left:10px;background:var(--acc);color:#fff;font-size:.7rem;font-weight:700;padding:3px 9px;border-radius:99px;text-transform:uppercase}
 .info{padding:14px;display:flex;flex-direction:column;gap:6px;flex:1}
-.info h3{font-size:1.25rem;font-weight:700;line-height:1.1}
+.info h3{font-size:1.55rem;line-height:1}
 .meta{color:var(--mut);font-size:.82rem}
-.price{font-family:'Barlow Condensed';font-size:1.6rem;font-weight:700;color:var(--acc2);margin-top:auto}
+.price{font-family:'Bebas Neue',Impact,sans-serif;font-size:1.9rem;color:var(--acc2);margin-top:auto}
 .price small{font-size:.8rem;color:var(--mut);font-family:Inter;font-weight:400}
 .empty{grid-column:1/-1;text-align:center;padding:36px 16px;color:var(--mut);border:1px dashed var(--line);border-radius:var(--r)}
 
 /* manuales */
 .man{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
 .mrow{display:flex;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px}
-.mico{flex:none;width:44px;height:52px;border-radius:6px;background:var(--acc);display:grid;place-items:center;font-weight:800;font-size:.7rem;color:#fff}
+.mico{flex:none;width:44px;height:52px;border-radius:8px;background:var(--acc);display:grid;place-items:center;font-weight:800;font-size:.7rem;color:#fff}
 .mrow h3{font-family:Inter;text-transform:none;font-size:.95rem;font-weight:600;letter-spacing:0;line-height:1.25}
 .mrow .meta{margin-top:2px}
 .mrow .btn{margin-left:auto;padding:8px 12px;font-size:.85rem;flex:none}
 
 /* contacto */
 .contact{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
-.contact div{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px}
-.contact h3{font-size:1.1rem;color:var(--acc2);margin-bottom:6px}
-footer{border-top:1px solid var(--line);padding:22px 0;color:var(--mut);font-size:.85rem}
+.contact div{background:var(--bg);border:1px solid var(--line);border-radius:var(--r);padding:18px}
+.contact h3{font-size:1.5rem;color:var(--acc2);margin-bottom:4px}
+footer{background:var(--dk);padding:26px 0;color:#9aa1ad;font-size:.85rem}
 footer .wrap{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between}
-footer a:hover{color:var(--tx)}
+footer a:hover{color:#fff}
 
 /* modal */
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:100;display:none;align-items:center;justify-content:center;padding:14px}
 .modal.on{display:flex}
-.mbox{background:var(--bg2);border:1px solid var(--line);border-radius:18px;max-width:880px;width:100%;max-height:92vh;overflow:auto;display:grid;grid-template-columns:1.1fr 1fr}
+.mbox{background:#fff;border:1px solid var(--line);border-radius:18px;max-width:880px;width:100%;max-height:92vh;overflow:auto;display:grid;grid-template-columns:1.1fr 1fr}
 @media(max-width:720px){.mbox{grid-template-columns:1fr}}
-.gal .big{aspect-ratio:4/3;background:#10131a;display:grid;place-items:center}
+.gal .big{aspect-ratio:4/3;background:#eef1f6;display:grid;place-items:center}
 .gal .big img{width:100%;height:100%;object-fit:contain}
 .thumbs{display:flex;gap:6px;padding:8px;overflow-x:auto}
 .thumbs img{width:64px;height:48px;object-fit:cover;border-radius:6px;border:2px solid transparent;cursor:pointer;flex:none}
 .thumbs img.on{border-color:var(--acc)}
 .det{padding:20px;display:flex;flex-direction:column;gap:10px}
-.det h2{font-size:2rem;font-weight:800;line-height:1}
+.det h2{font-size:2.6rem;line-height:.95}
 .det dl{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:.9rem}
 .det dt{color:var(--mut)}
 .det p{color:var(--mut);font-size:.92rem;white-space:pre-line}
 .x{position:absolute;top:14px;right:18px;background:var(--bg);border:1px solid var(--line);color:var(--tx);width:38px;height:38px;border-radius:50%;font-size:1.2rem;cursor:pointer;z-index:2}
 .wa-float{position:fixed;right:16px;bottom:16px;z-index:60;background:var(--ok);color:#06240f;border-radius:99px;padding:13px 18px;font-weight:700;box-shadow:0 6px 24px rgba(0,0,0,.45)}
+@media(max-width:640px){.wa-float{padding:13px 15px;font-size:0}.wa-float:before{content:"💬";font-size:1.3rem}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
@@ -121,33 +161,62 @@ footer a:hover{color:var(--tx)}
 
 <header>
   <div class="wrap bar">
-    <a href="#inicio" class="brand">DURAN<b>MOTOS</b></a>
+    <a href="#inicio" class="brand"><span>DURAN<b>MOTOS</b></span><small>CONCESIONARIA OFICIAL RVM</small></a>
     <nav>
-      <a href="#motos">Motos</a><a href="#repuestos">Repuestos</a><a href="#manuales">Manuales</a><a href="#contacto">Contacto</a>
+      <a href="#motos">Motos</a><a href="#marcas">Marcas</a><a href="#repuestos">Repuestos</a><a href="#manuales">Manuales</a><a href="#contacto">Contacto</a>
     </nav>
     <a class="btn btn-wa" id="waTop" target="_blank" rel="noopener">💬 WhatsApp</a>
   </div>
 </header>
 
 <main id="inicio">
-<div class="hero">
+<div class="hero" id="hero" aria-roledescription="carousel">
+  <div class="slide s1 on"><div class="mark">RVM</div><div class="wrap">
+    <div class="oficial"><b>RVM</b> Concesionaria oficial</div>
+    <span class="pill"><i></i>Río Gallegos, Santa Cruz — Argentina</span>
+    <h1>Tu próxima <span>moto</span> te está esperando.</h1>
+    <p>Concesionaria oficial RVM y tienda especializada en motos, repuestos y accesorios en Río Gallegos.</p>
+    <div class="cta"><a class="btn btn-white" href="#motos">Ver motos</a><a class="btn btn-wa" id="waHero" target="_blank" rel="noopener">💬 Cotizar por WhatsApp</a></div>
+  </div></div>
+  <div class="slide s2"><div class="mark">0KM</div><div class="wrap">
+    <span class="pill"><i></i>Motos en venta</span>
+    <h1>Financiación y <span>entrega inmediata</span></h1>
+    <p>Consultá disponibilidad, planes y formas de pago. Te asesoramos para elegir la moto ideal.</p>
+    <div class="cta"><a class="btn btn-white" href="#motos">Ver catálogo</a><a class="btn btn-line" href="#contacto">Dónde estamos</a></div>
+  </div></div>
+  <div class="slide s3"><div class="mark">PARTS</div><div class="wrap">
+    <span class="pill"><i></i>Repuestos y accesorios</span>
+    <h1>Todo para <span>tu moto</span></h1>
+    <p>Bujías, cadenas, kits de transmisión, filtros, cubiertas, aceites y mucho más.</p>
+    <div class="cta"><a class="btn btn-white" href="#repuestos">Buscar repuestos</a><a class="btn btn-line" id="waRep" target="_blank" rel="noopener">Pedí el tuyo</a></div>
+  </div></div>
+  <div class="slide s4"><div class="mark">PDF</div><div class="wrap">
+    <span class="pill"><i></i>Descargas gratis</span>
+    <h1>Manuales <span>para descargar</span></h1>
+    <p>Manuales de usuario, de servicio y catálogos de despiece en PDF, sin registrarte.</p>
+    <div class="cta"><a class="btn btn-white" href="#manuales">Ir a manuales</a></div>
+  </div></div>
+  <div class="hnav"><div class="wrap"><div class="dots" id="dots"></div>
+    <div class="arr"><button onclick="slide(-1)" aria-label="Anterior">‹</button><button onclick="slide(1)" aria-label="Siguiente">›</button></div></div></div>
+  <div class="stats"><div class="wrap">
+    <div><b>RVM</b><span>Concesionaria oficial</span></div>
+    <div><b id="stM">+</b><span>Motos disponibles</span></div>
+    <div><b id="stP">+</b><span>Repuestos publicados</span></div>
+    <div><b id="stD">+</b><span>Manuales gratis</span></div>
+  </div></div>
+</div>
+
+<section id="marcas" class="alt">
   <div class="wrap">
-    <span class="tag">Río Gallegos · Santa Cruz</span>
-    <h1>Tu moto y sus repuestos, <span>en un solo lugar</span></h1>
-    <p>Motos en venta, repuestos para tu moto y manuales para descargar gratis. Consultanos por WhatsApp y te respondemos al toque.</p>
-    <div class="cta">
-      <a class="btn btn-acc" href="#motos">Ver motos</a>
-      <a class="btn btn-ghost" href="#repuestos">Buscar repuestos</a>
-      <a class="btn btn-ghost" href="#manuales">Descargar manuales</a>
-    </div>
-    <div class="strip">
-      <div><b>🏍️ Motos en venta</b>Consultá stock y financiación</div>
-      <div><b>🔧 Repuestos</b>Bujías, cadenas, filtros, cubiertas y más</div>
-      <div><b>📄 Manuales gratis</b>Descargá el de tu modelo en PDF</div>
-      <div><b>📍 Pasteur 628</b>Río Gallegos, Santa Cruz</div>
+    <div class="head"><div><h2>Nuestras <em>marcas</em></h2><p>Concesionaria oficial y venta de motos de primeras marcas.</p></div></div>
+    <div class="marcas">
+      <div class="marca"><div class="logo rvm">R<b>V</b>M</div><p>Concesionaria oficial RVM en Río Gallegos: motos nuevas, garantía oficial, service y repuestos originales.</p>
+        <a class="btn btn-acc" href="#motos" onclick="setMarca('RVM')">Ver motos RVM</a></div>
+      <div class="marca"><div class="logo">Otras marcas</div><p>También tenemos motos de otras marcas y repuestos para todos los modelos. Consultanos lo que buscás.</p>
+        <a class="btn btn-line" href="#motos" onclick="setMarca('')">Ver todas</a></div>
     </div>
   </div>
-</div>
+</section>
 
 <section id="motos">
   <div class="wrap">
@@ -178,6 +247,19 @@ footer a:hover{color:var(--tx)}
   </div>
 </section>
 
+<section id="beneficios">
+  <div class="wrap">
+    <div class="head"><div><h2>Por qué <em>elegirnos</em></h2></div></div>
+    <div class="ben">
+      <div><i>🏅</i><h3>Concesionaria oficial RVM</h3><p>Motos nuevas con respaldo y garantía oficial de la marca.</p></div>
+      <div><i>🔧</i><h3>Repuestos originales</h3><p>Repuestos y accesorios para que tu moto rinda como el primer día.</p></div>
+      <div><i>🤝</i><h3>Atención personalizada</h3><p>Te asesoramos por WhatsApp o en el local, sin vueltas.</p></div>
+      <div><i>💳</i><h3>Financiación</h3><p>Consultá planes y formas de pago disponibles.</p></div>
+      <div><i>🛠️</i><h3>Taller y service</h3><p>Reservá tu turno para service y reparaciones.</p></div>
+    </div>
+  </div>
+</section>
+
 <section id="contacto" class="alt">
   <div class="wrap">
     <div class="head"><div><h2>Dónde <em>encontrarnos</em></h2></div></div>
@@ -192,7 +274,7 @@ footer a:hover{color:var(--tx)}
 
 <footer>
   <div class="wrap">
-    <span>© DURANMOTOS · Pasteur 628, Río Gallegos</span>
+    <span>© DURANMOTOS · Concesionaria oficial RVM · Pasteur 628, Río Gallegos</span>
     <a href="index.html">Acceso al sistema</a>
   </div>
 </footer>
@@ -227,14 +309,14 @@ async function load() {
       rest('dm_manuales?select=*&publicado=eq.true&order=marca,titulo&limit=1000')
     ]);
   } catch (e) { ITEMS = []; MANUALES = []; }
-  fillMarcas(); renderMotos(); renderChips(); renderRep(); renderMan();
+  fillMarcas(); renderMotos(); renderChips(); renderRep(); renderMan(); heroDestacados(); stats();
 }
 
 function card(it) {
   const f = (it.fotos || [])[0];
   const meta = [it.anio, it.km != null ? Number(it.km).toLocaleString('es-AR') + ' km' : (it.tipo === 'moto' ? '0 km' : ''), it.cilindrada].filter(Boolean).join(' · ');
   return `<article class="card" onclick="openM(${it.id})" tabindex="0" onkeydown="if(event.key==='Enter')openM(${it.id})">
-    <div class="ph ${f ? '' : 'noimg'}">${f ? `<img loading="lazy" src="${esc(f)}" alt="${esc(it.titulo)}">` : '<span style="font-size:3rem">' + (it.tipo === 'moto' ? '🏍️' : '🔧') + '</span>'}${it.destacado ? '<span class="badge">Destacado</span>' : ''}</div>
+    <div class="ph ${f ? '' : 'noimg'}">${it.tipo === 'moto' && it.marca ? `<span class="brandtag">${esc(it.marca)}</span>` : ''}${f ? `<img loading="lazy" src="${esc(f)}" alt="${esc(it.titulo)}">` : '<span style="font-size:3rem">' + (it.tipo === 'moto' ? '🏍️' : '🔧') + '</span>'}${it.destacado ? '<span class="badge">Destacado</span>' : ''}</div>
     <div class="info"><h3>${esc(it.titulo)}</h3>
       <div class="meta">${esc(it.tipo === 'moto' ? [it.marca, it.modelo].filter(Boolean).join(' ') : (it.categoria || ''))}</div>
       ${meta ? `<div class="meta">${esc(meta)}</div>` : ''}
@@ -243,7 +325,7 @@ function card(it) {
 
 function fillMarcas() {
   const sel = document.getElementById('mmarca');
-  [...new Set(ITEMS.filter(i => i.tipo === 'moto' && i.marca).map(i => i.marca))].sort().forEach(m => sel.add(new Option(m, m)));
+  [...new Set(['RVM', ...ITEMS.filter(i => i.tipo === 'moto' && i.marca).map(i => i.marca)])].sort().forEach(m => sel.add(new Option(m, m)));
 }
 function renderMotos() {
   const q = norm(document.getElementById('mq').value), mk = document.getElementById('mmarca').value, o = document.getElementById('mord').value;
@@ -270,6 +352,43 @@ function renderMan() {
     <div><h3>${esc(m.titulo)}</h3><div class="meta">${esc([m.marca, m.modelo, m.tipo].filter(Boolean).join(' · '))}</div></div>
     <a class="btn btn-acc" href="${esc(m.archivo_url)}" target="_blank" rel="noopener" download>⬇ Descargar</a></div>`).join('') ||
     `<div class="empty" style="grid-column:1/-1">${MANUALES.length ? 'No hay manuales para esa búsqueda.' : 'Estamos cargando los manuales.'} ¿Necesitás uno en particular? <a style="color:var(--acc2)" target="_blank" rel="noopener" href="${wa('Hola! Necesito el manual de: ')}">Pedilo por WhatsApp</a>.</div>`;
+}
+
+
+// ---- slider del hero (V25)
+let sl = 0, slT = null;
+function slides() { return [...document.querySelectorAll('#hero .slide')]; }
+function buildDots() {
+  const d = document.getElementById('dots'); d.innerHTML = slides().map((_, i) => `<button aria-label="Slide ${i + 1}" onclick="goSlide(${i})"></button>`).join(''); goSlide(sl, true);
+}
+function goSlide(i, quiet) {
+  const l = slides(); sl = (i + l.length) % l.length;
+  l.forEach((e, k) => e.classList.toggle('on', k === sl));
+  document.querySelectorAll('#dots button').forEach((b, k) => { b.classList.remove('on'); void b.offsetWidth; b.classList.toggle('on', k === sl); });
+  clearInterval(slT); slT = setInterval(() => goSlide(sl + 1), 6000);
+}
+function slide(n) { goSlide(sl + n); }
+(function () { let x0 = null; const h = document.getElementById('hero');
+  h.addEventListener('touchstart', e => x0 = e.touches[0].clientX, { passive: true });
+  h.addEventListener('touchend', e => { if (x0 == null) return; const dx = e.changedTouches[0].clientX - x0; if (Math.abs(dx) > 50) slide(dx < 0 ? 1 : -1); x0 = null; }); })();
+function heroDestacados() {
+  const h = document.getElementById('hero'), nav = h.querySelector('.hnav');
+  ITEMS.filter(i => i.tipo === 'moto' && i.destacado && (i.fotos || [])[0]).slice(0, 3).forEach(it => {
+    const d = document.createElement('div'); d.className = 'slide';
+    d.style.backgroundImage = `url("${String(it.fotos[0]).replace(/"/g, '%22')}")`;
+    d.innerHTML = `<div class="wrap"><span class="pill"><i></i>Destacada${it.marca ? ' · ' + esc(it.marca) : ''}</span><h1>${esc(it.titulo)}</h1><p>${esc([it.anio, it.cilindrada, it.km != null ? Number(it.km).toLocaleString('es-AR') + ' km' : '0 km'].filter(Boolean).join(' · '))} · ${money(it.precio, it.moneda)}</p>
+      <div class="cta"><a class="btn btn-white" href="javascript:openM(${it.id})">Ver detalles</a><a class="btn btn-wa" target="_blank" rel="noopener" href="${wa('Hola! Me interesa: ' + it.titulo)}">💬 Consultar</a></div></div>`;
+    h.insertBefore(d, nav);
+  });
+  buildDots();
+}
+function setMarca(m) { document.getElementById('mmarca').value = m; renderMotos(); }
+function stats() {
+  const n = t => ITEMS.filter(i => t ? i.tipo === 'moto' : i.tipo !== 'moto').length;
+  document.getElementById('stM').textContent = '+' + (n(true) || '');
+  document.getElementById('stP').textContent = '+' + (n(false) || '');
+  document.getElementById('stD').textContent = '+' + (MANUALES.length || '');
+  ['stM','stP','stD'].forEach(id => { const e = document.getElementById(id); if (e.textContent === '+') e.textContent = '—'; });
 }
 
 let galIdx = 0, galList = [];
@@ -299,7 +418,9 @@ document.getElementById('rq').addEventListener('input', renderRep);
 document.getElementById('manq').addEventListener('input', renderMan);
 document.getElementById('rchips').addEventListener('click', e => { const b = e.target.closest('.chip'); if (!b) return; repCat = b.dataset.c; renderChips(); renderRep(); });
 const hi = wa('Hola! Vi la página de DURANMOTOS y quiero hacer una consulta.');
-['waTop', 'waLink', 'waFloat'].forEach(i => document.getElementById(i).href = hi);
+['waTop', 'waLink', 'waFloat', 'waHero'].forEach(i => document.getElementById(i).href = hi);
+document.getElementById('waRep').href = wa('Hola! Estoy buscando un repuesto para mi moto.');
+buildDots();
 load();
 </script>
 </body>
