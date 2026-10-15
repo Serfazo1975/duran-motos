@@ -2801,6 +2801,13 @@ html.racing button[class*="from-blue-500"][class*="to-purple-600"]:hover,html.ra
                     💾 Sistema de Backup y Recuperación
                 </h2>
 
+                <!-- V31: Reinicio total -->
+                <div style="border:2px solid #fca5a5;background:#fef2f2;border-radius:16px;padding:16px;margin-bottom:24px;">
+                    <h3 style="font-weight:800;color:#b91c1c;margin-bottom:4px;">⚠️ Reiniciar todo a cero</h3>
+                    <p style="font-size:.85rem;color:#7f1d1d;margin-bottom:10px;">Borra ventas, inventario, clientes, reparaciones y presupuestos en la nube y en todos los equipos. Antes se descarga una copia de respaldo. No se puede deshacer.</p>
+                    <button id="btn-reset-todo" type="button" onclick="resetTodo()" style="background:linear-gradient(90deg,#ef4444,#b91c1c);color:#fff;padding:12px 20px;border-radius:10px;font-weight:800;cursor:pointer;">🗑️ Reiniciar todo a cero</button>
+                </div>
+
                 <!-- Estado del sistema -->
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
                     <div class="bg-gradient-to-r from-green-500 to-green-600 text-white p-6 rounded-2xl shadow-lg">
@@ -9018,6 +9025,9 @@ async function twDel(tbl, id) {
           if(v&&v.ts&&Number(v.ts)>Number(lsGet(KEY)||0)){
             if(v.products){products=[];lsSet('duran_motos_products','[]');}
             if(v.sales){sales=[];lsSet('duran_motos_sales','[]');}
+            if(v.clients){clients=[];lsSet('duran_motos_clients','[]');}
+            if(v.quotes){quotes=[];lsSet('duran_motos_quotes','[]');}
+            if(v.repairs){repairs=[];lsSet('duran_motos_repairs','[]');}
             lsSet(KEY,String(v.ts));
           }
         }
@@ -9045,6 +9055,29 @@ async function twDel(tbl, id) {
     renderInventario();
     alert(err?('⚠️ Se vació este equipo, pero la nube dio un aviso: '+err):'✅ Inventario en cero (nube y este equipo). Los otros equipos se limpian solos al abrir el sistema.');
   }
+  window.resetTodo=async function(){
+    try{ if(typeof isAdmin==='function'&&!isAdmin()){alert('⛔ Solo el Administrador puede reiniciar todo.');return;} }catch(e){}
+    if(!confirm('Vas a BORRAR TODO (ventas, inventario, clientes, reparaciones y presupuestos) en la nube y en todos los equipos.\n\nPrimero se descargará una copia de respaldo. Esta acción no se puede deshacer. ¿Continuar?'))return;
+    var t=prompt('Para confirmar escribí: BORRAR'); if((t||'').trim().toUpperCase()!=='BORRAR'){alert('Cancelado. No se borró nada.');return;}
+    try{exportBackup();}catch(e){}
+    var errs=[];
+    if(sb){
+      var tablas=['dm_sales','dm_products','dm_clients','dm_repairs','dm_quotes','dm_invoices'];
+      for(var i=0;i<tablas.length;i++){
+        try{ var d=await sb.from(tablas[i]).delete().neq('id',-987654321); if(d.error) errs.push(tablas[i]+': '+d.error.message); }
+        catch(e){ errs.push(tablas[i]+': '+String(e)); }
+      }
+    }
+    products=[];sales=[];clients=[];repairs=[];quotes=[];invoices=[];selectedClient=null;
+    ['duran_motos_products','duran_motos_sales','duran_motos_clients','duran_motos_repairs','duran_motos_quotes','duran_motos_invoices'].forEach(function(k){lsSet(k,'[]');});
+    if(!errs.length) await setResetEpoch({products:true,sales:true,clients:true,quotes:true,repairs:true});
+    try{renderDashboard();}catch(e){}
+    try{renderReportes();}catch(e){}
+    try{renderInventario();}catch(e){}
+    try{renderClientes();}catch(e){}
+    try{renderReparaciones();}catch(e){}
+    alert(errs.length?('⚠️ Se reinició este equipo, pero la nube dio avisos:\n'+errs.join('\n')):'✅ Todo en cero (nube y este equipo). Los otros equipos se limpian solos al abrir el sistema.');
+  };
   function inject(){
     if(document.getElementById('btn-vaciar-inv'))return;
     var box=document.getElementById('inventario-content'); if(!box)return;
