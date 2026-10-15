@@ -1835,6 +1835,16 @@ html.racing button[class*="from-blue-500"][class*="to-purple-600"]:hover,html.ra
   #tienda-content{overflow-x:hidden}
 }
 </style>
+<style id="v31-presupuesto-mobile">
+/* V31: en celular, la hoja A4 del presupuesto se achica para entrar en la pantalla.
+   Se desactiva con body.pdf-capturing para no afectar el PDF (que sigue en A4 real). */
+/* El achicado de la hoja A4 en celular lo hace ajustarPresupuestoMovil() por JS
+   (el zoom necesita un número y en CSS no se puede derivar del ancho de pantalla). */
+@media screen and (max-width:640px){
+  #presupuesto-content > div{ overflow-x:hidden !important; padding-left:10px !important; padding-right:10px !important; }
+  #presupuesto-content .toolbar{ width:100% !important; }
+}
+</style>
 </head>
 <body class="gradient-bg">
 
@@ -3097,7 +3107,7 @@ html.racing button[class*="from-blue-500"][class*="to-purple-600"]:hover,html.ra
 
         <!-- Presupuesto Tab -->
         <div id="presupuesto-content" class="pb-8" style="display:none;">
-            <div style="display:flex;flex-direction:column;align-items:center;padding:20px;gap:20px;">
+            <div style="display:flex;flex-direction:column;align-items:center;padding:20px;gap:20px;max-width:100vw;overflow-x:auto;-webkit-overflow-scrolling:touch;">
 <!-- TOOLBAR -->
 <div class="toolbar">
   <button class="btn-print" onclick="imprimirConImagenes()">🖨️ Imprimir / PDF</button>
@@ -5213,6 +5223,7 @@ No cubre daños por mal uso, humedad, golpes o sobrecarga eléctrica.</textarea>
                     break;
                 case 'presupuesto':
                     initPresupuesto();
+                    setTimeout(ajustarPresupuestoMovil, 60);
                     break;
                 case 'catalogo':
                     catInit();
@@ -8463,6 +8474,8 @@ async function guardarPDF() {
   toolbar.style.display = 'none';
   if (logoControls) logoControls.style.display = 'none';
   if (logoFileInput) logoFileInput.style.display = 'none';
+  document.body.classList.add('pdf-capturing'); // V31: desactiva el zoom móvil durante la captura
+  try { ajustarPresupuestoMovil(); } catch(e){} // limpia el zoom inline antes de capturar
 
   prepararCaptura();
   mostrarNotificacion('⏳ Generando PDF...');
@@ -8541,6 +8554,8 @@ async function guardarPDF() {
     mostrarNotificacion('❌ Error al generar PDF: ' + err.message);
   } finally {
     restaurarCaptura();
+    document.body.classList.remove('pdf-capturing'); // V31
+    try { ajustarPresupuestoMovil(); } catch(e){} // reaplica el zoom móvil
     toolbar.style.display = '';
     if (logoControls) logoControls.style.display = '';
   }
@@ -9026,6 +9041,26 @@ async function twDel(tbl, id) {
   var r0=window.renderInventario;
   window.renderInventario=function(){r0.apply(this,arguments);inject();};
 })();
+</script>
+<script id="v31-presupuesto-zoom">
+// V31: achica la hoja A4 del presupuesto para que entre en el ancho del celular.
+// Usa zoom (soportado en iOS Safari y Chrome). No corre durante la generación del PDF,
+// así el PDF se exporta siempre en A4 real.
+function ajustarPresupuestoMovil(){
+  var cont=document.getElementById('presupuesto-content'); if(!cont)return;
+  var pages=cont.querySelectorAll('.page, .img-print-page');
+  var capt=document.body.classList.contains('pdf-capturing');
+  var z='';
+  if(!capt && window.innerWidth<=640){
+    var factor=(window.innerWidth-20)/794;
+    if(factor>0 && factor<1) z=String(factor);
+  }
+  pages.forEach(function(p){ p.style.zoom=z; });
+}
+window.addEventListener('resize', function(){
+  if(typeof activeTab!=='undefined' && activeTab==='presupuesto') ajustarPresupuestoMovil();
+});
+window.addEventListener('orientationchange', function(){ setTimeout(ajustarPresupuestoMovil,200); });
 </script>
 </body>
 </html>
