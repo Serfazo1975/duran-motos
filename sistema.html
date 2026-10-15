@@ -9063,9 +9063,21 @@ async function twDel(tbl, id) {
     var errs=[];
     if(sb){
       var tablas=['dm_sales','dm_products','dm_clients','dm_repairs','dm_quotes','dm_invoices'];
+      var sleep=function(ms){return new Promise(function(r){setTimeout(r,ms);});};
       for(var i=0;i<tablas.length;i++){
-        try{ var d=await sb.from(tablas[i]).delete().neq('id',-987654321); if(d.error) errs.push(tablas[i]+': '+d.error.message); }
-        catch(e){ errs.push(tablas[i]+': '+String(e)); }
+        var tabla=tablas[i], ok=false, last='';
+        // Reintenta hasta 4 veces por si se corta la conexión (4G). Lo que importa es que quede vacía.
+        for(var intento=0;intento<4 && !ok;intento++){
+          try{
+            var d=await sb.from(tabla).delete().neq('id',-987654321);
+            if(d.error) last=d.error.message;
+            var c=await sb.from(tabla).select('id');
+            if(!c.error && c.data && c.data.length===0){ ok=true; break; }
+            if(c.error) last=c.error.message;
+          }catch(e){ last=String(e&&e.message||e); }
+          await sleep(900);
+        }
+        if(!ok) errs.push(tabla+': '+(last||'no se pudo vaciar'));
       }
     }
     products=[];sales=[];clients=[];repairs=[];quotes=[];invoices=[];selectedClient=null;
