@@ -1825,6 +1825,16 @@ html.racing button[class*="from-blue-500"][class*="to-purple-600"],html.racing b
 html.racing button[class*="from-blue-500"][class*="to-purple-600"]:hover,html.racing button[class*="from-purple-500"][class*="to-purple-600"]:hover{box-shadow:0 0 0 2px var(--rc-gold)!important}
 </style>
 <meta name="robots" content="noindex,nofollow">
+<style id="v31-tienda-admin-mobile">
+/* V31: en celular, el formulario de Tienda web pública pasa a una sola columna
+   para no desbordar el ancho (antes exigia columnas de 150px minimo). */
+@media (max-width:640px){
+  #tienda-content div[style*="grid-template-columns:repeat(auto-fit"]{grid-template-columns:1fr!important}
+  #tienda-content input[style*="grid-column:span 2"]{grid-column:auto!important}
+  #tienda-content input,#tienda-content select,#tienda-content textarea{width:100%;box-sizing:border-box;max-width:100%}
+  #tienda-content{overflow-x:hidden}
+}
+</style>
 </head>
 <body class="gradient-bg">
 
