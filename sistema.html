@@ -2307,7 +2307,7 @@ html.racing button[class*="from-blue-500"][class*="to-purple-600"]:hover,html.ra
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                         <input type="text" id="new-product-estante" placeholder="N° de estante (ej: 3)" class="px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400" />
-                        <input type="text" id="new-product-fila" placeholder="N° de fila (ej: B)" class="px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400" />
+                        <input type="text" id="new-product-fila" placeholder="N° de gaveta (ej: B)" class="px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400" />
                         <label class="px-4 py-3 rounded-xl border border-gray-300 bg-white text-gray-600 text-sm flex items-center gap-2 cursor-pointer">📷 Foto del producto: <input type="file" id="new-product-foto" accept="image/*" class="text-xs"></label>
                     </div>
                     <button onclick="addNewProduct()" id="btn-add-product" class="bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-6 py-3 rounded-xl hover:shadow-lg font-bold transition-all duration-300">
@@ -3699,7 +3699,7 @@ No cubre daños por mal uso, humedad, golpes o sobrecarga eléctrica.</textarea>
                 </select>
                 <div class="grid grid-cols-2 gap-3">
                     <input type="text" id="edit-product-estante" placeholder="N° de estante" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-400" />
-                    <input type="text" id="edit-product-fila" placeholder="N° de fila" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-400" />
+                    <input type="text" id="edit-product-fila" placeholder="N° de gaveta" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-400" />
                 </div>
                 <div class="flex items-center gap-3">
                     <img id="edit-product-foto-preview" src="" alt="" style="width:64px;height:64px;object-fit:cover;border-radius:10px;border:1px solid #e5e7eb;display:none;">
@@ -5707,7 +5707,7 @@ window.onload = function() {
             if (!searchTerm) return products;
             const words = searchTerm.toLowerCase().trim().split(/\s+/).filter(w => w.length > 0);
             return products.filter(p => {
-                const haystack = (p.name + ' ' + p.code + ' ' + p.category + ' ' + (p.estante||'') + ' ' + (p.fila||'') + ' estante ' + (p.estante||'') + ' fila ' + (p.fila||'')).toLowerCase();
+                const haystack = (p.name + ' ' + p.code + ' ' + p.category + ' ' + (p.estante||'') + ' ' + (p.fila||'') + ' estante ' + (p.estante||'') + ' gaveta ' + (p.fila||'')).toLowerCase();
                 // Código exacto → prioridad máxima
                 if (p.code.toLowerCase() === searchTerm.toLowerCase()) return true;
                 // Todas las palabras deben aparecer en el haystack
@@ -6313,7 +6313,7 @@ window.onload = function() {
             const estante = product.estante || '';
             const fila = product.fila || '';
             const ubic = (estante || fila)
-                ? `<div class="text-xs leading-tight">${estante ? `<div><span class="text-gray-400">Est.</span> <strong>${highlightText(String(estante), searchTerm)}</strong></div>` : ''}${fila ? `<div><span class="text-gray-400">Fila</span> <strong>${highlightText(String(fila), searchTerm)}</strong></div>` : ''}</div>`
+                ? `<div class="text-xs leading-tight">${estante ? `<div><span class="text-gray-400">Est.</span> <strong>${highlightText(String(estante), searchTerm)}</strong></div>` : ''}${fila ? `<div><span class="text-gray-400">Gav.</span> <strong>${highlightText(String(fila), searchTerm)}</strong></div>` : ''}</div>`
                 : '<span class="text-gray-300 text-xs">—</span>';
             const foto = img
                 ? `<img src="${img}" alt="${(product.name||'').replace(/"/g,'&quot;')}" class="inv-thumb" onclick="abrirLightbox('${img}')">`
