@@ -1845,6 +1845,20 @@ html.racing button[class*="from-blue-500"][class*="to-purple-600"]:hover,html.ra
   #presupuesto-content .toolbar{ width:100% !important; }
 }
 </style>
+<style id="v31-mobile-general">
+/* V31: ajustes generales para que el sistema entre bien en el celular. */
+@media (max-width:640px){
+  /* Las filas de botones (filtros, herramientas) pasan a varias líneas en vez de desbordar */
+  #app .flex.gap-4, #app .flex.gap-3, #app .flex.gap-2{ flex-wrap:wrap; }
+  /* Menos margen lateral para aprovechar el ancho */
+  #app .px-8{ padding-left:14px !important; padding-right:14px !important; }
+  #app .p-8{ padding:16px !important; }
+  #app .p-6{ padding:14px !important; }
+  /* Que nada empuje el ancho de la pantalla */
+  #app, #app .overflow-hidden{ max-width:100vw; }
+  #app *{ overflow-wrap:anywhere; }
+}
+</style>
 </head>
 <body class="gradient-bg">
 
