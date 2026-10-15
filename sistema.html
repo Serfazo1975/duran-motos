@@ -8944,6 +8944,7 @@ async function twDel(tbl, id) {
     var ids=sales.map(function(x){return x.id});
     sales=[];
     for(var i=0;i<ids.length;i++){ try{await deleteFromSupabase('dm_sales',ids[i]);}catch(e){} }
+    try{await setResetEpoch({sales:true});}catch(e){}
     try{saveAllData();}catch(e){}
     try{cloudLog('eliminar','Ventas puestas en cero ('+ids.length+')',null);}catch(e){}
     renderReportes();
@@ -8951,6 +8952,67 @@ async function twDel(tbl, id) {
   }
   var r0=window.renderReportes;
   window.renderReportes=function(){r0.apply(this,arguments);inject();};
+})();
+</script>
+<script id="v31-reset-inventario">
+// V31: "Vaciar inventario" + marca de reinicio en la nube.
+// Causa del bug: si la nube queda vacia, loadFromSupabase conservaba lo viejo del navegador y lo volvia a subir.
+// Ahora un reinicio deja una marca (dm_config.reset_epoch) y cada equipo limpia su copia local una sola vez.
+(function(){
+  var KEY='dm_reset_epoch_local';
+  function lsGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
+  function lsSet(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+  window.setResetEpoch=async function(scopes){
+    var ts=Date.now();
+    try{ if(sb) await sb.from('dm_config').upsert({key:'reset_epoch',value:Object.assign({ts:ts},scopes)},{onConflict:'key'}); }catch(e){}
+    lsSet(KEY,String(ts));
+  };
+  var orig=window.loadFromSupabase;
+  if(typeof orig==='function'){
+    window.loadFromSupabase=async function(){
+      try{
+        if(sb){
+          var r=await sb.from('dm_config').select('value').eq('key','reset_epoch').maybeSingle();
+          var v=r&&r.data&&r.data.value;
+          if(v&&v.ts&&Number(v.ts)>Number(lsGet(KEY)||0)){
+            if(v.products){products=[];lsSet('duran_motos_products','[]');}
+            if(v.sales){sales=[];lsSet('duran_motos_sales','[]');}
+            lsSet(KEY,String(v.ts));
+          }
+        }
+      }catch(e){}
+      return orig.apply(this,arguments);
+    };
+  }
+  async function vaciar(){
+    try{ if(typeof isAdmin==='function'&&!isAdmin()){alert('⛔ Solo el Administrador puede vaciar el inventario.');return;} }catch(e){}
+    if(!confirm('Vas a BORRAR todo el inventario ('+products.length+' producto/s) en la nube y en este equipo.\n\nPrimero se descargará una copia de respaldo. ¿Continuar?'))return;
+    var t=prompt('Para confirmar escribí: BORRAR'); if((t||'').trim().toUpperCase()!=='BORRAR'){alert('Cancelado. No se borró nada.');return;}
+    try{exportBackup();}catch(e){}
+    var err='';
+    if(sb){
+      try{
+        var d=await sb.from('dm_products').delete().neq('id',-987654321);
+        if(d.error) err=d.error.message;
+        var c=await sb.from('dm_products').select('id');
+        if(c.data&&c.data.length) err=err||('Quedaron '+c.data.length+' en la nube');
+      }catch(e){err=String(e);}
+    }
+    products=[]; lsSet('duran_motos_products','[]');
+    if(!err) await setResetEpoch({products:true});
+    try{saveAllData();}catch(e){}
+    renderInventario();
+    alert(err?('⚠️ Se vació este equipo, pero la nube dio un aviso: '+err):'✅ Inventario en cero (nube y este equipo). Los otros equipos se limpian solos al abrir el sistema.');
+  }
+  function inject(){
+    if(document.getElementById('btn-vaciar-inv'))return;
+    var box=document.getElementById('inventario-content'); if(!box)return;
+    var d=document.createElement('div'); d.style.cssText='display:flex;justify-content:flex-end;margin:0 0 12px';
+    d.innerHTML='<button id="btn-vaciar-inv" type="button" style="background:linear-gradient(90deg,#ef4444,#b91c1c);color:#fff;padding:10px 18px;border-radius:10px;font-weight:700;cursor:pointer">🗑️ Vaciar inventario</button>';
+    box.insertBefore(d,box.firstChild); d.firstChild.onclick=vaciar;
+  }
+  var r0=window.renderInventario;
+  window.renderInventario=function(){r0.apply(this,arguments);inject();};
 })();
 </script>
 </body>
