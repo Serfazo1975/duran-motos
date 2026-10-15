@@ -1859,6 +1859,14 @@ html.racing button[class*="from-blue-500"][class*="to-purple-600"]:hover,html.ra
   #app *{ overflow-wrap:anywhere; }
 }
 </style>
+<style id="v31-inventario-foto">
+/* V31: miniatura de producto en inventario + zoom al pasar el mouse + lightbox */
+.inv-thumb{width:48px;height:48px;object-fit:cover;border-radius:8px;border:1px solid #e5e7eb;cursor:zoom-in;background:#fff;display:inline-block;}
+#inv-hover{position:fixed;display:none;z-index:9998;pointer-events:none;}
+#inv-hover img{max-width:340px;max-height:340px;border-radius:12px;border:3px solid #fff;box-shadow:0 12px 44px rgba(0,0,0,.45);background:#fff;object-fit:contain;}
+#inv-lightbox{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:9999;padding:20px;cursor:zoom-out;}
+#inv-lightbox img{max-width:95vw;max-height:90vh;border-radius:12px;box-shadow:0 10px 40px rgba(0,0,0,.6);}
+</style>
 </head>
 <body class="gradient-bg">
 
@@ -2297,7 +2305,12 @@ html.racing button[class*="from-blue-500"][class*="to-purple-600"]:hover,html.ra
                             <option value="">— Categoría —</option>
                         </select>
                     </div>
-                    <button onclick="addNewProduct()" class="bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-6 py-3 rounded-xl hover:shadow-lg font-bold transition-all duration-300">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                        <input type="text" id="new-product-estante" placeholder="N° de estante (ej: 3)" class="px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400" />
+                        <input type="text" id="new-product-fila" placeholder="N° de fila (ej: B)" class="px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400" />
+                        <label class="px-4 py-3 rounded-xl border border-gray-300 bg-white text-gray-600 text-sm flex items-center gap-2 cursor-pointer">📷 Foto del producto: <input type="file" id="new-product-foto" accept="image/*" class="text-xs"></label>
+                    </div>
+                    <button onclick="addNewProduct()" id="btn-add-product" class="bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-6 py-3 rounded-xl hover:shadow-lg font-bold transition-all duration-300">
                         ✨ Agregar Producto
                     </button>
                 </div>
@@ -2345,9 +2358,11 @@ html.racing button[class*="from-blue-500"][class*="to-purple-600"]:hover,html.ra
                     <table class="w-full">
                         <thead>
                             <tr class="bg-gradient-to-r from-orange-500 to-red-500 text-white">
+                                <th class="p-4 text-center font-bold">📷 Foto</th>
                                 <th class="p-4 text-left font-bold">📝 Código</th>
                                 <th class="p-4 text-left font-bold">🏷️ Nombre</th>
                                 <th class="p-4 text-left font-bold">📂 Categoría</th>
+                                <th class="p-4 text-center font-bold">📍 Ubicación</th>
                                 <th class="p-4 text-right font-bold">💰 Precio</th>
                                 <th class="p-4 text-right font-bold">📦 Stock</th>
                                 <th class="p-4 text-center font-bold">📊 Estado</th>
@@ -3682,8 +3697,16 @@ No cubre daños por mal uso, humedad, golpes o sobrecarga eléctrica.</textarea>
                 <select id="edit-product-category" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-400">
                     <option value="">— Categoría —</option>
                 </select>
+                <div class="grid grid-cols-2 gap-3">
+                    <input type="text" id="edit-product-estante" placeholder="N° de estante" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-400" />
+                    <input type="text" id="edit-product-fila" placeholder="N° de fila" class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-400" />
+                </div>
+                <div class="flex items-center gap-3">
+                    <img id="edit-product-foto-preview" src="" alt="" style="width:64px;height:64px;object-fit:cover;border-radius:10px;border:1px solid #e5e7eb;display:none;">
+                    <label class="flex-1 px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 text-gray-600 text-sm flex items-center gap-2 cursor-pointer">📷 Cambiar/agregar foto: <input type="file" id="edit-product-foto" accept="image/*" class="text-xs"></label>
+                </div>
             </div>
-            
+
             <div class="flex gap-3">
                 <button onclick="saveEditProduct()" class="flex-1 bg-gradient-to-r from-green-500 to-green-600 text-white py-3 rounded-xl hover:shadow-lg font-bold transition-all duration-300 flex items-center justify-center gap-2">
                     ✅ Guardar
@@ -5684,7 +5707,7 @@ window.onload = function() {
             if (!searchTerm) return products;
             const words = searchTerm.toLowerCase().trim().split(/\s+/).filter(w => w.length > 0);
             return products.filter(p => {
-                const haystack = (p.name + ' ' + p.code + ' ' + p.category).toLowerCase();
+                const haystack = (p.name + ' ' + p.code + ' ' + p.category + ' ' + (p.estante||'') + ' ' + (p.fila||'') + ' estante ' + (p.estante||'') + ' fila ' + (p.fila||'')).toLowerCase();
                 // Código exacto → prioridad máxima
                 if (p.code.toLowerCase() === searchTerm.toLowerCase()) return true;
                 // Todas las palabras deben aparecer en el haystack
@@ -6271,11 +6294,37 @@ window.onload = function() {
             let filteredProducts = smartFilter(products, searchTerm);
             if (cat) filteredProducts = filteredProducts.filter(p => p.category === cat);
 
-            document.getElementById('inventory-table').innerHTML = filteredProducts.map(product => `
+            document.getElementById('inventory-table').innerHTML = filteredProducts.map(product => inventoryRowHtml(product, searchTerm)).join('');
+
+            if (filteredProducts.length === 0) {
+                document.getElementById('inventory-table').innerHTML = `
+                    <tr>
+                        <td colspan="9" class="p-8 text-center text-gray-500">
+                            ${searchTerm ? '🔍 No se encontraron productos' : '📦 No hay productos en el inventario'}
+                        </td>
+                    </tr>
+                `;
+            }
+        }
+
+        // V31: construye una fila del inventario (foto con zoom + ubicación estante/fila)
+        function inventoryRowHtml(product, searchTerm) {
+            const img = product.image || '';
+            const estante = product.estante || '';
+            const fila = product.fila || '';
+            const ubic = (estante || fila)
+                ? `<div class="text-xs leading-tight">${estante ? `<div><span class="text-gray-400">Est.</span> <strong>${highlightText(String(estante), searchTerm)}</strong></div>` : ''}${fila ? `<div><span class="text-gray-400">Fila</span> <strong>${highlightText(String(fila), searchTerm)}</strong></div>` : ''}</div>`
+                : '<span class="text-gray-300 text-xs">—</span>';
+            const foto = img
+                ? `<img src="${img}" alt="${(product.name||'').replace(/"/g,'&quot;')}" class="inv-thumb" onclick="abrirLightbox('${img}')">`
+                : '<span class="text-gray-300 text-2xl">📷</span>';
+            return `
                 <tr class="hover:bg-orange-50 transition-all duration-300">
+                    <td class="p-4 text-center">${foto}</td>
                     <td class="p-4 font-mono font-bold text-blue-600">${highlightText(product.code, searchTerm)}</td>
                     <td class="p-4 font-semibold">${highlightText(product.name, searchTerm)}</td>
                     <td class="p-4 text-gray-600">${highlightText(product.category, searchTerm)}</td>
+                    <td class="p-4 text-center text-gray-700">${ubic}</td>
                     <td class="p-4 text-right font-bold text-green-600">${formatCurrency(product.price)}</td>
                     <td class="p-4 text-right font-bold ${product.stock <= 5 ? 'text-red-500' : 'text-blue-600'}">${product.stock}</td>
                     <td class="p-4 text-center">
@@ -6301,17 +6350,7 @@ window.onload = function() {
                         ` : `<div class="flex flex-col items-center gap-1"><button onclick="prefillStockIn(${JSON.stringify(String(product.code)).replace(/"/g, '&quot;')})" class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-3 py-1.5 rounded-lg font-bold text-sm">➕ Sumar stock</button><span class="text-xs text-gray-400 font-medium">🔒 Solo lectura</span></div>`}
                     </td>
                 </tr>
-            `).join('');
-
-            if (filteredProducts.length === 0) {
-                document.getElementById('inventory-table').innerHTML = `
-                    <tr>
-                        <td colspan="7" class="p-8 text-center text-gray-500">
-                            ${searchTerm ? '🔍 No se encontraron productos' : '📦 No hay productos en el inventario'}
-                        </td>
-                    </tr>
-                `;
-            }
+            `;
         }
 
         function filterInventory() {
@@ -6320,42 +6359,12 @@ window.onload = function() {
             let filteredProducts = smartFilter(products, searchTerm);
             if (cat) filteredProducts = filteredProducts.filter(p => p.category === cat);
 
-            document.getElementById('inventory-table').innerHTML = filteredProducts.map(product => `
-                <tr class="hover:bg-orange-50 transition-all duration-300">
-                    <td class="p-4 font-mono font-bold text-blue-600">${highlightText(product.code, searchTerm)}</td>
-                    <td class="p-4 font-semibold">${highlightText(product.name, searchTerm)}</td>
-                    <td class="p-4 text-gray-600">${highlightText(product.category, searchTerm)}</td>
-                    <td class="p-4 text-right font-bold text-green-600">${formatCurrency(product.price)}</td>
-                    <td class="p-4 text-right font-bold ${product.stock <= 5 ? 'text-red-500' : 'text-blue-600'}">${product.stock}</td>
-                    <td class="p-4 text-center">
-                        <span class="px-3 py-1 rounded-full text-xs font-bold ${
-                            product.stock <= 0 ? 'bg-red-100 text-red-800' :
-                            product.stock <= 5 ? 'bg-yellow-100 text-yellow-800' :
-                            'bg-green-100 text-green-800'
-                        }">
-                            ${product.stock <= 0 ? '❌ Sin Stock' :
-                             product.stock <= 5 ? '⚠️ Stock Bajo' : '✅ Disponible'}
-                        </span>
-                    </td>
-                    <td class="p-4 text-center">
-                        ${isAdmin() ? `
-                        <div class="flex gap-2 justify-center">
-                            <button onclick="editProduct(${product.id})" class="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 py-2 rounded-lg hover:shadow-lg font-bold transition-all duration-300">
-                                ✏️
-                            </button>
-                            <button onclick="deleteProduct(${product.id})" class="delete-btn text-white px-3 py-2 rounded-lg hover:shadow-lg font-bold transition-all duration-300">
-                                🗑️
-                            </button>
-                        </div>
-                        ` : `<div class="flex flex-col items-center gap-1"><button onclick="prefillStockIn(${JSON.stringify(String(product.code)).replace(/"/g, '&quot;')})" class="bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-3 py-1.5 rounded-lg font-bold text-sm">➕ Sumar stock</button><span class="text-xs text-gray-400 font-medium">🔒 Solo lectura</span></div>`}
-                    </td>
-                </tr>
-            `).join('');
+            document.getElementById('inventory-table').innerHTML = filteredProducts.map(product => inventoryRowHtml(product, searchTerm)).join('');
 
             if (filteredProducts.length === 0) {
                 document.getElementById('inventory-table').innerHTML = `
                     <tr>
-                        <td colspan="7" class="p-8 text-center text-gray-500">
+                        <td colspan="9" class="p-8 text-center text-gray-500">
                             ${searchTerm ? '🔍 No se encontraron productos' : '📦 No hay productos en el inventario'}
                         </td>
                     </tr>
@@ -6363,36 +6372,53 @@ window.onload = function() {
             }
         }
 
-        function addNewProduct() {
+        async function addNewProduct() {
             const name = document.getElementById('new-product-name').value.trim();
             const code = document.getElementById('new-product-code').value.trim();
             const price = parseFloat(document.getElementById('new-product-price').value);
             const stock = parseInt(document.getElementById('new-product-stock').value);
             const category = document.getElementById('new-product-category').value.trim();
-            
+            const estante = document.getElementById('new-product-estante').value.trim();
+            const fila = document.getElementById('new-product-fila').value.trim();
+            const fotoFile = document.getElementById('new-product-foto').files[0];
+
             if (!name || !code || !price || !stock) {
                 alert('Por favor complete todos los campos requeridos');
                 return;
             }
-            
+
+            const btn = document.getElementById('btn-add-product');
+            let image = '';
+            if (fotoFile) {
+                if (btn) { btn.disabled = true; btn.textContent = '⏳ Subiendo foto...'; }
+                try { image = await subirFotoInventario(fotoFile); } catch(e) { alert('No se pudo subir la foto: ' + (e.message||e)); }
+                if (btn) { btn.disabled = false; btn.textContent = '✨ Agregar Producto'; }
+            }
+
             const newProduct = {
                 id: Date.now(),
                 name: name,
                 code: code.toUpperCase(),
                 price: price,
                 stock: stock,
-                category: category || 'General'
+                category: category || 'General',
+                estante: estante,
+                fila: fila,
+                image: image
             };
-            
+
             products.push(newProduct);
-            
+
             // Limpiar formulario
             document.getElementById('new-product-name').value = '';
             document.getElementById('new-product-code').value = '';
             document.getElementById('new-product-price').value = '';
             document.getElementById('new-product-stock').value = '';
             document.getElementById('new-product-category').value = '';
-            
+            document.getElementById('new-product-estante').value = '';
+            document.getElementById('new-product-fila').value = '';
+            document.getElementById('new-product-foto').value = '';
+
             saveAllData();
             renderInventario();
             showSaveIndicator();
@@ -6416,22 +6442,36 @@ window.onload = function() {
             document.getElementById('edit-product-price').value = product.price;
             document.getElementById('edit-product-stock').value = product.stock;
             document.getElementById('edit-product-category').value = product.category;
+            document.getElementById('edit-product-estante').value = product.estante || '';
+            document.getElementById('edit-product-fila').value = product.fila || '';
+            document.getElementById('edit-product-foto').value = '';
+            const prev = document.getElementById('edit-product-foto-preview');
+            if (product.image) { prev.src = product.image; prev.style.display = 'block'; }
+            else { prev.src = ''; prev.style.display = 'none'; }
 
             document.getElementById('edit-product-modal').style.display = 'flex';
         }
 
-        function saveEditProduct() {
+        async function saveEditProduct() {
             const name = document.getElementById('edit-product-name').value.trim();
             const code = document.getElementById('edit-product-code').value.trim();
             const price = parseFloat(document.getElementById('edit-product-price').value);
             const stock = parseInt(document.getElementById('edit-product-stock').value);
             const category = document.getElementById('edit-product-category').value.trim();
-            
+            const estante = document.getElementById('edit-product-estante').value.trim();
+            const fila = document.getElementById('edit-product-fila').value.trim();
+            const fotoFile = document.getElementById('edit-product-foto').files[0];
+
             if (!name || !code || !price || !stock) {
                 alert('Por favor complete todos los campos requeridos');
                 return;
             }
-            
+
+            let image = editingProduct.image || '';
+            if (fotoFile) {
+                try { image = await subirFotoInventario(fotoFile); } catch(e) { alert('No se pudo subir la foto: ' + (e.message||e)); }
+            }
+
             products = products.map(p =>
                 p.id === editingProduct.id ? {
                     ...p,
@@ -6439,10 +6479,13 @@ window.onload = function() {
                     code: code.toUpperCase(),
                     price: price,
                     stock: stock,
-                    category: category || 'General'
+                    category: category || 'General',
+                    estante: estante,
+                    fila: fila,
+                    image: image
                 } : p
             );
-            
+
             editingProduct = null;
             closeEditProductModal();
             saveAllData();
@@ -9120,6 +9163,70 @@ window.addEventListener('resize', function(){
   if(typeof activeTab!=='undefined' && activeTab==='presupuesto') ajustarPresupuestoMovil();
 });
 window.addEventListener('orientationchange', function(){ setTimeout(ajustarPresupuestoMovil,200); });
+</script>
+<script id="v31-inventario-foto-js">
+// V31: foto de producto en inventario — compresión, subida, zoom al pasar el mouse y lightbox.
+function comprimirImagen(file, maxW, quality){
+  maxW=maxW||800; quality=quality||0.72;
+  return new Promise(function(resolve,reject){
+    var r=new FileReader();
+    r.onload=function(){ var img=new Image();
+      img.onload=function(){
+        var w=img.width,h=img.height;
+        if(w>maxW){ h=Math.round(h*maxW/w); w=maxW; }
+        var c=document.createElement('canvas'); c.width=w; c.height=h;
+        c.getContext('2d').drawImage(img,0,0,w,h);
+        var dataUrl=c.toDataURL('image/jpeg',quality);
+        if(c.toBlob){ c.toBlob(function(b){ resolve({blob:b,dataUrl:dataUrl}); },'image/jpeg',quality); }
+        else resolve({blob:null,dataUrl:dataUrl});
+      };
+      img.onerror=reject; img.src=r.result;
+    };
+    r.onerror=reject; r.readAsDataURL(file);
+  });
+}
+async function subirFotoInventario(file){
+  var c=await comprimirImagen(file,800,0.72);
+  if(typeof sb!=='undefined' && sb && c.blob){
+    try{
+      var path='inventario/'+Date.now()+'-'+Math.random().toString(36).slice(2,7)+'.jpg';
+      var up=await sb.storage.from('tienda').upload(path, c.blob, {contentType:'image/jpeg'});
+      if(up.error) throw up.error;
+      return sb.storage.from('tienda').getPublicUrl(path).data.publicUrl;
+    }catch(e){ /* si falla la nube, guardo la imagen comprimida localmente */ }
+  }
+  return c.dataUrl;
+}
+function abrirLightbox(src){
+  var lb=document.getElementById('inv-lightbox');
+  if(!lb){
+    lb=document.createElement('div'); lb.id='inv-lightbox';
+    lb.innerHTML='<img alt="">'; lb.onclick=function(){ lb.style.display='none'; };
+    document.body.appendChild(lb);
+  }
+  lb.querySelector('img').src=src; lb.style.display='flex';
+}
+(function(){
+  function hoverEl(){
+    var h=document.getElementById('inv-hover');
+    if(!h){ h=document.createElement('div'); h.id='inv-hover'; h.innerHTML='<img alt="">'; document.body.appendChild(h); }
+    return h;
+  }
+  function pos(e){
+    var h=document.getElementById('inv-hover'); if(!h)return;
+    var pw=360, ph=360;
+    var x=e.clientX+20; if(x+pw>innerWidth) x=e.clientX-pw-20; if(x<6)x=6;
+    var y=e.clientY-ph/2; if(y<6)y=6; if(y+ph>innerHeight) y=innerHeight-ph-6;
+    h.style.left=x+'px'; h.style.top=y+'px';
+  }
+  document.addEventListener('mouseover',function(e){
+    var t=e.target; if(t&&t.classList&&t.classList.contains('inv-thumb')){ var h=hoverEl(); h.querySelector('img').src=t.src; h.style.display='block'; pos(e); }
+  });
+  document.addEventListener('mousemove',function(e){ var h=document.getElementById('inv-hover'); if(h&&h.style.display==='block') pos(e); });
+  document.addEventListener('mouseout',function(e){
+    var t=e.target; if(t&&t.classList&&t.classList.contains('inv-thumb')){ var h=document.getElementById('inv-hover'); if(h)h.style.display='none'; }
+  });
+})();
 </script>
 </body>
 </html>
